@@ -9,7 +9,7 @@ function toggleLeftDrawer() {
 </script>
 
 <template>
-  <q-layout class="bg-grey-3" view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" id="layout">
     <q-header elevated>
       <q-toolbar class="bg-grey-6">
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
@@ -41,7 +41,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/add-book" clickable>
+        <q-item to="/book/add" clickable>
           <q-item-section avatar>
             <q-icon name="library_add" />
           </q-item-section>
@@ -50,7 +50,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/favourites" clickable>
+        <q-item to="/" clickable>
           <q-item-section avatar>
             <q-icon name="format_quote" />
           </q-item-section>
@@ -59,7 +59,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/random" clickable>
+        <q-item to="/" clickable>
           <q-item-section avatar>
             <q-icon name="add" />
           </q-item-section>
@@ -68,7 +68,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/options" clickable>
+        <q-item to="/" clickable>
           <q-item-section avatar>
             <q-icon name="settings" />
           </q-item-section>
@@ -77,7 +77,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/info" clickable>
+        <q-item to="/book/60bf1b381a34c8191ddf50c1" clickable>
           <q-item-section avatar>
             <q-icon name="info" />
           </q-item-section>
@@ -88,8 +88,14 @@ function toggleLeftDrawer() {
       </q-list>
     </q-drawer>
 
-    <q-page-container class="bg-grey-3">
+    <q-page-container>
       <NuxtPage />
     </q-page-container>
   </q-layout>
 </template>
+
+<style>
+#layout {
+  background-image: linear-gradient(to bottom right, rgb(68, 64, 64), rgb(238, 238, 238));
+}
+</style>

@@ -16,6 +16,12 @@ export const Book = defineMongooseModel({
     translators: String,
     originalTitle: String,
     tags: String,
+    series: String,
+    seriesVol: Number,
+    publSeries: String,
+    isbn: Number,
+    note: String,
+    description: String,
     image: {
       type: String,
       default: 'https://i.imgur.com/rpVYMUX.jpeg',
