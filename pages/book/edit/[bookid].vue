@@ -1,6 +1,10 @@
 <script setup lang="ts">
 //const image = 'https://i.imgur.com/rpVYMUX.jpeg';
 
+const route = useRoute();
+const bookid = ref(route.params.bookid);
+const { data: fetchedBook } = await useFetch(`/api/book/${bookid.value}`);
+
 const menu = false;
 let modal = ref(true);
 let someDate = ref(new Date().toISOString());
@@ -9,57 +13,36 @@ let authorSearch = [];
 let publisherSearch = [];
 let translatorSearch = [];
 let tagsSearch = [];
-let kert = '';
+let kert = 'sdfsdf';
 let modelMultiple = ref([]);
 const options = ['Stanisław Lem', 'Stanisław Tym', 'Lucjan Tym'];
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
 const filterOptions = ref(options);
 
-// const title = ref('');
-// const authors = ref();
-// const publisher = ref();
-// const publicationDate = ref(2023);
-// const pages = ref();
-// const cover = ref('');
-// const purchasePrice = ref();
-// const retailPrice = ref();
-// const read = ref(false);
-// const purchaseDate = ref(new Date().toISOString());
-// const translators = ref();
-// const originalTitle = ref('');
-// const tags = ref();
-// const series = ref();
-// const seriesVol = ref();
-// const publSeries = ref();
-// const isbn = ref();
-// const note = ref('');
-// const description = ref('');
-// const image = ref('');
-
 const { parsedData, getLcData } = useLubimyCzytac();
 
 const book = ref({
-  title: '',
-  authors: [],
-  publisher: null,
-  publicationDate: 2023,
-  pages: 0,
-  cover: '',
-  purchasePrice: 0,
-  retailPrice: 0,
-  read: false,
-  purchaseDate: new Date().toISOString().slice(0, 10).replaceAll('-', '/'),
-  translators: [],
-  originalTitle: '',
-  tags: [],
-  series: null,
-  seriesVol: '',
-  publSeries: null,
-  lcNote: 0,
-  isbn: '',
-  notes: '',
-  description: '',
-  image: '',
+  title: fetchedBook.value.title,
+  authors: fetchedBook.value.authors.split(','),
+  publisher: fetchedBook.value.publisher,
+  publicationDate: fetchedBook.value.publicationDate,
+  pages: fetchedBook.value.pages,
+  cover: fetchedBook.value.cover,
+  purchasePrice: fetchedBook.value.purchasePrice.toFixed(2),
+  retailPrice: fetchedBook.value.retailPrice.toFixed(2),
+  read: fetchedBook.value.read,
+  purchaseDate: new Date(fetchedBook.value.purchaseDate).toISOString().slice(0, 10).replaceAll('-', '/'),
+  translators: fetchedBook.value.translators.split(','),
+  originalTitle: fetchedBook.value.originalTitle,
+  tags: fetchedBook.value.tags.split(','),
+  series: fetchedBook.value.series,
+  seriesVol: fetchedBook.value.seriesVol,
+  publSeries: fetchedBook.value.publSeries,
+  lcNote: fetchedBook.value.lcNote?.toFixed(2),
+  isbn: fetchedBook.value.isbn,
+  notes: fetchedBook.value.notes,
+  description: fetchedBook.value.description,
+  image: fetchedBook.value.image,
 });
 
 function filterFn(val, update) {
@@ -78,33 +61,6 @@ const sth = ref();
 async function onSubmit() {
   console.log('submit');
 
-  //const formData = new FormData();
-
-  //formData.append('title', book.value.title)
-
-  // formData.append('title', book.value.title)
-  // formData.append('authors', book.value.authors)
-  // formData.append('publisher', book.value.publisher)
-  // formData.append('publicationDate', book.value.publicationDate)
-  // formData.append('pages', book.value.pages)
-  // formData.append('cover', book.value.cover)
-  // formData.append('purchasePrice', book.value.purchasePrice)
-  // formData.append('retailPrice', book.value.retailPrice)
-  // formData.append('read', book.value.read)
-  // formData.append('purchaseDate', book.value.purchaseDate)
-  // formData.append('translators', book.value.translators)
-  // formData.append('originalTitle', book.value.originalTitle)
-  // formData.append('tags', book.value.tags)
-  // formData.append('series', book.value.series)
-  // formData.append('seriesVol', book.value.seriesVol)
-  // formData.append('publSeries', book.value.publSeries)
-  // formData.append('isbn', book.value.isbn)
-  // formData.append('lcNote', book.value.lcNote)
-  // formData.append('description', book.value.description)
-  // formData.append('notes', book.value.notes)
-  // formData.append('image', book.value.image)
-
-  // const bookToSave = structuredClone({...book.value});
   const bookToSave = {
     title: book.value.title,
     authors: book.value.authors.join(','),
@@ -128,53 +84,79 @@ async function onSubmit() {
     description: book.value.description,
     image: book.value.image,
   };
-  //bookToSave.authors = bookToSave.authors.join(',');
-  //bookToSave.translators = bookToSave.translators.join(',');
 
   console.log(bookToSave);
   console.log(book.value);
 
-  const response = await useFetch('/api/book/add', {
-    method: 'POST',
+  const response = await useFetch(`/api/book/edit/${bookid.value}`, {
+    method: 'PATCH',
     body: bookToSave,
   });
-
-  //console.log(response)
 }
 
 const data = ref();
 
 const lcUrl = ref('');
 
+const lcBookData = ref({
+  title: '',
+  authors: [],
+  publisher: null,
+  publicationDate: 2023,
+  pages: 0,
+  translators: [],
+  originalTitle: '',
+  tags: [],
+  series: null,
+  seriesVol: '',
+  publSeries: null,
+  lcNote: 0,
+  isbn: '',
+  description: '',
+  image: '',
+});
+
+let isLcFormVisible = ref(false);
+
 async function onLoadFromLC() {
   await getLcData(lcUrl.value);
 
-  book.value.title = parsedData.value.title;
-  book.value.authors = parsedData.value.authors;
-  book.value.publisher = parsedData.value.publisher;
-  book.value.publicationDate = +parsedData.value.datePublished.slice(0, 4);
-  book.value.pages = +parsedData.value.pages;
-  book.value.translators = parsedData.value.translators;
-  book.value.originalTitle = parsedData.value.originalTitle;
-  book.value.description = parsedData.value.description;
-  book.value.tags = parsedData.value.category.concat(parsedData.value.tags);
-  book.value.series = parsedData.value.series?.split(' (tom ')[0];
-  book.value.seriesVol = +parsedData.value.series?.split(' (tom ')[1].slice(0, -1);
-  book.value.publSeries = parsedData.value.publSeries;
-  book.value.isbn = parsedData.value.isbn;
-  book.value.lcNote = parsedData.value.note;
-  book.value.isbn = parsedData.value.isbn;
-  book.value.image = parsedData.value.image;
+  lcBookData.value.title = parsedData.value.title;
+  lcBookData.value.authors = parsedData.value.authors;
+  lcBookData.value.publisher = parsedData.value.publisher;
+  lcBookData.value.publicationDate = +parsedData.value.datePublished?.slice(0, 4);
+  lcBookData.value.pages = +parsedData.value.pages;
+  lcBookData.value.translators = parsedData.value.translators;
+  lcBookData.value.originalTitle = parsedData.value.originalTitle;
+  lcBookData.value.description = parsedData.value.description;
+  lcBookData.value.tags = parsedData.value.category.concat(parsedData.value.tags);
+  lcBookData.value.series = parsedData.value.series?.split(' (tom ')[0];
+  lcBookData.value.seriesVol = +parsedData.value.series?.split(' (tom ')[1].slice(0, -1);
+  lcBookData.value.publSeries = parsedData.value.publSeries;
+  lcBookData.value.isbn = parsedData.value.isbn;
+  lcBookData.value.lcNote = parsedData.value.note;
+  lcBookData.value.isbn = parsedData.value.isbn;
+  lcBookData.value.image = parsedData.value.image;
+
+  isLcFormVisible.value = true;
 }
 
+function overrideField(fieldName: String) {
+  // @ts-ignore
+  book.value[fieldName] = lcBookData.value[fieldName];
+}
 const onReset = async () => {
   console.log('asdf');
+  isLcFormVisible.value = !isLcFormVisible.value;
 };
 </script>
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
-    <h4>Dodaj książkę</h4>
+    <h4>Edytuj książkę</h4>
+
+    <div>{{ fetchedBook }}</div>
+
     <q-card class="my-card" flat bordered>
       <q-btn class="q-ma-sm" label="Pobierz z LC">
         <q-popup-proxy>
@@ -184,6 +166,54 @@ const onReset = async () => {
           </q-card>
         </q-popup-proxy>
       </q-btn>
+
+      <q-card-section v-if="isLcFormVisible" class="q-gutter-sm">
+        <q-field filled label="Tytuł" stack-label dense>
+          <template v-slot:control>
+            <div>{{ lcBookData.title }}</div>
+          </template>
+          <template v-slot:after>
+            <q-btn round dense flat icon="send" @click="overrideField('title')">
+              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+            </q-btn>
+          </template>
+        </q-field>
+
+        <q-field filled label="Autor" stack-label dense>
+          <template v-slot:control>
+            <!-- <div>{{ lcBookData.authors }}</div> -->
+            <q-chip v-for="author in lcBookData.authors">{{ author }}</q-chip>
+          </template>
+          <template v-slot:after>
+            <q-btn round dense flat icon="send" @click="overrideField('authors')">
+              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+            </q-btn>
+          </template>
+        </q-field>
+
+        <q-field filled label="Wydawca" stack-label dense>
+          <template v-slot:control>
+            <div>{{ lcBookData.publisher }}</div>
+          </template>
+          <template v-slot:after>
+            <q-btn round dense flat icon="send">
+              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+            </q-btn>
+          </template>
+        </q-field>
+
+        <q-field filled label="Opis" stack-label dense>
+          <template v-slot:control>
+            <div>{{ lcBookData.description }}</div>
+          </template>
+          <template v-slot:after>
+            <q-btn round dense flat icon="send" @click="overrideTitle()">
+              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+            </q-btn>
+          </template>
+        </q-field>
+      </q-card-section>
+
       <q-card-section>
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-input
@@ -304,11 +334,11 @@ const onReset = async () => {
 
           <div class="q-mt-xs row">
             <div class="col">
-              <q-input dense v-model="book.retailPrice" label="Cena okładkowa" mask="#.##" fill-mask="0" />
+              <q-input dense v-model="book.retailPrice" label="Cena okładkowa" reverse-fill-mask mask="#.##" fill-mask="0" />
             </div>
             <div class="col-1"></div>
             <div class="col">
-              <q-input dense v-model="book.purchasePrice" label="Cena zakupu" mask="#.##" fill-mask="0" />
+              <q-input dense v-model="book.purchasePrice" label="Cena zakupu" reverse-fill-mask mask="#.##" fill-mask="0" />
             </div>
             <div class="col-1"></div>
             <div class="col">

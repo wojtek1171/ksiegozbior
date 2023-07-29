@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const route = useRoute();
 const bookid = ref(route.params.bookid);
-//const { data: book } = await useFetch(`/api/book/${bookid}`)
+console.log(bookid);
+const { data: book } = await useFetch(`/api/book/${bookid.value}`);
 const tags = 'filozofia,pytania,popularnonaukowa';
 const desc =
   'W 2016 roku Ian Olasov wraz z kilkoma profesorami i studentami filozofii rozstawił stolik /n w centrum Nowego Jorku i wywiesił karteczkę "Zapytaj filozofa". Przez następne kilka godzin rozmawiał z przechodniami o Bogu, wyborach prezydenckich, hodowaniu rybek w akwarium i wolnej woli. Dzięki tej książce z pewnością nie zabraknie wam już tematów na small talki w windzie lub u fryzjera. Z tej książki dowiesz się: skoro Superman czerpie energię ze Słońca, to dlaczego nie jest opalony? Dlaczego istnieje raczej coś niż nic? Czy ketchup to smoothie? Jaki jest sens życia? ';
@@ -27,16 +28,14 @@ onMounted(() => {
 <template>
   <div ref="div">Book Details</div>
 
+  <div>{{ book }}</div>
+
   <q-card class="my-card" id="base-card" flat bordered>
     <div ref="div">
       <q-card-section :horizontal="isHorizontal">
         <q-card-section class="col-5 flex flex-center">
           <div>asd</div>
-          <q-img
-            id="img"
-            class="rounded-borders"
-            src="https://s.lubimyczytac.pl/upload/books/5005000/5005794/965853-352x500.jpg"
-          />
+          <q-img id="img" class="rounded-borders" src="https://s.lubimyczytac.pl/upload/books/5005000/5005794/965853-352x500.jpg" />
         </q-card-section>
 
         <q-card-section>
