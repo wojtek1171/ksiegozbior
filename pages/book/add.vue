@@ -152,12 +152,12 @@ async function onLoadFromLC() {
   book.value.title = parsedData.value.title;
   book.value.authors = parsedData.value.authors;
   book.value.publisher = parsedData.value.publisher;
-  book.value.publicationDate = +parsedData.value.datePublished.slice(0, 4);
+  book.value.publicationDate = +parsedData.value.publicationDate?.slice(0, 4);
   book.value.pages = +parsedData.value.pages;
   book.value.translators = parsedData.value.translators;
   book.value.originalTitle = parsedData.value.originalTitle;
   book.value.description = parsedData.value.description;
-  book.value.tags = parsedData.value.category.concat(parsedData.value.tags);
+  book.value.tags = !!parsedData.value.tags ? parsedData.value.category.concat(parsedData.value.tags) : parsedData.value.category;
   book.value.series = parsedData.value.series?.split(' (tom ')[0];
   book.value.seriesVol = +parsedData.value.series?.split(' (tom ')[1].slice(0, -1);
   book.value.publSeries = parsedData.value.publSeries;
@@ -174,6 +174,7 @@ const onReset = async () => {
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
+    <div>{{ parsedData }}</div>
     <h4>Dodaj książkę</h4>
     <q-card class="my-card" flat bordered>
       <q-btn class="q-ma-sm" label="Pobierz z LC">

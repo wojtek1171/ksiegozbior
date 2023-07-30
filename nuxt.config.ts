@@ -10,4 +10,5 @@ export default defineNuxtConfig({
     options: {},
     modelsDir: 'models',
   },
+  css: ['~/layouts/global.scss'],
 });

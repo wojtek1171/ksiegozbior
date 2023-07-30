@@ -18,6 +18,7 @@
   "dependencies": {
     "@quasar/extras": "^1.16.5",
     "nuxt-mongoose": "^0.0.9",
-    "quasar": "^2.12.3"
+    "quasar": "^2.12.3",
+    "sass": "^1.64.1"
   }
 }

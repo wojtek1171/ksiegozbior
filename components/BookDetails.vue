@@ -40,7 +40,7 @@ onMounted(() => {
 
         <q-card-section>
           <q-card-section class="q-pa-xs">
-            <div class="text-h5 q-mt-sm">Zapytaj Filozofa</div>
+            <div class="text-h5 q-mt-sm">Zapytaj FilozofaŻZ LŁ ąaęe</div>
             <div class="text-h6">Ian Olslav</div>
             <div>Wydawnictwo: Text</div>
             <div>Seria: Text</div>

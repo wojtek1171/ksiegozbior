@@ -94,8 +94,9 @@ function toggleLeftDrawer() {
   </q-layout>
 </template>
 
-<style>
+<style lang="scss">
+@use '~/layouts/global.scss';
 #layout {
-  background-image: linear-gradient(to bottom right, rgb(68, 64, 64), rgb(238, 238, 238));
+  // background-image: linear-gradient(to bottom right, rgb(68, 64, 64), rgb(238, 238, 238));
 }
 </style>

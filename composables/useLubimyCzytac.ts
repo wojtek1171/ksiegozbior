@@ -4,7 +4,7 @@ export default function useLubimyCzytac() {
     authors: [],
     publisher: '',
     category: [],
-    datePublished: '',
+    publicationDate: '',
     pages: '',
     translators: [],
     originalTitle: '',
@@ -37,7 +37,7 @@ export default function useLubimyCzytac() {
       .trim()
       .split(', ');
     parsedData.value.pages = stringData.match(new RegExp('numberOfPages":"' + '(.*?)' + '"'))[1];
-    parsedData.value.datePublished = stringData.match(new RegExp('datePublished":"' + '(.*?)' + '"'))[1];
+    parsedData.value.publicationDate = stringData.match(new RegExp('datePublished":"' + '(.*?)' + '"'))[1];
     parsedData.value.publSeries = stringData.match(new RegExp('Seria:' + '(.*?)' + '</'))?.[1]?.split('>')[1];
     parsedData.value.series = stringData
       .match(new RegExp('Cykl:' + '(.*?)' + '</'))?.[1]

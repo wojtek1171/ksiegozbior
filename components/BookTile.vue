@@ -37,9 +37,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>Book Details</div>
-  <div>{{ book.title }}</div>
-  <q-card class="my-card" id="base-card" bordered>
+  <q-card id="base-card" bordered>
     <div ref="div">
       <q-card-section :horizontal="isHorizontal">
         <q-card-section class="col-3 flex">

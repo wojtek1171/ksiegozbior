@@ -7,7 +7,7 @@
         <div>{{ publisher }}</div>
         <div>{{ category }}</div>
         <div>{{ pages }}</div>
-        <div>{{ datePublished }}</div>
+        <div>{{ publicationDate }}</div>
         <div>{{ series }}</div>
         <div>{{ cycle }}</div>
         <div>{{ isbn }}</div>
@@ -39,7 +39,7 @@ let costtam = 123;
 // const publisher = stringData.match(new RegExp('Wydawnictwo: ' + "(.*?)" + '</'))[1].split('>')[1];
 // const category = stringData.match(new RegExp('class="book__category' + "(.*?)" + '</'))[1].split('>')[1];
 // const pages = stringData.match(new RegExp('numberOfPages":"' + "(.*?)" + '"'))[1];
-// const datePublished = stringData.match(new RegExp('datePublished":"' + "(.*?)" + '"'))[1];
+// const publicationDate = stringData.match(new RegExp('publicationDate":"' + "(.*?)" + '"'))[1];
 // const series = stringData.match(new RegExp('Seria:' + "(.*?)" + '</'))?.[1]?.split('>')[1];
 // const cycle = stringData.match(new RegExp('Cykl:' + "(.*?)" + '</'))?.[1]?.split('>')[1];
 // const isbn = stringData.match(new RegExp('isbn":"' + "(.*?)" + '"'))[1];

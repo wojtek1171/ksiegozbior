@@ -1,11 +1,17 @@
 <script setup lang="ts">
 const { data: books } = await useFetch('/api/books');
 
-const visBooks = books.value?.slice(0, 9);
+const tileOrTab = ref(true);
+const changeView = () => (tileOrTab.value = !tileOrTab.value);
 </script>
 
 <template>
   <h6>Szukaj</h6>
-  <q-separator />
-  <BookTile v-for="book in visBooks" :key="book._id" :book="book"></BookTile>
+
+  <div>{{ tileOrTab }}</div>
+
+  <q-btn @click="changeView">Tile or tab</q-btn>
+
+  <ListTiles v-if="tileOrTab" :books="books"></ListTiles>
+  <ListTable v-else :books="books"></ListTable>
 </template>
