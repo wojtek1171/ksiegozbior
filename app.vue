@@ -14,14 +14,14 @@ function toggleLeftDrawer() {
       <q-toolbar class="bg-grey-6">
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="toolbar-title"> App </q-toolbar-title>
+        <q-toolbar-title class="bg-grey- toolbar-title"> App </q-toolbar-title>
         <div><q-btn round size="sm" color="grey-9" to="/"></q-btn></div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer class="bg-grey-7 text-white" id="drawer" v-model="leftDrawerOpen" :width="230" show-if-above>
+    <q-drawer class="bg-grey-5" id="drawer" v-model="leftDrawerOpen" :width="230" show-if-above>
       <q-list>
-        <q-item-label class="text-white" header> Menu </q-item-label>
+        <q-item-label header> Menu </q-item-label>
 
         <q-item to="/" clickable>
           <q-item-section avatar>

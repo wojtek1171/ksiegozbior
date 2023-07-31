@@ -39,7 +39,9 @@ function animateScroll(dir: string) {
       <q-scroll-area ref="scrollAreaRef" class="col-10" style="height: 350px; max-width: 1100px" @scroll="scroll">
         <div class="row no-wrap">
           <div v-for="book in homePageData.recentBooks" :key="book" class="q-pa-sm">
-            <q-img id="img" style="height: 300px; width: 200px" :src="book.image"></q-img>
+            <router-link :to="`/book/${book._id}`">
+              <q-img id="img" style="height: 300px; width: 200px" :src="book.image"> </q-img>
+            </router-link>
           </div>
         </div>
       </q-scroll-area>
@@ -53,7 +55,7 @@ function animateScroll(dir: string) {
 
     <div class="q-pt-lg text-h3 text-center">Księgozbiór zawiera</div>
 
-    <div class="q-pa-lg row text-center q-gutter-lg card-container">
+    <div class="q-pa-lg row flex flex-center text-center q-gutter-lg">
       <q-card bordered class="column text-center my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h3">
@@ -66,74 +68,75 @@ function animateScroll(dir: string) {
         </q-card-section>
       </q-card>
 
-      <q-card dark bordered class="bg-grey-9 column text-center my-card">
+      <q-card bordered class="column text-center my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h3">
-            {{ homePageData.bookCount }}
+            {{ homePageData.authorsCount }}
           </div>
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">autorów</div>
         </q-card-section>
       </q-card>
 
-      <q-card dark bordered class="bg-grey-9 column text-center my-card">
+      <q-card bordered class="column text-center my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h3">
             {{ homePageData.pagesCount }}
           </div>
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">stron</div>
         </q-card-section>
       </q-card>
 
-      <q-card dark bordered class="column bg-grey-9 my-card">
+      <q-card bordered class="column my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text">
             {{ homePageData.meters }}
           </div>
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">metrów bieżących</div>
         </q-card-section>
       </q-card>
 
-      <q-card dark bordered class="column bg-grey-9 my-card">
+      <q-card bordered class="column my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text">
             {{ homePageData.bookCount }}
           </div>
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">cytatów</div>
         </q-card-section>
       </q-card>
 
-      <q-card dark bordered class="column bg-grey-9 my-card">
+      <q-card bordered class="column my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text">{{ Math.round(homePageData.purchasePriceSum) }} zł</div>
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">suma cen zakupu</div>
         </q-card-section>
       </q-card>
 
-      <q-card dark bordered class="column bg-grey-9 my-card">
+      <q-card bordered class="column my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text">{{ Math.round(homePageData.retailPriceSum) }} zł</div>
         </q-card-section>
-        <q-separator dark inset />
+        <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">suma cen detal.</div>
         </q-card-section>
       </q-card>
     </div>
+    <q-separator></q-separator>
   </q-page>
 </template>
 
@@ -146,9 +149,5 @@ function animateScroll(dir: string) {
   width: 210px;
   height: 210px;
   background-color: rgb(235, 235, 235, 0.5);
-}
-
-.card-container {
-  margin: auto;
 }
 </style>

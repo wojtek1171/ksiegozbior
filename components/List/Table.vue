@@ -27,7 +27,7 @@ const columns = [
   { name: 'publisher', align: 'left', label: 'Wydawca', field: (row) => row.publisher, sortable: true },
   { name: 'pages', align: 'left', label: 'Strony', field: (row) => row.pages, sortable: true },
   { name: 'note', align: 'left', label: 'Ocena', field: (row) => row.lcNote, sortable: true },
-  { name: 'retailPrice', align: 'left', label: 'Cena detaliczna', field: (row) => row.retailPrice, sortable: true },
+  { name: 'retailPrice', align: 'left', label: 'Cena detal.', field: (row) => row.retailPrice, sortable: true },
   { name: 'purchasePrice', align: 'left', label: 'Cena zakupu', field: (row) => row.purchasePrice, sortable: true },
   { name: 'read', align: 'left', label: 'Przeczytana', field: (row) => row.read, sortable: true },
 ];
@@ -36,7 +36,7 @@ const columns = [
 <template>
   <div class="q-pa-md">
     <q-table
-      class="my-sticky-header-table"
+      class="my-sticky-header-table table"
       flat
       bordered
       dense
@@ -75,5 +75,9 @@ const columns = [
 .router-link {
   //all: unset;
   color: #000000;
+}
+
+.table {
+  background-color: rgb(255, 255, 255, 0.2);
 }
 </style>

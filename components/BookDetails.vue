@@ -30,7 +30,7 @@ onMounted(() => {
 
   <div>{{ book }}</div>
 
-  <q-card class="my-card" id="base-card" flat bordered>
+  <q-card id="base-card" flat bordered>
     <div ref="div">
       <q-card-section :horizontal="isHorizontal">
         <q-card-section class="col-5 flex flex-center">

@@ -1,40 +1,7 @@
 <script setup lang="ts">
-//const image = 'https://i.imgur.com/rpVYMUX.jpeg';
-
-const menu = false;
-let modal = ref(true);
-let someDate = ref(new Date().toISOString());
-let menu2 = false;
-let authorSearch = [];
-let publisherSearch = [];
-let translatorSearch = [];
-let tagsSearch = [];
-let kert = '';
-let modelMultiple = ref([]);
 const options = ['Stanisław Lem', 'Stanisław Tym', 'Lucjan Tym'];
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
 const filterOptions = ref(options);
-
-// const title = ref('');
-// const authors = ref();
-// const publisher = ref();
-// const publicationDate = ref(2023);
-// const pages = ref();
-// const cover = ref('');
-// const purchasePrice = ref();
-// const retailPrice = ref();
-// const read = ref(false);
-// const purchaseDate = ref(new Date().toISOString());
-// const translators = ref();
-// const originalTitle = ref('');
-// const tags = ref();
-// const series = ref();
-// const seriesVol = ref();
-// const publSeries = ref();
-// const isbn = ref();
-// const note = ref('');
-// const description = ref('');
-// const image = ref('');
 
 const { parsedData, getLcData } = useLubimyCzytac();
 
@@ -76,35 +43,6 @@ function filterFn(val, update) {
 const sth = ref();
 
 async function onSubmit() {
-  console.log('submit');
-
-  //const formData = new FormData();
-
-  //formData.append('title', book.value.title)
-
-  // formData.append('title', book.value.title)
-  // formData.append('authors', book.value.authors)
-  // formData.append('publisher', book.value.publisher)
-  // formData.append('publicationDate', book.value.publicationDate)
-  // formData.append('pages', book.value.pages)
-  // formData.append('cover', book.value.cover)
-  // formData.append('purchasePrice', book.value.purchasePrice)
-  // formData.append('retailPrice', book.value.retailPrice)
-  // formData.append('read', book.value.read)
-  // formData.append('purchaseDate', book.value.purchaseDate)
-  // formData.append('translators', book.value.translators)
-  // formData.append('originalTitle', book.value.originalTitle)
-  // formData.append('tags', book.value.tags)
-  // formData.append('series', book.value.series)
-  // formData.append('seriesVol', book.value.seriesVol)
-  // formData.append('publSeries', book.value.publSeries)
-  // formData.append('isbn', book.value.isbn)
-  // formData.append('lcNote', book.value.lcNote)
-  // formData.append('description', book.value.description)
-  // formData.append('notes', book.value.notes)
-  // formData.append('image', book.value.image)
-
-  // const bookToSave = structuredClone({...book.value});
   const bookToSave = {
     title: book.value.title,
     authors: book.value.authors.join(','),
@@ -128,8 +66,6 @@ async function onSubmit() {
     description: book.value.description,
     image: book.value.image,
   };
-  //bookToSave.authors = bookToSave.authors.join(',');
-  //bookToSave.translators = bookToSave.translators.join(',');
 
   console.log(bookToSave);
   console.log(book.value);
@@ -138,8 +74,6 @@ async function onSubmit() {
     method: 'POST',
     body: bookToSave,
   });
-
-  //console.log(response)
 }
 
 const data = ref();
@@ -176,7 +110,7 @@ const onReset = async () => {
   <div class="q-pa-md" id="form" style="max-width: 800px">
     <div>{{ parsedData }}</div>
     <h4>Dodaj książkę</h4>
-    <q-card class="my-card" flat bordered>
+    <q-card flat bordered>
       <q-btn class="q-ma-sm" label="Pobierz z LC">
         <q-popup-proxy>
           <q-card class="q-pa-md" style="width: 500px">
