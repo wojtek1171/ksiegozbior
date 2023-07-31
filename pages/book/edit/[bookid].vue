@@ -159,10 +159,6 @@ const onReset = async () => {
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
-    <h4>Edytujs książkę</h4>
-
-    <div>{{ fetchedBook }}</div>
-
     <q-card class="my-card" flat bordered>
       <div class="q-mx-md row no-wrap items-center">
         <div class="card-title">Edytuj książkę</div>
@@ -179,171 +175,173 @@ const onReset = async () => {
         </q-btn>
       </div>
 
-      <q-card-section v-if="isLcFormVisible" class="q-gutter-sm">
-        <q-field filled label="Tytuł" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.title }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('title')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+      <q-slide-transition>
+        <q-card-section v-show="isLcFormVisible" class="q-gutter-sm">
+          <q-field filled label="Tytuł" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.title }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('title')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Autor" stack-label dense>
-          <template v-slot:control>
-            <!-- <div>{{ lcBookData.authors }}</div> -->
-            <q-chip v-for="author in lcBookData.authors">{{ author }}</q-chip>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('authors')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Autor" stack-label dense>
+            <template v-slot:control>
+              <!-- <div>{{ lcBookData.authors }}</div> -->
+              <q-chip v-for="author in lcBookData.authors">{{ author }}</q-chip>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('authors')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Wydawca" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.publisher }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('publisher')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Wydawca" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.publisher }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('publisher')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field v-if="lcBookData.translators" filled label="Tłumacz" stack-label dense>
-          <template v-slot:control>
-            <!-- <div>{{ lcBookData.authors }}</div> -->
-            <q-chip v-for="translator in lcBookData.translators">{{ translator }}</q-chip>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('translators')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field v-if="lcBookData.translators" filled label="Tłumacz" stack-label dense>
+            <template v-slot:control>
+              <!-- <div>{{ lcBookData.authors }}</div> -->
+              <q-chip v-for="translator in lcBookData.translators">{{ translator }}</q-chip>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('translators')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field v-if="lcBookData.originalTitle" filled label="Tytuł oryginalny" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.originalTitle }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('originalTitle')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field v-if="lcBookData.originalTitle" filled label="Tytuł oryginalny" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.originalTitle }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('originalTitle')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field v-if="lcBookData.series" filled label="Cykl" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.series }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideSeries()">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field v-if="lcBookData.series" filled label="Cykl" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.series }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideSeries()">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field v-if="lcBookData.publSeries" filled label="Seria" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.publSeries }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('publSeries')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field v-if="lcBookData.publSeries" filled label="Seria" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.publSeries }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('publSeries')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="ISBN" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.isbn }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('isbn')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="ISBN" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.isbn }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('isbn')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Liczba stron" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.pages }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('pages')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Liczba stron" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.pages }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('pages')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Rok publikacji" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.publicationDate }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('publicationDate')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Rok publikacji" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.publicationDate }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('publicationDate')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Ocena LC" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.lcNote }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('lcNote')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Ocena LC" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.lcNote }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('lcNote')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Link do okładki" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.image }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('image')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Link do okładki" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.image }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('image')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Tagi" stack-label dense>
-          <template v-slot:control>
-            <q-chip v-for="tag in lcBookData.tags">{{ tag }}</q-chip>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('tags')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Tagi" stack-label dense>
+            <template v-slot:control>
+              <q-chip v-for="tag in lcBookData.tags">{{ tag }}</q-chip>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('tags')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <q-field filled label="Opis" stack-label dense>
-          <template v-slot:control>
-            <div>{{ lcBookData.description }}</div>
-          </template>
-          <template v-slot:after>
-            <q-btn round dense flat icon="assignment_returned" @click="overrideField('description')">
-              <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
-            </q-btn>
-          </template>
-        </q-field>
+          <q-field filled label="Opis" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.description }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('description')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
 
-        <div align="right">
-          <q-btn class="fd">
-            <div>Przenieś wszystko</div>
-            <q-space />
-            <q-icon name="assignment_returned" />
-          </q-btn>
-        </div>
-      </q-card-section>
+          <div align="right">
+            <q-btn class="fd">
+              <div>Przenieś wszystko</div>
+              <q-space />
+              <q-icon name="assignment_returned" />
+            </q-btn>
+          </div>
+        </q-card-section>
+      </q-slide-transition>
 
       <q-separator></q-separator>
 

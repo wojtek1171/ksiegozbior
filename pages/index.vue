@@ -1,58 +1,154 @@
-<template>
-  <div>
-    <h2>Hello</h2>
-    <button @click="someFunc">click</button>
-    <!-- <div>{{ title }}</div>
-        <div>{{ authors }}</div>
-        <div>{{ publisher }}</div>
-        <div>{{ category }}</div>
-        <div>{{ pages }}</div>
-        <div>{{ publicationDate }}</div>
-        <div>{{ series }}</div>
-        <div>{{ cycle }}</div>
-        <div>{{ isbn }}</div>
-        <div>{{ tags }}</div>
-        <div>{{ note }}</div>
-        <div>{{ description }}</div>
-        <div>{{ cover }}</div>
-        <div>{{ translators }}</div>
-        <div>{{ originalTitle }}</div> -->
-
-    <div>-----------------------------------------</div>
-    <!-- <div>{{ data.toString() }}</div> -->
-    <div>ŁĄŻĆ</div>
-  </div>
-</template>
-
 <script setup lang="ts">
-//const { data } = await useFetch('https://lubimyczytac.pl/ksiazka/213089/zywe-srebro');
-//const { data } = await useFetch('https://lubimyczytac.pl/ksiazka/4959860/szkice-z-filozofii-glupoty');
-//const { data } = await useFetch('https://lubimyczytac.pl/ksiazka/105143/wedrowiec');
-//const { data } = await useFetch('https://lubimyczytac.pl/ksiazka/4935972/historia-naszej-swiadomosci-jak-po-czterech-miliardach-lat-ewolucji-powstal-swiadomy-mozg');
+const { homePageData, getHomePageData } = useHomePageData();
+await getHomePageData();
 
-//const stringData = data.value;
+const scrollAreaRef = ref(null);
+const position = ref(0);
+let once = false;
+const curPosPercentage = ref(0);
+const totalWidth = ref(0);
 
-let costtam = 123;
+function scroll(sc) {
+  curPosPercentage.value = sc.horizontalPercentage;
+  position.value = sc.horizontalPosition;
+  if (!once) {
+    totalWidth.value = sc.horizontalSize;
+    once = true;
+  }
+}
 
-// const title = stringData.match(new RegExp('<h1 class="book__title"' + "(.*?)" + '</h1></div>'))[1].split('>')[1];
-// const authors = stringData.match(new RegExp('books:author" content="' + "(.*?)" + '" /><meta property'))[1].split(',&nbsp;');
-// const publisher = stringData.match(new RegExp('Wydawnictwo: ' + "(.*?)" + '</'))[1].split('>')[1];
-// const category = stringData.match(new RegExp('class="book__category' + "(.*?)" + '</'))[1].split('>')[1];
-// const pages = stringData.match(new RegExp('numberOfPages":"' + "(.*?)" + '"'))[1];
-// const publicationDate = stringData.match(new RegExp('publicationDate":"' + "(.*?)" + '"'))[1];
-// const series = stringData.match(new RegExp('Seria:' + "(.*?)" + '</'))?.[1]?.split('>')[1];
-// const cycle = stringData.match(new RegExp('Cykl:' + "(.*?)" + '</'))?.[1]?.split('>')[1];
-// const isbn = stringData.match(new RegExp('isbn":"' + "(.*?)" + '"'))[1];
-// const tags = stringData.match(/(?<=class="btn btn-outline-primary tag mt-2 mb-0">)(.*?)(?=<\/a>)/g);
-// const note = stringData.match(new RegExp('books:rating:value" content="' + "(.*?)" + '" />'))?.[1];
-// const description = stringData.match(new RegExp('<div class="collapse-content"><p>' + "(.*?)" + '</p>'))[1];
-// const cover = stringData.match(new RegExp('og:image" content="' + "(.*?)" + '" />'))[1];
-// const translators = stringData.match(/(?<=Tłumacz:)(.*?)(?=<\/a><\/dd>)/g).map(e => e.replace(/<.*?>/g, ""));
-// const originalTitle = stringData.match(new RegExp('Tytuł oryginału:' + "(.*?)" + '</dd'))?.[1]?.split('d>')[1];
-
-function someFunc() {
-  const rand = Math.floor(Math.random() * 12);
-  costtam = rand;
-  console.log(rand);
+function animateScroll(dir: string) {
+  if (dir === 'right') {
+    curPosPercentage.value < 1 && (position.value = position.value + totalWidth.value / 6);
+  } else {
+    curPosPercentage.value > 0 && (position.value = position.value - totalWidth.value / 6);
+  }
+  scrollAreaRef.value.setScrollPosition('horizontal', position.value, 300);
 }
 </script>
+
+<template>
+  <q-page class="text-center" style="max-width: 1100px; margin: auto">
+    <div class="q-py-lg text-h3 text-center">Ostatnio dodane</div>
+
+    <div class="row no-wrap">
+      <div class="col-1">
+        <q-btn icon="chevron_left" flat round @click="animateScroll('left')"></q-btn>
+      </div>
+
+      <q-scroll-area ref="scrollAreaRef" class="col-10" style="height: 350px; max-width: 1100px" @scroll="scroll">
+        <div class="row no-wrap">
+          <div v-for="book in homePageData.recentBooks" :key="book" class="q-pa-sm">
+            <q-img id="img" style="height: 300px; width: 200px" :src="book.image"></q-img>
+          </div>
+        </div>
+      </q-scroll-area>
+
+      <div class="col-1">
+        <q-btn icon="chevron_right" flat round @click="animateScroll('right')"></q-btn>
+      </div>
+    </div>
+
+    <q-separator></q-separator>
+
+    <div class="q-pt-lg text-h3 text-center">Księgozbiór zawiera</div>
+
+    <div class="q-pa-lg row text-center q-gutter-lg card-container">
+      <q-card bordered class="column text-center my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h3">
+            {{ homePageData.bookCount }}
+          </div>
+        </q-card-section>
+        <q-separator inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">książek</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card dark bordered class="bg-grey-9 column text-center my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h3">
+            {{ homePageData.bookCount }}
+          </div>
+        </q-card-section>
+        <q-separator dark inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">autorów</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card dark bordered class="bg-grey-9 column text-center my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h3">
+            {{ homePageData.pagesCount }}
+          </div>
+        </q-card-section>
+        <q-separator dark inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">stron</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card dark bordered class="column bg-grey-9 my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text">
+            {{ homePageData.meters }}
+          </div>
+        </q-card-section>
+        <q-separator dark inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">metrów bieżących</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card dark bordered class="column bg-grey-9 my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text">
+            {{ homePageData.bookCount }}
+          </div>
+        </q-card-section>
+        <q-separator dark inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">cytatów</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card dark bordered class="column bg-grey-9 my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text">{{ Math.round(homePageData.purchasePriceSum) }} zł</div>
+        </q-card-section>
+        <q-separator dark inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">suma cen zakupu</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card dark bordered class="column bg-grey-9 my-card">
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text">{{ Math.round(homePageData.retailPriceSum) }} zł</div>
+        </q-card-section>
+        <q-separator dark inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">suma cen detal.</div>
+        </q-card-section>
+      </q-card>
+    </div>
+  </q-page>
+</template>
+
+<style lang="scss">
+.section {
+  margin: auto;
+}
+
+.my-card {
+  width: 210px;
+  height: 210px;
+  background-color: rgb(235, 235, 235, 0.5);
+}
+
+.card-container {
+  margin: auto;
+}
+</style>
