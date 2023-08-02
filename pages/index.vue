@@ -25,11 +25,14 @@ function animateScroll(dir: string) {
   }
   scrollAreaRef.value.setScrollPosition('horizontal', position.value, 300);
 }
+const { isAdmin, authorize } = useAuth();
+authorize();
 </script>
 
 <template>
   <q-page class="text-center" style="max-width: 1100px; margin: auto">
     <div class="q-py-lg text-h3 text-center">Ostatnio dodane</div>
+    <div>{{ isAdmin }}</div>
 
     <div class="row no-wrap">
       <div class="col-1">

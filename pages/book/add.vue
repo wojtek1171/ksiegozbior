@@ -1,4 +1,10 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'adminguard',
+});
+
+const router = useRouter();
+
 const options = ['Stanisław Lem', 'Stanisław Tym', 'Lucjan Tym'];
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
 const filterOptions = ref(options);
@@ -67,12 +73,13 @@ async function onSubmit() {
     image: book.value.image,
   };
 
-  console.log(bookToSave);
-  console.log(book.value);
-
   const response = await useFetch('/api/book/add', {
     method: 'POST',
     body: bookToSave,
+  });
+
+  router.push({
+    path: '/books',
   });
 }
 

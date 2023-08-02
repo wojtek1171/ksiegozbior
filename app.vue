@@ -3,6 +3,9 @@
 
 const leftDrawerOpen = ref(true);
 
+const { isAdmin, authorize } = useAuth();
+authorize();
+
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
@@ -15,7 +18,7 @@ function toggleLeftDrawer() {
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title class="bg-grey- toolbar-title"> App </q-toolbar-title>
-        <div><q-btn round size="sm" color="grey-9" to="/"></q-btn></div>
+        <div><q-btn round size="sm" color="grey-9" to="/login"></q-btn></div>
       </q-toolbar>
     </q-header>
 
@@ -68,7 +71,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/" clickable>
+        <q-item v-if="isAdmin" to="/admin" clickable>
           <q-item-section avatar>
             <q-icon name="settings" />
           </q-item-section>

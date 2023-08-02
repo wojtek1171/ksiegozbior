@@ -2,6 +2,8 @@
 const { data: books } = await useFetch('/api/books/by_creation_desc');
 const displayedBooks = ref(books.value);
 
+const isBanner = ref(false);
+
 const tileOrTab = ref(true);
 const changeView = () => (tileOrTab.value = !tileOrTab.value);
 const filterOptions = ref({
@@ -9,7 +11,7 @@ const filterOptions = ref({
   publisher: '',
 });
 
-const { filteredBooks, filterBooks } = await useBookFilter();
+const { filteredBooks, filterBooks } = useBookFilter();
 
 const componentKey = ref(0);
 
@@ -20,10 +22,31 @@ const onChange = (param) => {
   filterBooks(books.value, filterOptions.value);
   displayedBooks.value = filteredBooks.value;
 };
+
+function showBanner() {}
+
+const sharedState = useState('alert');
+
+onMounted(() => {
+  console.log('mounted');
+  console.log(sharedState.value);
+
+  isBanner.value = sharedState.value?.isVisible;
+});
 </script>
 
 <template>
   <h6>Szukaj</h6>
+
+  <q-banner v-if="isBanner" class="bg-primary text-white">
+    {{ sharedState.message }}
+    <template v-slot:action>
+      <q-btn flat color="white" label="Dismiss" />
+      <q-btn flat color="white" label="Update Credit Card" />
+    </template>
+  </q-banner>
+
+  <q-btn @click="showBanner">Baner</q-btn>
 
   <div>{{ filterOptions }}</div>
 

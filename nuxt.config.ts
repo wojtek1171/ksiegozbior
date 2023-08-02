@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['nuxt-quasar-ui', 'nuxt-mongoose'],
+  runtimeConfig: {
+    public: {
+      token: process.env.TOKEN,
+    },
+  },
   quasar: {
     /* */
   },

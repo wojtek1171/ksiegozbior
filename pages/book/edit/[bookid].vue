@@ -159,7 +159,7 @@ const onReset = async () => {
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
-    <q-card class="my-card" flat bordered>
+    <q-card flat bordered>
       <div class="q-mx-md row no-wrap items-center">
         <div class="card-title">Edytuj książkę</div>
 
