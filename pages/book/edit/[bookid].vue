@@ -2,6 +2,7 @@
 //const image = 'https://i.imgur.com/rpVYMUX.jpeg';
 
 const route = useRoute();
+const router = useRouter();
 const bookid = ref(route.params.bookid);
 const { data: fetchedBook } = await useFetch(`/api/book/${bookid.value}`);
 
@@ -59,8 +60,6 @@ function filterFn(val, update) {
 const sth = ref();
 
 async function onSubmit() {
-  console.log('submit');
-
   const bookToSave = {
     title: book.value.title,
     authors: book.value.authors.join(','),
@@ -85,13 +84,16 @@ async function onSubmit() {
     image: book.value.image,
   };
 
-  console.log(bookToSave);
-  console.log(book.value);
-
   const response = await useFetch(`/api/book/edit/${bookid.value}`, {
     method: 'PATCH',
     body: bookToSave,
   });
+
+  const sharedState = useState('alert', () => ({
+    isVisible: true,
+    message: `Książka ${book.value.title} została edytowana`,
+  }));
+  router.push('/books');
 }
 
 const data = ref();

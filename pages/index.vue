@@ -32,9 +32,8 @@ authorize();
 <template>
   <q-page class="text-center" style="max-width: 1100px; margin: auto">
     <div class="q-py-lg text-h3 text-center">Ostatnio dodane</div>
-    <div>{{ isAdmin }}</div>
 
-    <div class="row no-wrap">
+    <div class="row items-center no-wrap">
       <div class="col-1">
         <q-btn icon="chevron_left" flat round @click="animateScroll('left')"></q-btn>
       </div>
@@ -149,8 +148,8 @@ authorize();
 }
 
 .my-card {
-  width: 210px;
-  height: 210px;
+  width: 215px;
+  height: 215px;
   background-color: rgb(235, 235, 235, 0.5);
 }
 </style>

@@ -23,30 +23,29 @@ const onChange = (param) => {
   displayedBooks.value = filteredBooks.value;
 };
 
-function showBanner() {}
-
 const sharedState = useState('alert');
 
-onMounted(() => {
-  console.log('mounted');
-  console.log(sharedState.value);
+function dismissBanner() {
+  isBanner.value = false;
+  clearNuxtState('alert');
+}
 
+onMounted(() => {
   isBanner.value = sharedState.value?.isVisible;
+});
+
+onUnmounted(() => {
+  clearNuxtState('alert');
 });
 </script>
 
 <template>
-  <h6>Szukaj</h6>
-
   <q-banner v-if="isBanner" class="bg-primary text-white">
     {{ sharedState.message }}
     <template v-slot:action>
-      <q-btn flat color="white" label="Dismiss" />
-      <q-btn flat color="white" label="Update Credit Card" />
+      <q-btn @click="dismissBanner" flat color="white" label="OK" />
     </template>
   </q-banner>
-
-  <q-btn @click="showBanner">Baner</q-btn>
 
   <div>{{ filterOptions }}</div>
 

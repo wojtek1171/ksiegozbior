@@ -14,15 +14,15 @@ function toggleLeftDrawer() {
 <template>
   <q-layout view="lHh Lpr lFf" id="layout">
     <q-header elevated>
-      <q-toolbar class="bg-grey-6">
+      <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="bg-grey- toolbar-title"> App </q-toolbar-title>
-        <div><q-btn round size="sm" color="grey-9" to="/login"></q-btn></div>
+        <q-toolbar-title class="toolbar-title"> App </q-toolbar-title>
+        <div><q-btn icon="logout" round size="sm" color="blue-10" to="/login"></q-btn></div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer class="bg-grey-5" id="drawer" v-model="leftDrawerOpen" :width="230" show-if-above>
+    <q-drawer id="drawer" bordered v-model="leftDrawerOpen" :width="230" show-if-above elevated>
       <q-list>
         <q-item-label header> Menu </q-item-label>
 
@@ -101,5 +101,10 @@ function toggleLeftDrawer() {
 @use '~/layouts/global.scss';
 #layout {
   // background-image: linear-gradient(to bottom right, rgb(68, 64, 64), rgb(238, 238, 238));
+}
+
+#drawer {
+  background-color: rgb(215, 231, 231);
+  border-color: black;
 }
 </style>

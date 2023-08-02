@@ -5,34 +5,14 @@ const book = props.book;
 
 const tags = 'filozofia,pytania,popularnonaukowa';
 
-const div = ref(null);
-
-const isHorizontal = ref(true);
-
-let width = ref(null);
-
-function changeOnResize() {
-  console.log('222');
-
-  if (div.value) {
-    div.value.clientWidth < 800 ? (isHorizontal.value = false) : (isHorizontal.value = true);
-  }
-}
-
 onMounted(() => {
   console.log('Hej1');
-
-  if (div.value) {
-    div.value.clientWidth < 800 ? (isHorizontal.value = false) : (isHorizontal.value = true);
-  }
-
-  window.addEventListener('resize', changeOnResize);
 });
 
-onUnmounted(() => {
-  console.log('Unmounted');
-  window.removeEventListener('resize', changeOnResize);
-});
+// onUnmounted(() => {
+//   console.log('Unmounted');
+//   window.removeEventListener('resize', changeOnResize);
+// });
 
 function urlToBook(bookId: String) {
   return `/book/${bookId}`;
@@ -41,13 +21,14 @@ function urlToBook(bookId: String) {
 
 <template>
   <q-card class="q-pl-xs" id="base-card" bordered>
+    <q-badge v-if="book.read" color="green" floating align="middle"><q-icon name="check"></q-icon></q-badge>
     <div class="q-my-md">
-      <div class="row flex items-center justify-center">
+      <div class="row flex justify-center">
         <div class="q-ma-md">
           <q-img class="rounded-borders" id="img-book-tile" :src="book.image" />
         </div>
 
-        <div class="q-mx-md data-container">
+        <div class="q-mx-md book-tile-data-container">
           <q-card-section class="q-pa-xs">
             <router-link class="title-link" :to="urlToBook(book._id)"
               ><div class="text-h5">{{ book.title }}</div></router-link
@@ -67,19 +48,19 @@ function urlToBook(bookId: String) {
             </div>
             <div class="row">
               <div class="col-4" id="tag-icon">Wydawnictwo:</div>
-              <div class="col-auto">{{ book.publisher }}</div>
+              <div class="col text-bold">{{ book.publisher }}</div>
             </div>
-            <div class="row items-center">
+            <div v-if="book.publSeries" class="row items-center">
               <div class="col-4" id="tag-icon">Seria:</div>
-              <div class="col">{{ book.publSeries }}</div>
+              <div class="col text-bold">{{ book.publSeries }}</div>
             </div>
-            <div class="row items-center">
+            <div v-if="book.series" class="row items-center">
               <div class="col-4" id="tag-icon">Cykl:</div>
-              <div class="col">{{ book.series }}</div>
+              <div class="col text-bold">{{ book.series }}</div>
             </div>
             <div class="row items-center">
               <div class="col-4" id="tag-icon">Ocena LC:</div>
-              <div class="col">{{ book.lcNote }}</div>
+              <div class="col text-bold">{{ book.lcNote }}</div>
             </div>
           </q-card-section>
 
@@ -87,16 +68,24 @@ function urlToBook(bookId: String) {
 
           <q-card-section class="q-pa-xs">
             <div class="row items-center">
-              <div class="col-4" id="tag-icon">Rok wydania:</div>
-              <div class="col">{{ book.publicationDate }}</div>
-            </div>
-            <div class="row items-center">
               <div class="col-4" id="tag-icon">Tytuł oryginału:</div>
-              <div class="col">{{ book.originalTitle }}</div>
+              <div class="col text-bold">{{ book.originalTitle }}</div>
             </div>
             <div class="row items-center">
               <div class="col-4" id="tag-icon">Tłumacz:</div>
-              <div class="col">{{ book.translators }}</div>
+              <div class="col text-bold">{{ book.translators }}</div>
+            </div>
+            <div class="row items-center">
+              <div class="col-4" id="tag-icon">Stron:</div>
+              <div class="col text-bold">{{ book.pages }}</div>
+            </div>
+            <div class="row items-center">
+              <div class="col-4" id="tag-icon">Rok wydania:</div>
+              <div class="col text-bold">{{ book.publicationDate }}</div>
+            </div>
+            <div class="row items-center">
+              <div class="col-4" id="tag-icon">ISBN:</div>
+              <div class="col text-bold">{{ book.isbn }}</div>
             </div>
           </q-card-section>
         </div>
@@ -131,7 +120,7 @@ function urlToBook(bookId: String) {
 #img-book-tile {
   width: 200px;
   max-height: 270px;
-  border: 10px solid rgb(48, 52, 54);
+  border: 6px solid rgb(31, 60, 75);
   margin: auto;
 }
 
@@ -141,7 +130,7 @@ function urlToBook(bookId: String) {
   background-color: rgb(255, 255, 255, 0.2);
 }
 
-.data-container {
+.book-tile-data-container {
   width: max(400px, calc(100% - 300px));
 }
 
@@ -151,6 +140,6 @@ function urlToBook(bookId: String) {
 }
 
 .title-link:hover {
-  color: rgb(75, 78, 228);
+  color: #0e68c9;
 }
 </style>

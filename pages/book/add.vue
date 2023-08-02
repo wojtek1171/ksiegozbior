@@ -246,15 +246,15 @@ const onReset = async () => {
 
           <div class="q-mt-xs row">
             <div class="col">
-              <q-input dense v-model="book.retailPrice" label="Cena okładkowa" mask="#.##" fill-mask="0" />
+              <q-input dense v-model="book.retailPrice" label="Cena okładkowa" reverse-fill-mask mask="#.##" fill-mask="0" />
             </div>
             <div class="col-1"></div>
             <div class="col">
-              <q-input dense v-model="book.purchasePrice" label="Cena zakupu" mask="#.##" fill-mask="0" />
+              <q-input dense v-model="book.purchasePrice" label="Cena zakupu" reverse-fill-mask mask="#.##" fill-mask="0" />
             </div>
             <div class="col-1"></div>
             <div class="col">
-              <q-input dense v-model="book.lcNote" label="Ocena LC" mask="#.##" fill-mask="0" />
+              <q-input dense v-model="book.lcNote" label="Ocena LC" mask="#.##" reverse-fill-mask fill-mask="0" />
             </div>
           </div>
 
