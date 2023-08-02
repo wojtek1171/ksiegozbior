@@ -4,12 +4,9 @@ definePageMeta({
 });
 
 const router = useRouter();
-
-const options = ['Stanisław Lem', 'Stanisław Tym', 'Lucjan Tym'];
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
-const filterOptions = ref(options);
-
 const { parsedData, getLcData } = useLubimyCzytac();
+const lcUrl = ref('');
 
 const book = ref({
   title: '',
@@ -26,27 +23,15 @@ const book = ref({
   originalTitle: '',
   tags: [],
   series: null,
-  seriesVol: '',
+  seriesVol: null,
   publSeries: null,
   lcNote: 0,
+  lcUrl: '',
   isbn: '',
   notes: '',
   description: '',
   image: '',
 });
-
-function filterFn(val, update) {
-  update(() => {
-    if (val === '') {
-      filterOptions.value = options;
-    } else {
-      const needle = val.toLowerCase();
-      filterOptions.value = options.filter((v) => v.toLowerCase().indexOf(needle) > -1);
-    }
-  });
-}
-
-const sth = ref();
 
 async function onSubmit() {
   const bookToSave = {
@@ -67,6 +52,7 @@ async function onSubmit() {
     seriesVol: book.value.seriesVol,
     publSeries: book.value.publSeries,
     lcNote: +book.value.lcNote,
+    lcUrl: book.value.lcUrl,
     isbn: book.value.isbn,
     notes: book.value.notes,
     description: book.value.description,
@@ -78,14 +64,15 @@ async function onSubmit() {
     body: bookToSave,
   });
 
+  const sharedState = useState('alert', () => ({
+    isVisible: true,
+    message: `Książka '${book.value.title}' została dodana`,
+  }));
+
   router.push({
     path: '/books',
   });
 }
-
-const data = ref();
-
-const lcUrl = ref('');
 
 async function onLoadFromLC() {
   await getLcData(lcUrl.value);
@@ -100,12 +87,28 @@ async function onLoadFromLC() {
   book.value.description = parsedData.value.description;
   book.value.tags = !!parsedData.value.tags ? parsedData.value.category.concat(parsedData.value.tags) : parsedData.value.category;
   book.value.series = parsedData.value.series?.split(' (tom ')[0];
-  book.value.seriesVol = +parsedData.value.series?.split(' (tom ')[1].slice(0, -1);
+  book.value.seriesVol = parsedData.value.series ? +parsedData.value.series?.split(' (tom ')[1].slice(0, -1) : null;
   book.value.publSeries = parsedData.value.publSeries;
   book.value.isbn = parsedData.value.isbn;
-  book.value.lcNote = parsedData.value.note;
+  book.value.lcNote = +parsedData.value.note;
+  book.value.lcUrl = lcUrl.value;
   book.value.isbn = parsedData.value.isbn;
   book.value.image = parsedData.value.image;
+}
+
+const { searchHintsBundle, prepareSearchHints } = await useBookSearchHints();
+prepareSearchHints();
+const searchHints = ref([]);
+
+function filterFn(val, update, hints) {
+  update(() => {
+    if (val === '') {
+      searchHints.value = hints;
+    } else {
+      const needle = val.toLowerCase();
+      searchHints.value = hints.filter((v) => v.toLowerCase().indexOf(needle) > -1);
+    }
+  });
 }
 
 const onReset = async () => {
@@ -114,18 +117,22 @@ const onReset = async () => {
 </script>
 
 <template>
-  <div class="q-pa-md" id="form" style="max-width: 800px">
-    <div>{{ parsedData }}</div>
-    <h4>Dodaj książkę</h4>
-    <q-card flat bordered>
-      <q-btn class="q-ma-sm" label="Pobierz z LC">
-        <q-popup-proxy>
-          <q-card class="q-pa-md" style="width: 500px">
-            <q-input dense v-model="lcUrl" label="link lubimy czytać"></q-input>
-            <q-btn class="q-mt-lg" label="pobierz" @click="onLoadFromLC()"></q-btn>
-          </q-card>
-        </q-popup-proxy>
-      </q-btn>
+  <div class="q-pa-md" id="add-form" style="max-width: 800px">
+    <q-card class="card-form" flat bordered>
+      <div class="q-mx-md row no-wrap items-center">
+        <div class="card-title">Dodaj książkę</div>
+
+        <q-space />
+
+        <q-btn class="q-ma-sm" label="Pobierz z LC">
+          <q-popup-proxy>
+            <q-card class="q-pa-md" style="width: 500px">
+              <q-input dense v-model="lcUrl" label="link lubimy czytać"></q-input>
+              <q-btn class="q-mt-lg" label="pobierz" @click="onLoadFromLC()"></q-btn>
+            </q-card>
+          </q-popup-proxy>
+        </q-btn>
+      </div>
       <q-card-section>
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-input
@@ -142,36 +149,34 @@ const onReset = async () => {
             v-model="book.authors"
             multiple
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
-            stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.authors)"
             new-value-mode="add-unique"
             label="Autor"
+            lazy-rules
+            :rules="[(val) => (val && val.length > 0) || 'Pole wymagane']"
           />
 
           <q-select
             v-model="book.publisher"
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
-            use-chips
-            stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.publishers)"
             new-value-mode="add-unique"
-            label="Wydawca"
+            label="Wydawnictwo"
           />
 
           <q-select
             v-model="book.translators"
             multiple
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
-            stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.translators)"
             new-value-mode="add-unique"
             label="Tłumacz"
           />
@@ -183,11 +188,9 @@ const onReset = async () => {
               <q-select
                 v-model="book.series"
                 dense
-                :options="filterOptions"
+                :options="searchHints"
                 use-input
-                use-chips
-                stack-label
-                @filter="filterFn"
+                @filter="(val, update) => filterFn(val, update, searchHintsBundle.series)"
                 new-value-mode="add-unique"
                 label="Cykl"
               />
@@ -201,11 +204,9 @@ const onReset = async () => {
           <q-select
             v-model="book.publSeries"
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
-            use-chips
-            stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.publSeries)"
             new-value-mode="add-unique"
             label="Seria"
           />
@@ -268,22 +269,25 @@ const onReset = async () => {
             </div>
           </div>
 
+          <div>
+            <q-input dense type="url" v-model="book.lcUrl" label="Link do LubimyCzytac.pl" />
+          </div>
+
           <q-select
             v-model="book.tags"
             multiple
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
-            stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
             new-value-mode="add-unique"
             label="Tagi"
           />
 
           <div class="row">
             <div class="col">
-              <q-input filled v-model="book.purchaseDate" mask="date" :rules="['date']" label="Data zakupu" style="max-width: 800px">
+              <q-input filled dense v-model="book.purchaseDate" mask="date" :rules="['date']" label="Data zakupu" style="max-width: 800px">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -315,17 +319,14 @@ const onReset = async () => {
       </q-card-section>
     </q-card>
   </div>
-
-  <!-- <div>{{ book.purchasePrice }}</div>
-  <div>{{ book.retailPrice }}</div>
-  <div>{{ book.purchaseDate }}</div>
-  <div>{{ typeof book.purchaseDate }}</div>
-  <div>{{ options }}</div>
-  <div>{{ filterOptions }}</div> -->
 </template>
 
 <style>
-#form {
+#add-form {
   margin: auto;
+}
+
+.card-form {
+  background-color: rgb(255, 255, 255, 0.5);
 }
 </style>

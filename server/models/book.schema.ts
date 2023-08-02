@@ -21,6 +21,7 @@ export const Book = defineMongooseModel({
     publSeries: String,
     isbn: Number,
     lcNote: Number,
+    lcUrl: String,
     notes: String,
     description: String,
     image: {

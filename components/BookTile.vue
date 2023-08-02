@@ -67,11 +67,11 @@ function urlToBook(bookId: String) {
           <q-separator />
 
           <q-card-section class="q-pa-xs">
-            <div class="row items-center">
+            <div v-if="book.originalTitle" class="row items-center">
               <div class="col-4" id="tag-icon">Tytuł oryginału:</div>
               <div class="col text-bold">{{ book.originalTitle }}</div>
             </div>
-            <div class="row items-center">
+            <div v-if="book.translators" class="row items-center">
               <div class="col-4" id="tag-icon">Tłumacz:</div>
               <div class="col text-bold">{{ book.translators }}</div>
             </div>

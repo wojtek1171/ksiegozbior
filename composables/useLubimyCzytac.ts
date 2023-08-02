@@ -19,7 +19,6 @@ export default function useLubimyCzytac() {
 
   async function getLcData(url: String) {
     const trimmedUrl = url.slice(8).replaceAll('/', '&');
-    console.log(trimmedUrl);
 
     const { data } = await useFetch(`/api/lc/${trimmedUrl}`);
 
@@ -35,7 +34,12 @@ export default function useLubimyCzytac() {
       .match(new RegExp('class="book__category' + '(.*?)' + '</'))[1]
       .split('>')[1]
       .trim()
-      .split(', ');
+      .replace(', itd.)', '')
+      .split(', ')
+      .join(',')
+      .split(' (')
+      .join(',')
+      .split(',');
     parsedData.value.pages = stringData.match(new RegExp('numberOfPages":"' + '(.*?)' + '"'))[1];
     parsedData.value.publicationDate = stringData.match(new RegExp('datePublished":"' + '(.*?)' + '"'))[1];
     parsedData.value.publSeries = stringData.match(new RegExp('Seria:' + '(.*?)' + '</'))?.[1]?.split('>')[1];
@@ -53,6 +57,8 @@ export default function useLubimyCzytac() {
       .match(new RegExp('Tytuł oryginału:' + '(.*?)' + '</dd'))?.[1]
       ?.split('d>')[1]
       .trim();
+
+    parsedData.value.description = parsedData.value.description.replaceAll('<br /><br />', '\n');
   }
 
   return {

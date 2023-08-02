@@ -13,6 +13,10 @@ function onDeleteButton() {
   deleteModalOpen.value = true;
 }
 
+function prepareDescription(desc: String) {
+  return desc?.replaceAll('\r\n', '<br />').replaceAll('\n', '<br />');
+}
+
 async function handleDelete() {
   const response = await useFetch(`/api/book/delete/${book.value._id}`, {
     method: 'DELETE',
@@ -26,7 +30,7 @@ async function handleDelete() {
 </script>
 
 <template>
-  <!-- <div>{{ book }}</div> -->
+  <!-- <div>{{ book.seriesVol }}</div> -->
   <div class="q-py-lg">
     <q-card class="q-my-xs" id="base-card" flat bordered>
       <div class="q-my-lg" ref="div">
@@ -133,8 +137,9 @@ async function handleDelete() {
           </div>
         </q-card-section>
 
-        <q-card-section>
-          {{ book.description }}
+        <q-card-section v-if="book.description">
+          <div class="text-h6" style="white-space: pre-line">Opis</div>
+          <div v-html="prepareDescription(book.description)"></div>
         </q-card-section>
 
         <q-card-actions align="right">

@@ -1,63 +1,35 @@
 <script setup lang="ts">
-//const image = 'https://i.imgur.com/rpVYMUX.jpeg';
-
 const route = useRoute();
 const router = useRouter();
 const bookid = ref(route.params.bookid);
 const { data: fetchedBook } = await useFetch(`/api/book/${bookid.value}`);
-
-const menu = false;
-let modal = ref(true);
-let someDate = ref(new Date().toISOString());
-let menu2 = false;
-let authorSearch = [];
-let publisherSearch = [];
-let translatorSearch = [];
-let tagsSearch = [];
-let kert = 'sdfsdf';
-let modelMultiple = ref([]);
-const options = ['Stanisław Lem', 'Stanisław Tym', 'Lucjan Tym'];
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
-const filterOptions = ref(options);
-
 const { parsedData, getLcData } = useLubimyCzytac();
 
 const book = ref({
   title: fetchedBook.value.title,
-  authors: fetchedBook.value.authors.split(','),
+  authors: fetchedBook.value.authors?.split(','),
   publisher: fetchedBook.value.publisher,
   publicationDate: fetchedBook.value.publicationDate,
   pages: fetchedBook.value.pages,
   cover: fetchedBook.value.cover,
-  purchasePrice: fetchedBook.value.purchasePrice.toFixed(2),
-  retailPrice: fetchedBook.value.retailPrice.toFixed(2),
+  purchasePrice: fetchedBook.value.purchasePrice?.toFixed(2),
+  retailPrice: fetchedBook.value.retailPrice?.toFixed(2),
   read: fetchedBook.value.read,
-  purchaseDate: new Date(fetchedBook.value.purchaseDate).toISOString().slice(0, 10).replaceAll('-', '/'),
-  translators: fetchedBook.value.translators.split(','),
+  purchaseDate: new Date(fetchedBook.value.purchaseDate)?.toISOString().slice(0, 10).replaceAll('-', '/'),
+  translators: fetchedBook.value.translators?.split(','),
   originalTitle: fetchedBook.value.originalTitle,
-  tags: fetchedBook.value.tags.split(','),
+  tags: fetchedBook.value.tags?.split(','),
   series: fetchedBook.value.series,
   seriesVol: fetchedBook.value.seriesVol,
   publSeries: fetchedBook.value.publSeries,
   lcNote: fetchedBook.value.lcNote?.toFixed(2),
+  lcUrl: fetchedBook.value.lcUrl,
   isbn: fetchedBook.value.isbn,
   notes: fetchedBook.value.notes,
   description: fetchedBook.value.description,
   image: fetchedBook.value.image,
 });
-
-function filterFn(val, update) {
-  update(() => {
-    if (val === '') {
-      filterOptions.value = options;
-    } else {
-      const needle = val.toLowerCase();
-      filterOptions.value = options.filter((v) => v.toLowerCase().indexOf(needle) > -1);
-    }
-  });
-}
-
-const sth = ref();
 
 async function onSubmit() {
   const bookToSave = {
@@ -78,6 +50,7 @@ async function onSubmit() {
     seriesVol: book.value.seriesVol,
     publSeries: book.value.publSeries,
     lcNote: +book.value.lcNote,
+    lcUrl: book.value.lcUrl,
     isbn: book.value.isbn,
     notes: book.value.notes,
     description: book.value.description,
@@ -91,12 +64,10 @@ async function onSubmit() {
 
   const sharedState = useState('alert', () => ({
     isVisible: true,
-    message: `Książka ${book.value.title} została edytowana`,
+    message: `Książka '${book.value.title}' została edytowana`,
   }));
   router.push('/books');
 }
-
-const data = ref();
 
 const lcUrl = ref('');
 
@@ -113,6 +84,7 @@ const lcBookData = ref({
   seriesVol: '',
   publSeries: null,
   lcNote: 0,
+  lcUrl: '',
   isbn: '',
   description: '',
   image: '',
@@ -133,10 +105,11 @@ async function onLoadFromLC() {
   lcBookData.value.description = parsedData.value.description;
   lcBookData.value.tags = !!parsedData.value.tags ? parsedData.value.category.concat(parsedData.value.tags) : parsedData.value.category;
   lcBookData.value.series = parsedData.value.series?.split(' (tom ')[0];
-  lcBookData.value.seriesVol = +parsedData.value.series?.split(' (tom ')[1].slice(0, -1);
+  lcBookData.value.seriesVol = parsedData.value.series ? +parsedData.value.series?.split(' (tom ')[1].slice(0, -1) : null;
   lcBookData.value.publSeries = parsedData.value.publSeries;
   lcBookData.value.isbn = parsedData.value.isbn;
   lcBookData.value.lcNote = parsedData.value.note;
+  lcBookData.value.lcUrl = lcUrl.value;
   lcBookData.value.isbn = parsedData.value.isbn;
   lcBookData.value.image = parsedData.value.image;
 
@@ -153,14 +126,34 @@ function overrideSeries() {
   book.value.seriesVol = lcBookData.value.seriesVol;
 }
 
+function addTagsToForm() {
+  book.value.tags = book.value.tags.concat(lcBookData.value.tags);
+}
+
 const onReset = async () => {
   console.log('asdf');
   isLcFormVisible.value = !isLcFormVisible.value;
 };
+
+const { searchHintsBundle, prepareSearchHints } = await useBookSearchHints();
+prepareSearchHints();
+const searchHints = ref([]);
+
+function filterFn(val, update, hints) {
+  update(() => {
+    if (val === '') {
+      searchHints.value = hints;
+    } else {
+      const needle = val.toLowerCase();
+      searchHints.value = hints.filter((v) => v.toLowerCase().indexOf(needle) > -1);
+    }
+  });
+}
 </script>
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
+    <div>{{ book.translators }}</div>
     <q-card flat bordered>
       <div class="q-mx-md row no-wrap items-center">
         <div class="card-title">Edytuj książkę</div>
@@ -313,13 +306,24 @@ const onReset = async () => {
             </template>
           </q-field>
 
+          <q-field filled label="Link do LubimyCzytac.pl" stack-label dense>
+            <template v-slot:control>
+              <div>{{ lcBookData.lcUrl }}</div>
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="assignment_returned" @click="overrideField('lcUrl')">
+                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              </q-btn>
+            </template>
+          </q-field>
+
           <q-field filled label="Tagi" stack-label dense>
             <template v-slot:control>
               <q-chip v-for="tag in lcBookData.tags">{{ tag }}</q-chip>
             </template>
             <template v-slot:after>
-              <q-btn round dense flat icon="assignment_returned" @click="overrideField('tags')">
-                <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+              <q-btn round dense flat icon="assignment_returned" @click="addTagsToForm()">
+                <q-tooltip class="text-body2"> Dodaj do formularza </q-tooltip>
               </q-btn>
             </template>
           </q-field>
@@ -363,23 +367,25 @@ const onReset = async () => {
             v-model="book.authors"
             multiple
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
             stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.authors)"
             new-value-mode="add-unique"
             label="Autor"
+            lazy-rules
+            :rules="[(val) => (val && val.length > 0) || 'Pole wymagane']"
           />
 
           <q-select
             v-model="book.publisher"
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
             stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.publishers)"
             new-value-mode="add-unique"
             label="Wydawca"
           />
@@ -388,11 +394,11 @@ const onReset = async () => {
             v-model="book.translators"
             multiple
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
             stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.translators)"
             new-value-mode="add-unique"
             label="Tłumacz"
           />
@@ -404,11 +410,11 @@ const onReset = async () => {
               <q-select
                 v-model="book.series"
                 dense
-                :options="filterOptions"
+                :options="searchHints"
                 use-input
                 use-chips
                 stack-label
-                @filter="filterFn"
+                @filter="(val, update) => filterFn(val, update, searchHintsBundle.series)"
                 new-value-mode="add-unique"
                 label="Cykl"
               />
@@ -422,11 +428,11 @@ const onReset = async () => {
           <q-select
             v-model="book.publSeries"
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
             stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.publSeries)"
             new-value-mode="add-unique"
             label="Seria"
           />
@@ -489,15 +495,19 @@ const onReset = async () => {
             </div>
           </div>
 
+          <div>
+            <q-input dense type="url" v-model="book.lcUrl" label="Link do LubimyCzytac.pl" />
+          </div>
+
           <q-select
             v-model="book.tags"
             multiple
             dense
-            :options="filterOptions"
+            :options="searchHints"
             use-input
             use-chips
             stack-label
-            @filter="filterFn"
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
             new-value-mode="add-unique"
             label="Tagi"
           />

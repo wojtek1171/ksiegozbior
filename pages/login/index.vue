@@ -13,10 +13,7 @@ async function login() {
     },
   });
   if (response.data.value.message) {
-    console.log('firs');
-    console.log(response.data.value.message);
   } else {
-    console.log(response.data.value);
     const token = useCookie('token');
     token.value = response.data.value;
   }

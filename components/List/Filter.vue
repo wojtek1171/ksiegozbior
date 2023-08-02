@@ -3,7 +3,7 @@ const emit = defineEmits(['filterOptionsChanged']);
 
 const filterOptions = ref({
   title: '',
-  authors: '',
+  authors: null,
   translators: '',
   publisher: '',
   series: null,
@@ -21,11 +21,12 @@ const filterOptions = ref({
 const filterByPurchaseDate = ref(false);
 const filterByPublicationYear = ref(false);
 
-const hints = ['Jedn', 'Dwa Dwr', 'Trzy'];
+const { searchHintsBundle, prepareSearchHints } = await useBookSearchHints();
+prepareSearchHints();
 
-const searchHints = ref(hints);
+const searchHints = ref([]);
 
-function filterFn(val, update) {
+function filterFn(val, update, hints) {
   update(() => {
     if (val === '') {
       searchHints.value = hints;
@@ -42,25 +43,52 @@ watch(filterOptions.value, () => {
 </script>
 
 <template>
+  <div>{{ typeof filterOptions.isbn }}</div>
   <div class="q-ma-md text-h3 text-center">Księgozbiór</div>
 
-  <q-card class="q-pa-sm" id="base-card">
+  <q-card class="q-pa-sm" id="filter-base-card">
     <div class="row flex justify-between q-gutter-md" id="filter-row">
-      <q-input dense v-model="filterOptions.title" label="Tytuł" />
-      <q-input dense v-model="filterOptions.authors" label="Autor" />
-      <q-input dense v-model="filterOptions.publisher" label="Wydawca" />
-      <q-input dense v-model="filterOptions.translators" label="Tłumacz" />
+      <q-input dense v-model="filterOptions.title" debounce="500" label="Tytuł" />
+      <q-select
+        v-model="filterOptions.authors"
+        dense
+        clearable
+        :options="searchHints"
+        use-input
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.authors)"
+        label="Autor"
+      />
+      <q-select
+        v-model="filterOptions.publisher"
+        dense
+        clearable
+        :options="searchHints"
+        use-input
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.publishers)"
+        label="Wydawca"
+      />
+      <q-select
+        v-model="filterOptions.translators"
+        dense
+        clearable
+        :options="searchHints"
+        use-input
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.translators)"
+        label="Tłumacz"
+      />
+      <!-- <q-input dense v-model="filterOptions.authors" label="Autor" /> -->
+      <!-- <q-input dense v-model="filterOptions.publisher" label="Wydawca" /> -->
+      <!-- <q-input dense v-model="filterOptions.translators" label="Tłumacz" /> -->
     </div>
 
     <div class="row flex justify-start q-gutter-md">
       <q-select
         v-model="filterOptions.series"
         dense
+        clearable
         :options="searchHints"
         use-input
-        use-chips
-        stack-label
-        @filter="filterFn"
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.series)"
         new-value-mode="add-unique"
         label="Cykl"
       />
@@ -68,15 +96,14 @@ watch(filterOptions.value, () => {
       <q-select
         v-model="filterOptions.publSeries"
         dense
+        clearable
         :options="searchHints"
         use-input
-        use-chips
-        stack-label
-        @filter="filterFn"
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.publSeries)"
         new-value-mode="add-unique"
         label="Seria"
       />
-      <q-input dense v-model="filterOptions.isbn" label="ISBN" />
+      <q-input dense v-model="filterOptions.isbn" type="number" label="ISBN" />
     </div>
 
     <q-select
@@ -86,8 +113,7 @@ watch(filterOptions.value, () => {
       :options="searchHints"
       use-input
       use-chips
-      stack-label
-      @filter="filterFn"
+      @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
       new-value-mode="add-unique"
       label="Tagi"
     />
@@ -190,16 +216,12 @@ watch(filterOptions.value, () => {
     <q-checkbox v-model="filterOptions.read" label="Przeczytana" />
     <q-checkbox v-model="filterOptions.notRead" label="Nieprzeczytane" />
   </q-card>
-
-  <div>{{ filterOptions }}</div>
-
-  <div></div>
 </template>
 
 <style lang="scss">
-#base-card {
+#filter-base-card {
   margin: auto;
-  max-width: 900px;
+  max-width: 1000px;
   background-color: rgb(255, 255, 255, 0.2);
 }
 

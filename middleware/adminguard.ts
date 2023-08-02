@@ -4,8 +4,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   const adminPages = ['/admin', '/book/add'];
 
-  console.log(isAdmin);
-
   if (adminPages.includes(to.path) && !isAdmin.value) {
     return navigateTo('/');
   }
