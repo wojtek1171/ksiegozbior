@@ -1,6 +1,12 @@
 <script setup lang="ts">
+useMeta({
+  title: 'Księgozbiór - Strona główna',
+});
+
 const { homePageData, getHomePageData } = useHomePageData();
 await getHomePageData();
+
+const { declineBook, declineAuthor, declinePage, declineQuote } = useDeclination();
 
 const scrollAreaRef = ref(null);
 const position = ref(0);
@@ -66,7 +72,7 @@ authorize();
         </q-card-section>
         <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h6">książek</div>
+          <div class="text-h6">{{ declineBook(homePageData.bookCount) }}</div>
         </q-card-section>
       </q-card>
 
@@ -78,7 +84,7 @@ authorize();
         </q-card-section>
         <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h6">autorów</div>
+          <div class="text-h6">{{ declineAuthor(homePageData.authorsCount) }}</div>
         </q-card-section>
       </q-card>
 
@@ -90,7 +96,7 @@ authorize();
         </q-card-section>
         <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h6">stron</div>
+          <div class="text-h6">{{ declinePage(homePageData.pagesCount) }}</div>
         </q-card-section>
       </q-card>
 
@@ -114,7 +120,7 @@ authorize();
         </q-card-section>
         <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h6">cytatów</div>
+          <div class="text-h6">{{ declineQuote(homePageData.bookCount) }}</div>
         </q-card-section>
       </q-card>
 
@@ -152,6 +158,11 @@ authorize();
   height: 215px;
   background-color: rgb(235, 235, 235, 0.5);
   border-radius: 25px;
+  transition: transform 0.7s;
+}
+
+.my-card:hover {
+  transform: scale(1.1);
 }
 
 #scroll-img {
@@ -160,7 +171,6 @@ authorize();
 }
 
 #scroll-img:hover {
-  border-radius: 10px;
   transform: scale(1.05);
 }
 </style>

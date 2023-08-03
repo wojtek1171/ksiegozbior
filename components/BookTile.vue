@@ -13,10 +13,6 @@ onMounted(() => {
 //   console.log('Unmounted');
 //   window.removeEventListener('resize', changeOnResize);
 // });
-
-function urlToBook(bookId: String) {
-  return `/book/${bookId}`;
-}
 </script>
 
 <template>
@@ -32,7 +28,7 @@ function urlToBook(bookId: String) {
 
         <div class="q-mx-md book-tile-data-container">
           <q-card-section class="q-pa-xs">
-            <router-link class="title-link" :to="urlToBook(book._id)"
+            <router-link class="title-link" :to="`/book/${book._id}`"
               ><div class="text-h5">{{ book.title }}</div></router-link
             >
             <div class="chip-col-right">

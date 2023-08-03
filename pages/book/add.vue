@@ -2,6 +2,9 @@
 definePageMeta({
   middleware: 'adminguard',
 });
+useMeta({
+  title: 'Dodaj książkę',
+});
 
 const router = useRouter();
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
@@ -124,7 +127,7 @@ const onReset = async () => {
 
         <q-space />
 
-        <q-btn class="q-ma-sm" label="Pobierz z LC">
+        <q-btn class="q-ma-sm" color="orange-10" outline label="Pobierz z LC">
           <q-popup-proxy>
             <q-card class="q-pa-md" style="width: 500px">
               <q-input dense v-model="lcUrl" label="link lubimy czytać"></q-input>
@@ -134,9 +137,9 @@ const onReset = async () => {
         </q-btn>
       </div>
       <q-card-section>
-        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-sm">
           <q-input
-            class="q-py-xs"
+            class="q-py-none"
             dense
             v-model="book.title"
             label="Tytuł"
@@ -145,7 +148,7 @@ const onReset = async () => {
           />
 
           <q-select
-            class="q-my-xs"
+            class="q-py-none"
             v-model="book.authors"
             multiple
             dense
@@ -160,6 +163,7 @@ const onReset = async () => {
           />
 
           <q-select
+            class="q-mt-sm"
             v-model="book.publisher"
             dense
             :options="searchHints"
@@ -286,7 +290,7 @@ const onReset = async () => {
           />
 
           <div class="row">
-            <div class="col">
+            <div>
               <q-input filled dense v-model="book.purchaseDate" mask="date" :rules="['date']" label="Data zakupu" style="max-width: 800px">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
@@ -301,19 +305,19 @@ const onReset = async () => {
                 </template>
               </q-input>
             </div>
-            <div class="col">
+            <q-space />
+            <div>
               <q-checkbox v-model="book.read" label="Przeczytana" />
             </div>
-            <div class="col"></div>
           </div>
 
           <q-input dense v-model="book.description" label="Opis" type="textarea" />
 
           <q-input dense v-model="book.notes" label="Notatka" type="textarea" />
 
-          <div>
-            <q-btn label="Submit" type="submit" color="primary" />
-            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+          <div align="right">
+            <q-btn label="Submit" type="submit" color="positive" outline />
+            <q-btn label="Reset" type="reset" color="primary" outline class="q-ml-sm" />
           </div>
         </q-form>
       </q-card-section>
@@ -328,5 +332,9 @@ const onReset = async () => {
 
 .card-form {
   background-color: rgb(255, 255, 255, 0.5);
+}
+
+.card-title {
+  font-size: x-large;
 }
 </style>

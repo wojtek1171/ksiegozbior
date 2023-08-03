@@ -1,4 +1,7 @@
 <script setup lang="ts">
+useMeta({
+  title: 'Wyszukaj książkę',
+});
 const { data: books } = await useFetch('/api/books/by_creation_desc');
 const displayedBooks = ref(books.value);
 
@@ -49,11 +52,13 @@ onUnmounted(() => {
   <ListFilter @filterOptionsChanged="onChange"></ListFilter>
 
   <q-separator class="q-mt-md"></q-separator>
-  <div class="row items-center">
-    <div class="q-ma-md">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
-    <q-space />
-    <div>
-      <q-btn class="q-ma-md" @click="changeView">Tile or tab</q-btn>
+  <div class="row items-center" style="max-width: 1000px; margin: auto">
+    <div class="col"></div>
+    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
+    <!-- <q-space /> -->
+    <div class="col" align="right">
+      <q-btn v-if="tileOrTab" class="q-ma-md" icon="view_list" @click="changeView" />
+      <q-btn v-else class="q-ma-md" icon="grid_view" @click="changeView" />
     </div>
   </div>
   <q-separator></q-separator>

@@ -149,18 +149,23 @@ function filterFn(val, update, hints) {
     }
   });
 }
+onMounted(() => {
+  useMeta({
+    title: `Edytuj - ${book.value.title.slice(0, 20)}...`,
+  });
+});
 </script>
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
-    <div>{{ book.translators }}</div>
-    <q-card flat bordered>
+    <q-card class="card-form" flat bordered>
       <div class="q-mx-md row no-wrap items-center">
         <div class="card-title">Edytuj książkę</div>
 
         <q-space />
 
-        <q-btn class="q-ma-sm" label="Pobierz z LC">
+        <!-- <q-btn class="q-ma-sm" color="orange-7" outline flat label="Pobierz z LC"> -->
+        <q-btn class="q-ma-sm" color="orange-10" outline label="Pobierz z LC">
           <q-popup-proxy>
             <q-card class="q-pa-md" style="width: 500px">
               <q-input dense v-model="lcUrl" label="link lubimy czytać"></q-input>
@@ -354,7 +359,7 @@ function filterFn(val, update, hints) {
       <q-card-section>
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-input
-            class="q-py-xs"
+            class="q-py-none"
             dense
             v-model="book.title"
             label="Tytuł"
@@ -363,7 +368,7 @@ function filterFn(val, update, hints) {
           />
 
           <q-select
-            class="q-my-xs"
+            class="q-py-none"
             v-model="book.authors"
             multiple
             dense
@@ -379,6 +384,7 @@ function filterFn(val, update, hints) {
           />
 
           <q-select
+            class="q-mt-sm"
             v-model="book.publisher"
             dense
             :options="searchHints"
@@ -529,7 +535,6 @@ function filterFn(val, update, hints) {
               </q-input>
             </div>
             <q-space />
-            <!-- <div class="col"></div> -->
             <div>
               <q-checkbox v-model="book.read" label="Przeczytana" />
             </div>
@@ -539,9 +544,9 @@ function filterFn(val, update, hints) {
 
           <q-input dense v-model="book.notes" label="Notatka" type="textarea" />
 
-          <div>
-            <q-btn label="Submit" type="submit" color="primary" />
-            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+          <div align="right">
+            <q-btn label="Submit" type="submit" color="positive" outline />
+            <q-btn label="Reset" type="reset" color="primary" outline class="q-ml-sm" />
           </div>
         </q-form>
       </q-card-section>
@@ -559,6 +564,10 @@ function filterFn(val, update, hints) {
 <style lang="scss">
 #form {
   margin: auto;
+}
+
+.card-form {
+  background-color: rgb(255, 255, 255, 0.5);
 }
 
 .card-title {

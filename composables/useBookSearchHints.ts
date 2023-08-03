@@ -10,7 +10,6 @@ export default function useBookSearchHints() {
 
   async function prepareSearchHints() {
     const { data: books } = await useFetch('/api/books');
-    //const preparedData = prepareData(books?.value);
 
     let authors = [];
     let publishers = [];

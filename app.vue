@@ -1,8 +1,5 @@
 <script setup lang="ts">
-//import { ref } from 'vue';
-
 const leftDrawerOpen = ref(true);
-
 const { isAdmin, authorize } = useAuth();
 authorize();
 
@@ -81,7 +78,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/book/60bf1b381a34c8191ddf50c1" clickable>
+        <q-item to="/info" clickable>
           <q-item-section avatar>
             <q-icon name="info" />
           </q-item-section>

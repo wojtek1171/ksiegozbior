@@ -3,11 +3,11 @@ const route = useRoute();
 const router = useRouter();
 const bookid = ref(route.params.bookid);
 const { data: book } = await useFetch(`/api/book/${bookid.value}`);
-const tags = 'filozofia,pytania,popularnonaukowa';
 
 const deleteModalOpen = ref(false);
 
-const editUrl = `/book/edit/${book.value._id}`;
+const { isAdmin, authorize } = useAuth();
+authorize();
 
 function onDeleteButton() {
   deleteModalOpen.value = true;
@@ -27,13 +27,18 @@ async function handleDelete() {
   }));
   router.push('/books');
 }
+
+onMounted(() => {
+  useMeta({
+    title: `${book.value.title.length > 20 ? book.value.title.slice(0, 20) + '...' : book.value.title} - ${book.value.authors.slice(0, 20)}`,
+  });
+});
 </script>
 
 <template>
-  <!-- <div>{{ book.seriesVol }}</div> -->
   <div class="q-py-lg">
     <q-card class="q-my-xs" id="base-card" flat bordered>
-      <q-badge v-if="book.read" color="green" floating align="middle"><q-icon name="check"></q-icon></q-badge>
+      <div v-if="book.read" class="q-pa-mds badge"><q-icon name="check_circle" size="xs" color="positive" /></div>
       <div class="q-my-lg" ref="div">
         <div class="row flex justify-center">
           <div class="q-mx-md text-center">
@@ -192,10 +197,10 @@ async function handleDelete() {
           </q-btn>
           <q-space></q-space>
 
-          <q-card-actions align="right">
-            <q-btn flat color="red" @click="onDeleteButton"> usuń </q-btn>
-            <q-btn flat color="green" :to="editUrl"> edytuj </q-btn>
-            <q-btn flat color="primary"> dodaj cytat </q-btn>
+          <q-card-actions v-if="isAdmin" align="right">
+            <q-btn outline color="red" @click="onDeleteButton"> usuń </q-btn>
+            <q-btn outline color="green" :to="`/book/edit/${book._id}`"> edytuj </q-btn>
+            <q-btn outline color="primary"> dodaj cytat </q-btn>
           </q-card-actions>
         </div>
       </div>
@@ -236,5 +241,11 @@ async function handleDelete() {
 
 .chip-col-right {
   margin-left: -7px;
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 </style>

@@ -42,7 +42,6 @@ function filterFn(val, update, hints) {
 }
 
 onMounted(() => {
-  console.log(searchParam);
   const splittedParam = searchParam.split('=');
 
   switch (splittedParam[0]) {
