@@ -63,4 +63,5 @@ export default defineNuxtConfig({
     modelsDir: 'models',
   },
   css: ['~/layouts/global.scss'],
+  devServerHandlers: [],
 });
