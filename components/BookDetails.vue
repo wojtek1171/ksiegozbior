@@ -33,6 +33,7 @@ async function handleDelete() {
   <!-- <div>{{ book.seriesVol }}</div> -->
   <div class="q-py-lg">
     <q-card class="q-my-xs" id="base-card" flat bordered>
+      <q-badge v-if="book.read" color="green" floating align="middle"><q-icon name="check"></q-icon></q-badge>
       <div class="q-my-lg" ref="div">
         <div class="row flex justify-center">
           <div class="q-mx-md text-center">
@@ -42,7 +43,16 @@ async function handleDelete() {
           <div class="q-mx-md book-details-data-container">
             <q-card-section class="q-pa-xs">
               <div class="text-h5">{{ book.title }}</div>
-              <div class="text-h6">{{ book.authors }}</div>
+              <!-- <div class="text-h6">{{ book.authors }}</div> -->
+              <div class="chip-col-right">
+                <span v-for="author in book.authors.split(',')" :key="author">
+                  <router-link class="link" :to="`/books/aut=${author}`">
+                    <q-chip dense clickable size="lg">
+                      {{ author }}
+                    </q-chip>
+                  </router-link>
+                </span>
+              </div>
             </q-card-section>
 
             <q-card-section class="q-pa-xs">
@@ -50,52 +60,73 @@ async function handleDelete() {
                 <div class="col-4" id="tag-icon">Wydawnictwo:</div>
                 <div class="col text-bold">{{ book.publisher }}</div>
               </div>
-              <div v-if="book.series" class="row items-center">
-                <div class="col-4" id="tag-icon">Seria:</div>
-                <div class="col text-bold">{{ book.publSeries }}</div>
-              </div>
               <div v-if="book.publSeries" class="row items-center">
-                <div class="col-4" id="tag-icon">Cykl:</div>
-                <div class="col text-bold">{{ book.series }}</div>
+                <div class="col-4" id="tag-icon">Seria:</div>
+                <div class="col chip-col-right">
+                  <router-link class="link" :to="`/books/publSeries=${book.publSeries}`">
+                    <q-chip dense clickable size="md">
+                      {{ book.publSeries }}
+                    </q-chip>
+                  </router-link>
+                </div>
               </div>
-              <div class="row items-center">
+              <div v-if="book.series" class="row items-center">
+                <div class="col-4" id="tag-icon">Cykl:</div>
+                <div class="col chip-col-right">
+                  <router-link class="link" :to="`/books/series=${book.series}`">
+                    <q-chip dense clickable size="md">
+                      {{ book.series }}
+                    </q-chip>
+                  </router-link>
+                  <span class="items-center">Tom {{ book.seriesVol }}</span>
+                </div>
+              </div>
+              <div v-if="book.originalTitle" class="row">
+                <div class="col-4" id="tag-icon">Tytuł oryginału:</div>
+                <div class="col text-bold">{{ book.originalTitle }}</div>
+              </div>
+              <div v-if="book.translators" class="row items-center">
+                <div class="col-4" id="tag-icon">Tłumacz:</div>
+                <div class="col chip-col-right">
+                  <span v-for="translator in book.translators.split(',')" :key="translator">
+                    <router-link class="link" :to="`/books/tra=${translator}`">
+                      <q-chip dense clickable size="md">
+                        {{ translator }}
+                      </q-chip>
+                    </router-link>
+                  </span>
+                </div>
+              </div>
+            </q-card-section>
+
+            <q-separator />
+
+            <q-card-section class="q-pa-xs">
+              <div v-if="book.lcNote" class="row items-center">
                 <div class="col-4" id="tag-icon">Ocena LC:</div>
-                <div class="col text-bold">{{ book.lcNote }}</div>
+                <div class="col flex items-center text-bold">{{ book.lcNote }} <q-icon class="q-ml-xs" name="star" /></div>
               </div>
               <div class="row items-center">
                 <div class="col-4" id="tag-icon">Stron:</div>
                 <div class="col text-bold">{{ book.pages }}</div>
               </div>
-            </q-card-section>
-
-            <q-separator />
-
-            <q-card-section class="q-pa-xs">
               <div class="row">
-                <div class="col-4" id="tag-icon">Tytuł oryginału:</div>
-                <div class="col text-bold">{{ book.originalTitle }}</div>
+                <div class="col-4">Okładka:</div>
+                <div class="col text-bold">{{ book.cover }}</div>
               </div>
               <div class="row items-center">
                 <div class="col-4" id="tag-icon">Rok wydania:</div>
                 <div class="col text-bold">{{ book.publicationDate }}</div>
               </div>
-              <div class="row items-center">
+              <div v-if="book.isbn" class="row items-center">
                 <div class="col-4" id="tag-icon">ISBN:</div>
                 <div class="col text-bold">{{ book.isbn }}</div>
-              </div>
-              <div class="row items-center">
-                <div class="col-4" id="tag-icon">Tłumacz:</div>
-                <div class="col text-bold">{{ book.translators }}</div>
               </div>
             </q-card-section>
 
             <q-separator />
 
             <q-card-section class="q-pa-xs">
-              <div class="row">
-                <div class="col-4">Okładka:</div>
-                <div class="col text-bold">{{ book.cover }}</div>
-              </div>
               <div class="row">
                 <div class="col-4">Cena zakupu:</div>
                 <div class="col text-bold">{{ book.purchasePrice }} zł</div>
@@ -124,14 +155,11 @@ async function handleDelete() {
             </div>
             <div class="col text-bold">
               <span v-for="tag in book.tags.split(',')" :key="tag">
-                <!-- <router-link class="link" :to="`/search/${tag}`">
-                                <q-chip dense clickable size="md">
-                                    {{ tag }}
-                                </q-chip>
-                            </router-link> -->
-                <q-chip dense clickable size="md">
-                  {{ tag }}
-                </q-chip>
+                <router-link class="link" :to="`/books/tag=${tag}`">
+                  <q-chip dense clickable size="md">
+                    {{ tag }}
+                  </q-chip>
+                </router-link>
               </span>
             </div>
           </div>
@@ -142,13 +170,37 @@ async function handleDelete() {
           <div v-html="prepareDescription(book.description)"></div>
         </q-card-section>
 
+        <!-- <q-btn round size="md">
+          <q-avatar size="30px">
+            <q-tooltip>Przejdź do LubimyCzytac.pl</q-tooltip>
+            <img src="../assets/pics/lc-logo.png">
+          </q-avatar>
+    </q-btn>
+
         <q-card-actions align="right">
           <q-btn flat color="red" @click="onDeleteButton"> usuń </q-btn>
           <q-btn flat color="green" :to="editUrl"> edytuj </q-btn>
           <q-btn flat color="primary"> dodaj cytat </q-btn>
-        </q-card-actions>
+        </q-card-actions> -->
+
+        <div class="row no-wrap" style="height: 40px">
+          <q-btn :href="book.lcUrl" target="_blank" class="q-ml-sm" round flat>
+            <q-avatar size="30px">
+              <q-tooltip>Przejdź do LubimyCzytac.pl</q-tooltip>
+              <img src="../assets/pics/lc-logo.png" />
+            </q-avatar>
+          </q-btn>
+          <q-space></q-space>
+
+          <q-card-actions align="right">
+            <q-btn flat color="red" @click="onDeleteButton"> usuń </q-btn>
+            <q-btn flat color="green" :to="editUrl"> edytuj </q-btn>
+            <q-btn flat color="primary"> dodaj cytat </q-btn>
+          </q-card-actions>
+        </div>
       </div>
     </q-card>
+
     <q-dialog v-model="deleteModalOpen" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -168,7 +220,8 @@ async function handleDelete() {
 <style lang="scss">
 #img-book-details {
   width: 300px;
-  border: 10px solid rgb(48, 52, 54);
+  // border: 7px solid rgb(27, 56, 70);
+  border-radius: 12px;
 }
 
 #base-card {
@@ -181,5 +234,7 @@ async function handleDelete() {
   width: max(400px, calc(100% - 400px));
 }
 
-$primary: red;
+.chip-col-right {
+  margin-left: -7px;
+}
 </style>

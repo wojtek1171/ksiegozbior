@@ -42,7 +42,7 @@ authorize();
         <div class="row no-wrap">
           <div v-for="book in homePageData.recentBooks" :key="book" class="q-pa-sm">
             <router-link :to="`/book/${book._id}`">
-              <q-img id="img" style="height: 300px; width: 200px" :src="book.image"> </q-img>
+              <q-img id="scroll-img" style="height: 300px; width: 200px" :src="book.image" />
             </router-link>
           </div>
         </div>
@@ -151,5 +151,16 @@ authorize();
   width: 215px;
   height: 215px;
   background-color: rgb(235, 235, 235, 0.5);
+  border-radius: 25px;
+}
+
+#scroll-img {
+  border-radius: 10px;
+  transition: transform 0.4s;
+}
+
+#scroll-img:hover {
+  border-radius: 10px;
+  transform: scale(1.05);
 }
 </style>

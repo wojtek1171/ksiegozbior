@@ -1,9 +1,13 @@
 <script setup lang="ts">
 const emit = defineEmits(['filterOptionsChanged']);
 
+const route = useRoute();
+
+const searchParam = route.params.param as String;
+
 const filterOptions = ref({
   title: '',
-  authors: null,
+  authors: '',
   translators: '',
   publisher: '',
   series: null,
@@ -37,19 +41,45 @@ function filterFn(val, update, hints) {
   });
 }
 
+onMounted(() => {
+  console.log(searchParam);
+  const splittedParam = searchParam.split('=');
+
+  switch (splittedParam[0]) {
+    case 'aut':
+      filterOptions.value.authors = splittedParam[1];
+      break;
+    case 'tra':
+      filterOptions.value.translators = splittedParam[1];
+      break;
+    case 'tag':
+      filterOptions.value.tags = splittedParam[1];
+      break;
+    case 'series':
+      filterOptions.value.series = new Array(splittedParam[1]);
+      break;
+    case 'publSeries':
+      filterOptions.value.publSeries = splittedParam[1];
+      break;
+    default:
+      filterOptions.value.title = splittedParam[0];
+  }
+});
+
 watch(filterOptions.value, () => {
   emit('filterOptionsChanged', filterOptions.value);
 });
 </script>
 
 <template>
-  <div>{{ typeof filterOptions.isbn }}</div>
+  <div>{{ searchParam }}</div>
   <div class="q-ma-md text-h3 text-center">Księgozbiór</div>
 
   <q-card class="q-pa-sm" id="filter-base-card">
-    <div class="row flex justify-between q-gutter-md" id="filter-row">
-      <q-input dense v-model="filterOptions.title" debounce="500" label="Tytuł" />
+    <div class="row q-gutter-md" id="filter-row">
+      <q-input class="col" dense v-model="filterOptions.title" debounce="500" label="Tytuł" />
       <q-select
+        class="col"
         v-model="filterOptions.authors"
         dense
         clearable
@@ -59,6 +89,7 @@ watch(filterOptions.value, () => {
         label="Autor"
       />
       <q-select
+        class="col"
         v-model="filterOptions.publisher"
         dense
         clearable
@@ -67,7 +98,11 @@ watch(filterOptions.value, () => {
         @filter="(val, update) => filterFn(val, update, searchHintsBundle.publishers)"
         label="Wydawca"
       />
+    </div>
+
+    <div class="row q-gutter-md">
       <q-select
+        class="col"
         v-model="filterOptions.translators"
         dense
         clearable
@@ -76,13 +111,8 @@ watch(filterOptions.value, () => {
         @filter="(val, update) => filterFn(val, update, searchHintsBundle.translators)"
         label="Tłumacz"
       />
-      <!-- <q-input dense v-model="filterOptions.authors" label="Autor" /> -->
-      <!-- <q-input dense v-model="filterOptions.publisher" label="Wydawca" /> -->
-      <!-- <q-input dense v-model="filterOptions.translators" label="Tłumacz" /> -->
-    </div>
-
-    <div class="row flex justify-start q-gutter-md">
       <q-select
+        class="col"
         v-model="filterOptions.series"
         dense
         clearable
@@ -94,6 +124,7 @@ watch(filterOptions.value, () => {
       />
 
       <q-select
+        class="col"
         v-model="filterOptions.publSeries"
         dense
         clearable
@@ -103,114 +134,131 @@ watch(filterOptions.value, () => {
         new-value-mode="add-unique"
         label="Seria"
       />
-      <q-input dense v-model="filterOptions.isbn" type="number" label="ISBN" />
     </div>
 
-    <q-select
-      v-model="filterOptions.tags"
-      multiple
-      dense
-      :options="searchHints"
-      use-input
-      use-chips
-      @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
-      new-value-mode="add-unique"
-      label="Tagi"
-    />
+    <div class="row q-gutter-md">
+      <q-input class="col-4" dense debounce="500" v-model="filterOptions.isbn" type="number" label="ISBN" />
 
-    <div class="q-mt-xs row flex justify-start q-gutter-md">
-      <q-checkbox v-model="filterByPublicationYear" label="Filtruj po roku publikacji" />
-      <q-input
-        filled
+      <q-select
+        class="col"
+        v-model="filterOptions.tags"
+        multiple
         dense
-        :disable="!filterByPublicationYear"
-        v-model="filterOptions.publicationYearFrom"
-        mask="date"
-        :rules="['date']"
-        label="Od"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="filterOptions.publicationYearFrom">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <q-input
-        filled
-        dense
-        :disable="!filterByPublicationYear"
-        v-model="filterOptions.publicationYearTo"
-        mask="date"
-        :rules="['date']"
-        label="Do"
-        class="float-right"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="filterOptions.publicationYearTo">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
+        :options="searchHints"
+        use-input
+        use-chips
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
+        new-value-mode="add-unique"
+        label="Tagi"
+      />
     </div>
 
-    <div class="row flex justify-start q-gutter-md">
-      <q-checkbox v-model="filterByPurchaseDate" label="Filtruj po dacie zakupu" />
-      <q-input
-        filled
-        dense
-        :disable="!filterByPurchaseDate"
-        v-model="filterOptions.purchaseDateFrom"
-        mask="date"
-        :rules="['date']"
-        label="Od"
-        style="max-width: 800px"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="filterOptions.purchaseDateFrom">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <q-input
-        filled
-        dense
-        :disable="!filterByPurchaseDate"
-        v-model="filterOptions.purchaseDateTo"
-        mask="date"
-        :rules="['date']"
-        label="Do"
-        style="max-width: 800px"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="filterOptions.purchaseDateTo">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
+    <div class="row q-mt-md flex justify-start">
+      <div>
+        <q-checkbox v-model="filterByPublicationYear" label="Filtruj po roku publikacji" />
+      </div>
+
+      <div class="row">
+        <q-input
+          class="col q-mx-md"
+          filled
+          dense
+          :disable="!filterByPublicationYear"
+          v-model="filterOptions.publicationYearFrom"
+          mask="date"
+          :rules="['date']"
+          label="Od"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="filterOptions.publicationYearFrom">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-input
+          class="col"
+          filled
+          dense
+          :disable="!filterByPublicationYear"
+          v-model="filterOptions.publicationYearTo"
+          mask="date"
+          :rules="['date']"
+          label="Do"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="filterOptions.publicationYearTo">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+    </div>
+
+    <div class="row flex justify-start">
+      <div>
+        <q-checkbox v-model="filterByPurchaseDate" label="Filtruj po dacie zakupu" />
+      </div>
+
+      <div class="row">
+        <q-input
+          class="col q-mx-md"
+          filled
+          dense
+          :disable="!filterByPurchaseDate"
+          v-model="filterOptions.purchaseDateFrom"
+          mask="date"
+          :rules="['date']"
+          label="Od"
+          style="max-width: 800px"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="filterOptions.purchaseDateFrom">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-input
+          class="col"
+          filled
+          dense
+          :disable="!filterByPurchaseDate"
+          v-model="filterOptions.purchaseDateTo"
+          mask="date"
+          :rules="['date']"
+          label="Do"
+          style="max-width: 800px"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="filterOptions.purchaseDateTo">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
     </div>
 
     <q-checkbox v-model="filterOptions.read" label="Przeczytana" />

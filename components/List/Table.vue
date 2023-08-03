@@ -58,7 +58,7 @@ const columns = [
           >
           <q-td>{{ props.row.publisher }}</q-td>
           <q-td>{{ props.row.pages }}</q-td>
-          <q-td>{{ props.row.note }}</q-td>
+          <q-td>{{ props.row.lcNote }}</q-td>
           <q-td>{{ props.row.retailPrice }}</q-td>
           <q-td>{{ props.row.purchasePrice }}</q-td>
           <q-td>
