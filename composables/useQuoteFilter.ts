@@ -3,13 +3,9 @@ export default function useBookFilter() {
 
   async function filterQuotes(quotes, filterOptions) {
     filteredQuotes.value = quotes
-      .filter((quote) => quote.bookTitle?.toLowerCase().includes(filterOptions.bookTitle?.toLowerCase()))
-      .filter((quote) => (filterOptions.authors ? quote.authors?.toLowerCase().includes(filterOptions.authors?.toLowerCase()) : true));
-    // .filter((quote) => (filterOptions.publisher ? book.publisher?.toLowerCase().includes(filterOptions.publisher?.toLowerCase()) : true))
-
-    if (filterOptions.tags.length > 0) {
-      filteredQuotes.value = filteredQuotes.value.filter((quote) => filterOptions.tags?.some((tag) => quote.tags.includes(tag)));
-    }
+      .filter((quote) => (filterOptions.bookTitle ? quote.bookTitle?.toLowerCase().includes(filterOptions.bookTitle?.toLowerCase()) : true))
+      .filter((quote) => (filterOptions.authors ? quote.authors?.toLowerCase().includes(filterOptions.authors?.toLowerCase()) : true))
+      .filter((quote) => (filterOptions.tags.length > 0 ? filterOptions.tags?.some((tag) => quote.tags.includes(tag)) : true));
   }
 
   return {

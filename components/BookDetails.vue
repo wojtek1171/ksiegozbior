@@ -3,6 +3,7 @@ const route = useRoute();
 const router = useRouter();
 const bookid = ref(route.params.bookid);
 const { data: book } = await useFetch(`/api/book/${bookid.value}`);
+const { data: quotes } = await useFetch(`/api/quotes/by_book_id/${bookid.value}`);
 
 const deleteModalOpen = ref(false);
 
@@ -37,7 +38,7 @@ onMounted(() => {
 
 <template>
   <div class="q-py-lg">
-    <q-card class="q-my-xs" id="base-card" flat bordered>
+    <q-card class="q-my-xs" id="base-card" bordered>
       <div v-if="book.read" class="q-pa-mds badge"><q-icon name="check_circle" size="xs" color="positive" /></div>
       <div class="q-my-lg" ref="div">
         <div class="row flex justify-center">
@@ -175,19 +176,6 @@ onMounted(() => {
           <div v-html="prepareDescription(book.description)"></div>
         </q-card-section>
 
-        <!-- <q-btn round size="md">
-          <q-avatar size="30px">
-            <q-tooltip>Przejdź do LubimyCzytac.pl</q-tooltip>
-            <img src="../assets/pics/lc-logo.png">
-          </q-avatar>
-    </q-btn>
-
-        <q-card-actions align="right">
-          <q-btn flat color="red" @click="onDeleteButton"> usuń </q-btn>
-          <q-btn flat color="green" :to="editUrl"> edytuj </q-btn>
-          <q-btn flat color="primary"> dodaj cytat </q-btn>
-        </q-card-actions> -->
-
         <div class="row no-wrap" style="height: 40px">
           <q-btn :href="book.lcUrl" target="_blank" class="q-ml-sm" round flat>
             <q-avatar size="30px">
@@ -206,6 +194,16 @@ onMounted(() => {
       </div>
     </q-card>
 
+    <q-separator class="q-my-md" />
+
+    <div v-if="quotes.length > 0">
+      <div class="text-h5 text-center">Cytaty</div>
+
+      <div class="q-mt-md" v-for="quote in quotes">
+        <QuoteListQuoteTile :key="quote._id" :quote="quote" />
+      </div>
+    </div>
+
     <q-dialog v-model="deleteModalOpen" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -215,7 +213,7 @@ onMounted(() => {
 
         <q-card-actions align="right">
           <q-btn flat label="Wróć" color="primary" v-close-popup />
-          <q-btn @click="handleDelete" flat label="Usuń" color="red" v-close-popup />
+          <q-btn @click="handleDelete" flat label="Usuń" color="positive" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>

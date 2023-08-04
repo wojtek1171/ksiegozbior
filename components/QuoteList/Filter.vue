@@ -55,7 +55,16 @@ watch(filterOptions.value, () => {
   <div class="q-ma-md text-h3 text-center">Cytaty</div>
 
   <q-card class="q-pa-md" id="filter-base-card-quote">
-    <q-input dense v-model="filterOptions.bookTitle" debounce="500" label="Tytuł" />
+    <!-- <q-input dense v-model="filterOptions.bookTitle" debounce="500" label="Tytuł" /> -->
+    <q-select
+      v-model="filterOptions.bookTitle"
+      dense
+      clearable
+      :options="searchHints"
+      use-input
+      @filter="(val, update) => filterFn(val, update, searchHintsBundle.bookTitles)"
+      label="Autor"
+    />
     <q-select
       v-model="filterOptions.authors"
       dense
@@ -84,6 +93,7 @@ watch(filterOptions.value, () => {
   margin: auto;
   max-width: 600px;
   background-color: rgb(255, 255, 255, 0.2);
+  border-radius: 25px;
 }
 
 #filter-row > * {

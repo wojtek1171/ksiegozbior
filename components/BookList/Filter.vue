@@ -71,7 +71,6 @@ watch(filterOptions.value, () => {
 </script>
 
 <template>
-  <div>{{ searchParam }}</div>
   <div class="q-ma-md text-h3 text-center">Księgozbiór</div>
 
   <q-card class="q-pa-sm" id="filter-base-card">
@@ -270,10 +269,6 @@ watch(filterOptions.value, () => {
   margin: auto;
   max-width: 1000px;
   background-color: rgb(255, 255, 255, 0.2);
-}
-
-#filter-row > * {
-  // width: max(400px, calc(100% - 400px));
-  //width: calc(900/ 4);
+  border-radius: 25px;
 }
 </style>

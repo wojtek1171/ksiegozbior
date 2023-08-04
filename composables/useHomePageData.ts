@@ -7,18 +7,22 @@ export default function useHomePageData() {
     meters: 12.8,
     purchasePriceSum: 0,
     retailPriceSum: 0,
+    quotesCount: 0,
   });
 
   async function getHomePageData() {
-    const { data: books } = await useFetch('/api/books/by_creation_desc');
-    const preparedData = prepareData(books?.value);
+    const books = await $fetch('/api/books/by_creation_desc');
+    const quotesCount = await $fetch('/api/quotes/count');
 
-    homePageData.value.recentBooks = books.value?.slice(0, 10);
+    const preparedData = prepareData(books);
+
+    homePageData.value.recentBooks = books?.slice(0, 10);
     homePageData.value.authorsCount = preparedData.authorsCount;
-    homePageData.value.bookCount = books.value?.length;
+    homePageData.value.bookCount = books?.length;
     homePageData.value.pagesCount = preparedData.pagesCount;
     homePageData.value.purchasePriceSum = preparedData.purchasePriceSum;
     homePageData.value.retailPriceSum = preparedData.retailPriceSum;
+    homePageData.value.quotesCount = quotesCount;
   }
 
   function prepareData(books) {

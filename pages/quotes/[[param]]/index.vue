@@ -1,7 +1,4 @@
 <script setup lang="ts">
-useMeta({
-  title: 'Wyszukaj cytat',
-});
 const { data: quotes } = await useFetch('/api/quotes/by_creation_desc');
 const displayedQuotes = ref(quotes.value);
 
@@ -40,6 +37,9 @@ function dismissBanner() {
 }
 
 onMounted(() => {
+  useMeta({
+    title: 'Wyszukaj cytat',
+  });
   isBanner.value = sharedState.value?.isVisible;
 });
 
@@ -49,11 +49,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <q-banner v-if="isBanner" class="bg-green-4 text-white">
-    {{ sharedState.message }}
-    <template v-slot:action>
-      <q-btn @click="dismissBanner" flat color="white" label="OK" />
-    </template>
+  <q-banner v-if="isBanner" class="bg-green-4 banner">
+    <div class="row no-wrap q-gutter-md">
+      <div>
+        {{ sharedState.message }}
+      </div>
+      <div>
+        <q-btn @click="dismissBanner" outline color="black" icon="close" size="sm" round />
+      </div>
+    </div>
   </q-banner>
 
   <QuoteListFilter @filterOptionsChanged="onFilterChange"></QuoteListFilter>
@@ -66,3 +70,12 @@ onUnmounted(() => {
 
   <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" @quoteDeleted="onQuoteDeleted"></QuoteListTiles>
 </template>
+
+<style lang="scss">
+.banner {
+  position: absolute;
+  border-radius: 20px;
+  top: 55px;
+  right: 5px;
+}
+</style>

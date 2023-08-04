@@ -1,15 +1,14 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'adminguard',
-});
-
+const route = useRoute();
 const router = useRouter();
+const quoteid = ref(route.params.quoteid);
+const { data: fetchedQuote } = await useFetch(`/api/quote/${quoteid.value}`);
 
 const quote = ref({
-  bookTitle: '',
-  authors: [],
-  text: '',
-  tags: [],
+  bookTitle: fetchedQuote.value.bookTitle,
+  authors: fetchedQuote.value.authors?.split(','),
+  text: fetchedQuote.value.text,
+  tags: fetchedQuote.value.tags?.split(','),
 });
 
 async function onSubmit() {
@@ -20,19 +19,16 @@ async function onSubmit() {
     tags: quote.value.tags?.join(','),
   };
 
-  const response = await useFetch('/api/quote/add', {
-    method: 'POST',
+  const response = await useFetch(`/api/quote/edit/${quoteid.value}`, {
+    method: 'PATCH',
     body: quoteToSave,
   });
 
   const sharedState = useState('quoteAlert', () => ({
     isVisible: true,
-    message: 'Cytat została dodany',
+    message: 'Cytat został edytowany',
   }));
-
-  router.push({
-    path: '/quotes',
-  });
+  router.push('/quotes');
 }
 
 const onReset = async () => {
@@ -56,29 +52,34 @@ function filterFn(val, update, hints) {
     }
   });
 }
-
 onMounted(() => {
   useMeta({
-    title: 'Dodaj cytat',
+    title: 'Edytuj cytat',
   });
 });
 </script>
 
 <template>
-  <div class="q-pa-md" id="add-form" style="max-width: 800px">
+  <div class="q-pa-md" id="form" style="max-width: 800px">
     <q-card class="card-form" flat bordered>
       <div class="q-mx-md row no-wrap items-center">
-        <div class="card-title">Dodaj cytat</div>
+        <div class="card-title">Edytuj cytat</div>
       </div>
+
+      <q-separator></q-separator>
+
       <q-card-section>
-        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-sm">
+        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-select
             class="q-py-none"
             v-model="quote.bookTitle"
+            multiple
             dense
             :options="searchHints"
             use-input
-            @filter="(val, update) => filterFn(val, update, searchHintsBundle.bookTitles)"
+            use-chips
+            stack-label
+            @filter="(val, update) => filterFn(val, update, searchHintsBundle.authors)"
             new-value-mode="add-unique"
             label="Źródło"
             lazy-rules
@@ -93,6 +94,7 @@ onMounted(() => {
             :options="searchHints"
             use-input
             use-chips
+            stack-label
             @filter="(val, update) => filterFn(val, update, searchHintsBundle.authors)"
             new-value-mode="add-unique"
             label="Autor"
@@ -107,6 +109,7 @@ onMounted(() => {
             :options="searchHints"
             use-input
             use-chips
+            stack-label
             @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
             new-value-mode="add-unique"
             label="Tagi"
@@ -124,14 +127,13 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
-#add-form {
+<style lang="scss">
+#form {
   margin: auto;
 }
 
 .card-form {
   background-color: rgb(255, 255, 255, 0.5);
-  border-radius: 25px;
 }
 
 .card-title {

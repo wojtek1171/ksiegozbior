@@ -2,9 +2,6 @@
 definePageMeta({
   middleware: 'adminguard',
 });
-useMeta({
-  title: 'Dodaj książkę',
-});
 
 const router = useRouter();
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
@@ -117,6 +114,12 @@ function filterFn(val, update, hints) {
 const onReset = async () => {
   console.log('reset');
 };
+
+onMounted(() => {
+  useMeta({
+    title: 'Dodaj książkę',
+  });
+});
 </script>
 
 <template>

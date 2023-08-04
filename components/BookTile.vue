@@ -11,7 +11,7 @@ const book = props.book;
 
 <template>
   <q-card class="q-pl-xs" id="base-card" bordered>
-    <div v-if="book.read" class="q-pa-mds badge"><q-icon name="check_circle" size="xs" color="positive" /></div>
+    <div v-if="book.read" class="badge"><q-icon name="check_circle" size="xs" color="positive" /></div>
     <div class="q-my-md">
       <div class="row flex justify-center">
         <div class="q-ma-md">
@@ -22,7 +22,7 @@ const book = props.book;
 
         <div class="q-mx-md book-tile-data-container">
           <q-card-section class="q-pa-xs">
-            <router-link class="title-link" :to="`/book/${book._id}`"
+            <router-link class="title-link-book" :to="`/book/${book._id}`"
               ><div class="text-h5">{{ book.title }}</div></router-link
             >
             <div class="chip-col-right">
@@ -151,7 +151,7 @@ const book = props.book;
   width: max(400px, calc(100% - 300px));
 }
 
-.title-link {
+.title-link-book {
   text-decoration: none;
   color: black;
 }

@@ -12,11 +12,11 @@ function toggleLeftDrawer() {
   <q-layout view="lHh Lpr lFf" id="layout">
     <VitePwaManifest />
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-indigo">
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title class="toolbar-title"> App </q-toolbar-title>
-        <div><q-btn icon="logout" round size="sm" color="blue-10" to="/login"></q-btn></div>
+        <div><q-btn icon="logout" round size="sm" color="indigo-10" to="/login"></q-btn></div>
       </q-toolbar>
     </q-header>
 

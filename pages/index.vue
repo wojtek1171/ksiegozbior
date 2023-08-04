@@ -117,7 +117,7 @@ onMounted(() => {
       <q-card bordered class="column my-card">
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text">
-            {{ homePageData.bookCount }}
+            {{ homePageData.quotesCount }}
           </div>
         </q-card-section>
         <q-separator inset />

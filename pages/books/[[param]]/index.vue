@@ -1,7 +1,4 @@
 <script setup lang="ts">
-useMeta({
-  title: 'Wyszukaj książkę',
-});
 const { data: books } = await useFetch('/api/books/by_creation_desc');
 const displayedBooks = ref(books.value);
 
@@ -33,6 +30,9 @@ function dismissBanner() {
 }
 
 onMounted(() => {
+  useMeta({
+    title: 'Wyszukaj książkę',
+  });
   isBanner.value = sharedState.value?.isVisible;
 });
 
@@ -42,16 +42,20 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <q-banner v-if="isBanner" class="bg-green-4 text-white">
-    {{ sharedState.message }}
-    <template v-slot:action>
-      <q-btn @click="dismissBanner" flat color="white" label="OK" />
-    </template>
+  <q-banner v-if="isBanner" class="bg-green-4 banner">
+    <div class="row no-wrap q-gutter-md">
+      <div>
+        {{ sharedState.message }}
+      </div>
+      <div>
+        <q-btn @click="dismissBanner" outline color="black" icon="close" size="sm" round />
+      </div>
+    </div>
   </q-banner>
 
-  <BookListFilter @filterOptionsChanged="onChange"></BookListFilter>
+  <BookListFilter @filterOptionsChanged="onChange" />
 
-  <q-separator class="q-mt-md"></q-separator>
+  <q-separator class="q-mt-md" />
   <div class="row items-center" style="max-width: 1000px; margin: auto">
     <div class="col"></div>
     <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
@@ -61,8 +65,17 @@ onUnmounted(() => {
       <q-btn v-else class="q-ma-md" icon="grid_view" @click="changeView" />
     </div>
   </div>
-  <q-separator></q-separator>
+  <q-separator />
 
-  <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey"></BookListTiles>
-  <BookListTable v-else :books="displayedBooks"></BookListTable>
+  <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey" />
+  <BookListTable v-else :books="displayedBooks" />
 </template>
+
+<style lang="scss">
+.banner {
+  position: absolute;
+  border-radius: 20px;
+  top: 55px;
+  right: 5px;
+}
+</style>
