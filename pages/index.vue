@@ -1,8 +1,4 @@
 <script setup lang="ts">
-useMeta({
-  title: 'Księgozbiór - Strona główna',
-});
-
 const { homePageData, getHomePageData } = useHomePageData();
 await getHomePageData();
 
@@ -33,6 +29,12 @@ function animateScroll(dir: string) {
 }
 const { isAdmin, authorize } = useAuth();
 authorize();
+
+onMounted(() => {
+  useMeta({
+    title: 'Księgozbiór - Strona główna',
+  });
+});
 </script>
 
 <template>
