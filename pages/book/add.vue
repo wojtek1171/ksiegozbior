@@ -115,7 +115,7 @@ function filterFn(val, update, hints) {
 }
 
 const onReset = async () => {
-  console.log('asdf');
+  console.log('reset');
 };
 </script>
 

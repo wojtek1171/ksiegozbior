@@ -2,10 +2,6 @@
 definePageMeta({
   middleware: 'adminguard',
 });
-
-onMounted(() => {
-  console.log('fsdf');
-});
 </script>
 
 <template>

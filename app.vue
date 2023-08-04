@@ -42,7 +42,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/book/add" clickable>
+        <q-item v-if="isAdmin" to="/book/add" clickable>
           <q-item-section avatar>
             <q-icon name="library_add" />
           </q-item-section>
@@ -51,7 +51,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/" clickable>
+        <q-item to="/quotes" clickable>
           <q-item-section avatar>
             <q-icon name="format_quote" />
           </q-item-section>
@@ -60,7 +60,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/" clickable>
+        <q-item v-if="isAdmin" to="/quote/add" clickable>
           <q-item-section avatar>
             <q-icon name="add" />
           </q-item-section>
@@ -69,12 +69,21 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
+        <q-item to="/" clickable>
+          <q-item-section avatar>
+            <q-icon name="bar_chart" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Statystyki</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item v-if="isAdmin" to="/admin" clickable>
           <q-item-section avatar>
             <q-icon name="settings" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Admin panel</q-item-label>
+            <q-item-label>Panel admina</q-item-label>
           </q-item-section>
         </q-item>
 

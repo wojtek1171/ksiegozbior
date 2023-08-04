@@ -131,7 +131,7 @@ function addTagsToForm() {
 }
 
 const onReset = async () => {
-  console.log('asdf');
+  console.log('reset');
   isLcFormVisible.value = !isLcFormVisible.value;
 };
 

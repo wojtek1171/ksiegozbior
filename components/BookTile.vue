@@ -3,12 +3,6 @@ const props = defineProps(['book']);
 
 const book = props.book;
 
-const tags = 'filozofia,pytania,popularnonaukowa';
-
-onMounted(() => {
-  console.log('Hej1');
-});
-
 // onUnmounted(() => {
 //   console.log('Unmounted');
 //   window.removeEventListener('resize', changeOnResize);

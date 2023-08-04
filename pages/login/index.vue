@@ -18,10 +18,6 @@ async function login() {
     token.value = response.data.value;
   }
 }
-
-onMounted(() => {
-  console.log('fsdf');
-});
 </script>
 
 <template>

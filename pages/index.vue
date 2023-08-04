@@ -1,7 +1,7 @@
 <script setup lang="ts">
-// useMeta({
-//   title: 'Księgozbiór - Strona główna',
-// });
+useMeta({
+  title: 'Księgozbiór - Strona główna',
+});
 
 const { homePageData, getHomePageData } = useHomePageData();
 await getHomePageData();

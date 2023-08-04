@@ -49,7 +49,7 @@ onUnmounted(() => {
     </template>
   </q-banner>
 
-  <ListFilter @filterOptionsChanged="onChange"></ListFilter>
+  <BookListFilter @filterOptionsChanged="onChange"></BookListFilter>
 
   <q-separator class="q-mt-md"></q-separator>
   <div class="row items-center" style="max-width: 1000px; margin: auto">
@@ -63,6 +63,6 @@ onUnmounted(() => {
   </div>
   <q-separator></q-separator>
 
-  <ListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey"></ListTiles>
-  <ListTable v-else :books="displayedBooks"></ListTable>
+  <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey"></BookListTiles>
+  <BookListTable v-else :books="displayedBooks"></BookListTable>
 </template>
