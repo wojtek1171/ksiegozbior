@@ -46,24 +46,26 @@ export default function useLubimyCzytac() {
       .split(' (')
       .join(',')
       .split(',');
-    parsedData.value.pages = stringData.match(new RegExp('numberOfPages":"' + '(.*?)' + '"'))[1];
-    parsedData.value.publicationDate = stringData.match(new RegExp('datePublished":"' + '(.*?)' + '"'))[1];
+    parsedData.value.pages = stringData.match(new RegExp('numberOfPages":"' + '(.*?)' + '"'))?.[1];
+    parsedData.value.publicationDate = stringData.match(new RegExp('datePublished":"' + '(.*?)' + '"'))?.[1];
     parsedData.value.publSeries = stringData.match(new RegExp('Seria:' + '(.*?)' + '</'))?.[1]?.split('>')[1];
     parsedData.value.series = stringData
       .match(new RegExp('Cykl:' + '(.*?)' + '</'))?.[1]
       ?.split('>')[1]
       .trim();
-    parsedData.value.isbn = stringData.match(new RegExp('isbn":"' + '(.*?)' + '"'))[1];
+    parsedData.value.isbn = stringData.match(new RegExp('isbn":"' + '(.*?)' + '"'))?.[1];
     parsedData.value.tags = stringData.match(/(?<=class="btn btn-outline-primary tag mt-2 mb-0">)(.*?)(?=<\/a>)/g)?.map((e) => e.trim());
     parsedData.value.note = stringData.match(new RegExp('books:rating:value" content="' + '(.*?)' + '" />'))?.[1];
     parsedData.value.description = stringData.match(new RegExp('<div class="collapse-content"><p>' + '(.*?)' + '</p>'))[1]?.trim();
-    parsedData.value.image = stringData.match(new RegExp('og:image" content="' + '(.*?)' + '" />'))[1];
+    parsedData.value.image = stringData.match(new RegExp('og:image" content="' + '(.*?)' + '" />'))?.[1];
     parsedData.value.translators = stringData.match(new RegExp('Tłumacz:(.*?)</a></dd>'))?.[1]?.replace(/<.*?>/g, '')?.split(', ');
     parsedData.value.originalTitle = stringData
       .match(new RegExp('Tytuł oryginału:' + '(.*?)' + '</dd'))?.[1]
       ?.split('d>')[1]
       .trim();
     parsedData.value.description = parsedData.value.description.replaceAll('<br /><br />', '\n');
+
+    console.log(parsedData);
   }
 
   return {
