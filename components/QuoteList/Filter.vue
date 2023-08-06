@@ -38,7 +38,7 @@ onMounted(() => {
       filterOptions.value.bookTitle = splittedParam[1];
       break;
     case 'tag':
-      filterOptions.value.tags = splittedParam[1];
+      filterOptions.value.tags = new Array(splittedParam[1]);
       break;
     default:
       filterOptions.value.bookTitle = splittedParam[0];
@@ -51,7 +51,6 @@ watch(filterOptions.value, () => {
 </script>
 
 <template>
-  <div>{{ searchParam }}</div>
   <div class="q-ma-md text-h3 text-center">Cytaty</div>
 
   <q-card class="q-pa-md" id="filter-base-card-quote">
@@ -94,10 +93,5 @@ watch(filterOptions.value, () => {
   max-width: 600px;
   background-color: rgb(255, 255, 255, 0.2);
   border-radius: 25px;
-}
-
-#filter-row > * {
-  // width: max(400px, calc(100% - 400px));
-  //width: calc(900/ 4);
 }
 </style>

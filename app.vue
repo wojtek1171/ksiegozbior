@@ -69,7 +69,7 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
-        <q-item to="/" clickable>
+        <q-item to="/statistics" clickable>
           <q-item-section avatar>
             <q-icon name="bar_chart" />
           </q-item-section>

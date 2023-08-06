@@ -49,6 +49,16 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <QuoteListFilter @filterOptionsChanged="onFilterChange" />
+
+  <q-separator class="q-mt-md" />
+  <div class="row items-center" style="max-width: 1000px; margin: auto">
+    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedQuotes?.length }}</div>
+  </div>
+  <q-separator />
+
+  <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" @quoteDeleted="onQuoteDeleted" />
+
   <q-banner v-if="isBanner" class="bg-green-4 banner">
     <div class="row no-wrap q-gutter-md">
       <div>
@@ -59,16 +69,6 @@ onUnmounted(() => {
       </div>
     </div>
   </q-banner>
-
-  <QuoteListFilter @filterOptionsChanged="onFilterChange"></QuoteListFilter>
-
-  <q-separator class="q-mt-md"></q-separator>
-  <div class="row items-center" style="max-width: 1000px; margin: auto">
-    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedQuotes?.length }}</div>
-  </div>
-  <q-separator></q-separator>
-
-  <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" @quoteDeleted="onQuoteDeleted"></QuoteListTiles>
 </template>
 
 <style lang="scss">

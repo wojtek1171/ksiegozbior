@@ -26,6 +26,10 @@ async function handleDelete() {
   router.push('/quotes');
 }
 
+function copyToClipboard() {
+  navigator.clipboard.writeText(quote.text);
+}
+
 onMounted(() => {
   console.log('Hej1');
 });
@@ -88,7 +92,7 @@ onMounted(() => {
           <q-btn icon="edit" flat color="positive" :to="`/quote/edit/${quote._id}`"></q-btn>
         </div>
         <div>
-          <q-btn icon="content_copy" flat color="grey" @click="">
+          <q-btn icon="content_copy" flat color="grey" @click="copyToClipboard">
             <q-tooltip>Kopiuj do schowka</q-tooltip>
           </q-btn>
           <q-btn v-if="quote.bookId" icon="menu_book" flat color="grey" :to="`/book/${quote.bookId}`">

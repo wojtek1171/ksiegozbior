@@ -42,6 +42,25 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <BookListFilter @filterOptionsChanged="onChange" />
+
+  <q-separator class="q-mt-md" />
+
+  <div class="row items-center" style="max-width: 1000px; margin: auto">
+    <div class="col"></div>
+    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
+    <!-- <q-space /> -->
+    <div class="col" align="right">
+      <q-btn v-if="tileOrTab" class="q-ma-md" icon="view_list" @click="changeView" />
+      <q-btn v-else class="q-ma-md" icon="grid_view" @click="changeView" />
+    </div>
+  </div>
+
+  <q-separator />
+
+  <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey" />
+  <BookListTable v-else :books="displayedBooks" />
+
   <q-banner v-if="isBanner" class="bg-green-4 banner">
     <div class="row no-wrap q-gutter-md">
       <div>
@@ -52,23 +71,6 @@ onUnmounted(() => {
       </div>
     </div>
   </q-banner>
-
-  <BookListFilter @filterOptionsChanged="onChange" />
-
-  <q-separator class="q-mt-md" />
-  <div class="row items-center" style="max-width: 1000px; margin: auto">
-    <div class="col"></div>
-    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
-    <!-- <q-space /> -->
-    <div class="col" align="right">
-      <q-btn v-if="tileOrTab" class="q-ma-md" icon="view_list" @click="changeView" />
-      <q-btn v-else class="q-ma-md" icon="grid_view" @click="changeView" />
-    </div>
-  </div>
-  <q-separator />
-
-  <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey" />
-  <BookListTable v-else :books="displayedBooks" />
 </template>
 
 <style lang="scss">

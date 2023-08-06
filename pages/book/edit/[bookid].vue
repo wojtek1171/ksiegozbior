@@ -66,7 +66,7 @@ async function onSubmit() {
     isVisible: true,
     message: `Książka '${book.value.title}' została edytowana`,
   }));
-  router.push('/books');
+  router.push(`/book/${bookid.value}`);
 }
 
 const lcUrl = ref('');

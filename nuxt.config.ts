@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['nuxt-quasar-ui', 'nuxt-mongoose', '@vite-pwa/nuxt'],
+  plugins: [{ src: '~/plugins/apexcharts.client.js', mode: 'client' }],
   pwa: {
     manifest: {
       name: 'Ksiegozbior',
