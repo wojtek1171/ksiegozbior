@@ -4,7 +4,6 @@ const props = defineProps(['book']);
 const book = props.book;
 
 // onUnmounted(() => {
-//   console.log('Unmounted');
 //   window.removeEventListener('resize', changeOnResize);
 // });
 </script>

@@ -34,7 +34,7 @@ const columns = [
 </script>
 
 <template>
-  <div class="q-pa-md">
+  <div class="q-pb-lg q-px-md">
     <q-table
       class="my-sticky-header-table table"
       flat
@@ -50,7 +50,7 @@ const columns = [
         <q-tr :props="props">
           <q-td
             ><router-link class="router-link" :to="getBookLink(props.row._id)"
-              >{{ trimTitle(props.row.title) }}<q-tooltip class="text-body2">{{ props.row.title }}></q-tooltip></router-link
+              >{{ trimTitle(props.row.title) }}<q-tooltip class="text-body2">{{ props.row.title }}</q-tooltip></router-link
             ></q-td
           >
           <q-td

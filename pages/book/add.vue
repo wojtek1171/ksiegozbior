@@ -74,8 +74,13 @@ async function onSubmit() {
   });
 }
 
+const lcError = ref(false);
+
 async function onLoadFromLC() {
-  await getLcData(lcUrl.value);
+  const response = await getLcData(lcUrl.value);
+  if (response?.message) {
+    lcError.value = true;
+  }
 
   book.value.title = parsedData.value.title;
   book.value.authors = parsedData.value.authors;
@@ -135,6 +140,7 @@ onMounted(() => {
             <q-card class="q-pa-md" style="width: 500px">
               <q-input dense v-model="lcUrl" label="link lubimy czytać"></q-input>
               <q-btn class="q-mt-lg" label="pobierz" @click="onLoadFromLC()"></q-btn>
+              <div v-if="lcError" class="dsad text-red">Dane mogą być niekompletne</div>
             </q-card>
           </q-popup-proxy>
         </q-btn>

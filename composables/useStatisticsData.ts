@@ -11,18 +11,9 @@ export default function useStatisticsData() {
 
   async function getStatisticsData() {
     const books = await $fetch('/api/books');
-    //const quotesCount = await $fetch('/api/quotes/count');
 
     const preparedData = prepareData(books);
-
-    statisticsData.value.booksRead = getReadBooksCount(books);
-    statisticsData.value.booksTotal = books.length;
-    statisticsData.value.authors = preparedData.authors;
-    statisticsData.value.publishers = preparedData.publishers;
-    statisticsData.value.tags = preparedData.tags;
-    statisticsData.value.booksByYear = preparedData.booksByYear;
-    statisticsData.value.expensesByYear = preparedData.expensesByYear;
-    //getExpensesByYear();
+    statisticsData.value = { ...preparedData, booksRead: getReadBooksCount(books), booksTotal: books.length };
   }
 
   function prepareData(books) {
@@ -54,10 +45,7 @@ export default function useStatisticsData() {
       preparedData.publishers.push(book.publisher);
       preparedData.tags.push(book.tags.split(','));
 
-      //console.log(typeof book.purchaseDate);
-
       const yearObj = yearsFrom2013.find((x) => x.year == +book.purchaseDate.slice(0, 4));
-      //console.log(yearObj)
       if (yearObj) {
         yearObj.expenses += book.purchasePrice;
         yearObj.bookCount += 1;
@@ -75,15 +63,7 @@ export default function useStatisticsData() {
     preparedData.publishers = getElementOccurancesSortedDesc(preparedData.publishers.flat(1));
     preparedData.tags = getElementOccurancesSortedDesc(preparedData.tags.flat(1));
 
-    //console.log(sortedAuthors)
-
     return preparedData;
-  }
-
-  function updateYearData(book) {
-    //years
-    // console.log(somar)
-    // console.log(somar.find(x => x.year == 2017))
   }
 
   function getElementOccurancesSortedDesc(elements) {
@@ -118,16 +98,6 @@ export default function useStatisticsData() {
       }
     });
     return count;
-  }
-
-  function countAuthors(books: Book) {
-    let authors = [];
-
-    books.forEach((book) => {
-      authors = authors.concat(book.authors.split(','));
-    });
-
-    return new Set(authors).size;
   }
 
   return {

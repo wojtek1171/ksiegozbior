@@ -30,9 +30,9 @@ function copyToClipboard() {
   navigator.clipboard.writeText(quote.text);
 }
 
-onMounted(() => {
-  console.log('Hej1');
-});
+// onMounted(() => {
+//   console.log('Hej1');
+// });
 
 // onUnmounted(() => {
 //   console.log('Unmounted');

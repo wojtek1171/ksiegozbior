@@ -19,11 +19,17 @@ export default function useLubimyCzytac() {
 
   async function getLcData(url: String) {
     const trimmedUrl = url.slice(8).replaceAll('/', '&');
-
     const { data } = await useFetch(`/api/lc/${trimmedUrl}`);
-
     const stringData = data.value;
 
+    try {
+      scrapData(stringData);
+    } catch (e) {
+      return { message: 'Data can be incomplete' };
+    }
+  }
+
+  function scrapData(stringData) {
     parsedData.value.title = stringData
       .match(new RegExp('<h1 class="book__title"' + '(.*?)' + '</h1></div>'))[1]
       .split('>')[1]
@@ -57,7 +63,6 @@ export default function useLubimyCzytac() {
       .match(new RegExp('Tytuł oryginału:' + '(.*?)' + '</dd'))?.[1]
       ?.split('d>')[1]
       .trim();
-
     parsedData.value.description = parsedData.value.description.replaceAll('<br /><br />', '\n');
   }
 
