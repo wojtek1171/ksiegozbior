@@ -7,6 +7,7 @@ const currentPage = ref(1);
 const maxPage = ref(Math.ceil(props.books.length / 10));
 
 watch(currentPage, () => {
+  window.scrollTo(0, 400);
   const startPosition = (currentPage.value - 1) * 10;
   visBooks = props.books.slice(startPosition, startPosition + 10);
 });

@@ -62,7 +62,7 @@ watch(filterOptions.value, () => {
       :options="searchHints"
       use-input
       @filter="(val, update) => filterFn(val, update, searchHintsBundle.bookTitles)"
-      label="Autor"
+      label="Źródło"
     />
     <q-select
       v-model="filterOptions.authors"

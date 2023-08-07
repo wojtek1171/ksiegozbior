@@ -51,8 +51,8 @@ onUnmounted(() => {
     <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
     <!-- <q-space /> -->
     <div class="col" align="right">
-      <q-btn v-if="tileOrTab" class="q-ma-md" icon="view_list" @click="changeView" />
-      <q-btn v-else class="q-ma-md" icon="grid_view" @click="changeView" />
+      <q-btn v-if="tileOrTab" class="q-ma-md text-black" icon="view_list" color="blue-grey-2" @click="changeView" />
+      <q-btn v-else class="q-ma-md text-black" icon="grid_view" color="blue-grey-2" @click="changeView" />
     </div>
   </div>
 

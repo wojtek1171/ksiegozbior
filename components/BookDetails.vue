@@ -188,7 +188,9 @@ onMounted(() => {
           <q-card-actions v-if="isAdmin" align="right">
             <q-btn outline color="red" @click="onDeleteButton"> usuń </q-btn>
             <q-btn outline color="green" :to="`/book/edit/${book._id}`"> edytuj </q-btn>
-            <q-btn outline color="primary"> dodaj cytat </q-btn>
+            <q-btn outline color="primary" :to="`/quote/add?bookid=${book._id}&source=${book.title}&authors=${book.authors}`">
+              dodaj cytat
+            </q-btn>
           </q-card-actions>
         </div>
       </div>

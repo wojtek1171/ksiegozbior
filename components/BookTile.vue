@@ -155,7 +155,7 @@ const book = props.book;
   color: black;
 }
 
-.title-link:hover {
+.title-link-book:hover {
   color: #0e68c9;
 }
 

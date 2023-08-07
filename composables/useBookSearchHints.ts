@@ -9,7 +9,7 @@ export default function useBookSearchHints() {
   });
 
   async function prepareSearchHints() {
-    const { data: books } = await useFetch('/api/books');
+    const books = await $fetch('/api/books');
 
     let authors = [];
     let publishers = [];
@@ -18,7 +18,7 @@ export default function useBookSearchHints() {
     let publSeries = [];
     let tags = [];
 
-    books.value.forEach((book) => {
+    books.forEach((book) => {
       authors = authors.concat(book.authors?.split(','));
       publishers.push(book.publisher);
       translators = translators.concat(book.translators?.split(','));

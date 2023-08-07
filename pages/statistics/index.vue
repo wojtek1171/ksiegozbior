@@ -99,6 +99,12 @@ const expensesByYearSeries = [
     data: statisticsData.value.expensesByYear.data,
   },
 ];
+
+onMounted(() => {
+  useMeta({
+    title: 'Statystyki',
+  });
+});
 </script>
 
 <template>

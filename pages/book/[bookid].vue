@@ -9,10 +9,7 @@ function dismissBanner() {
 }
 
 onMounted(() => {
-  // useMeta({
-  //   title: 'Wyszukaj książkę',
-  // });
-  isBanner.value = sharedState.value?.isVisible;
+  isBanner.value = sharedState?.value?.isVisible;
 });
 </script>
 
@@ -21,7 +18,7 @@ onMounted(() => {
   <q-banner v-if="isBanner" class="bg-green-4 banner-bd">
     <div class="row no-wrap q-gutter-md">
       <div>
-        {{ sharedState.message }}
+        {{ sharedState?.message }}
       </div>
       <div>
         <q-btn @click="dismissBanner" outline color="black" icon="close" size="sm" round />

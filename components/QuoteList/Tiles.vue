@@ -12,6 +12,7 @@ const onQuoteDeleted = (param) => {
 };
 
 watch(currentPage, () => {
+  window.scrollTo(0, 250);
   const startPosition = (currentPage.value - 1) * 10;
   visQuotes = props.quotes.slice(startPosition, startPosition + 10);
 });

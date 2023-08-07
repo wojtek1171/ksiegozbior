@@ -4,10 +4,11 @@ definePageMeta({
 });
 
 const router = useRouter();
+const route = useRoute();
 
 const quote = ref({
-  bookTitle: '',
-  authors: [],
+  bookTitle: route.query.source || '',
+  authors: route.query.authors?.split(',') || [],
   text: '',
   tags: [],
 });
@@ -18,6 +19,7 @@ async function onSubmit() {
     authors: quote.value.authors.join(','),
     text: quote.value.text,
     tags: quote.value.tags?.join(','),
+    bookId: route.query.bookid || null,
   };
 
   const response = await useFetch('/api/quote/add', {

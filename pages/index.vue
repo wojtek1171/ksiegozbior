@@ -67,8 +67,8 @@ onMounted(() => {
 
     <div class="q-pa-lg row flex flex-center text-center q-gutter-lg">
       <q-card bordered class="column text-center my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h3">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
+          <div>
             {{ homePageData.bookCount }}
           </div>
         </q-card-section>
@@ -79,8 +79,8 @@ onMounted(() => {
       </q-card>
 
       <q-card bordered class="column text-center my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h3">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
+          <div>
             {{ homePageData.authorsCount }}
           </div>
         </q-card-section>
@@ -91,8 +91,8 @@ onMounted(() => {
       </q-card>
 
       <q-card bordered class="column text-center my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h3">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
+          <div>
             {{ homePageData.pagesCount }}
           </div>
         </q-card-section>
@@ -103,7 +103,7 @@ onMounted(() => {
       </q-card>
 
       <q-card bordered class="column my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
           <div class="text">
             {{ homePageData.meters }}
           </div>
@@ -115,7 +115,7 @@ onMounted(() => {
       </q-card>
 
       <q-card bordered class="column my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
           <div class="text">
             {{ homePageData.quotesCount }}
           </div>
@@ -127,7 +127,7 @@ onMounted(() => {
       </q-card>
 
       <q-card bordered class="column my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
           <div class="text">{{ Math.round(homePageData.purchasePriceSum) }} zł</div>
         </q-card-section>
         <q-separator inset />
@@ -137,7 +137,7 @@ onMounted(() => {
       </q-card>
 
       <q-card bordered class="column my-card">
-        <q-card-section class="col text-h3 flex items-center text-center section">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
           <div class="text">{{ Math.round(homePageData.retailPriceSum) }} zł</div>
         </q-card-section>
         <q-separator inset />
@@ -153,6 +153,12 @@ onMounted(() => {
 <style lang="scss">
 .section {
   margin: auto;
+  // font-size: xx-large;
+}
+
+.top-section {
+  margin: auto;
+  font-size: 2.9em;
 }
 
 .my-card {
