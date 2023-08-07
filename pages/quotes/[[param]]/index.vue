@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { data: quotes } = await useFetch('/api/quotes/by_creation_desc');
 const displayedQuotes = ref(quotes.value);
+const { declineQuote } = useDeclination();
 
 const isBanner = ref(false);
 
@@ -53,7 +54,7 @@ onUnmounted(() => {
 
   <q-separator class="q-mt-md" />
   <div class="row items-center" style="max-width: 1000px; margin: auto">
-    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedQuotes?.length }}</div>
+    <div class="q-ma-md col text-center">Znaleziono {{ displayedQuotes?.length }} {{ declineQuote(displayedQuotes?.length) }}</div>
   </div>
   <q-separator />
 
@@ -62,7 +63,7 @@ onUnmounted(() => {
   <q-banner v-if="isBanner" class="bg-green-4 banner">
     <div class="row no-wrap q-gutter-md">
       <div>
-        {{ sharedState.message }}
+        {{ sharedState?.message }}
       </div>
       <div>
         <q-btn @click="dismissBanner" outline color="black" icon="close" size="sm" round />

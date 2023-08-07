@@ -56,7 +56,7 @@ async function onSubmit() {
     isbn: book.value.isbn,
     notes: book.value.notes,
     description: book.value.description,
-    image: book.value.image,
+    image: book.value.image || 'https://i.imgur.com/rpVYMUX.jpeg',
   };
 
   const response = await useFetch('/api/book/add', {
@@ -324,7 +324,8 @@ onMounted(() => {
 
           <q-input dense v-model="book.notes" label="Notatka" type="textarea" />
 
-          <div align="right">
+          <div class="q-gutter-sm" align="right">
+            <!-- <q-btn label="Dodaj okładkę" type="submit" color="primary" outline /> -->
             <q-btn label="Submit" type="submit" color="positive" outline />
             <q-btn label="Reset" type="reset" color="primary" outline class="q-ml-sm" />
           </div>

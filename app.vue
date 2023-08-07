@@ -20,7 +20,7 @@ function toggleLeftDrawer() {
       </q-toolbar>
     </q-header>
 
-    <q-drawer id="drawer" bordered v-model="leftDrawerOpen" :width="230" show-if-above elevated>
+    <q-drawer id="drawer" bordered v-model="leftDrawerOpen" :width="210" show-if-above elevated>
       <q-list>
         <q-item-label header> Menu </q-item-label>
 

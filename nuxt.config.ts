@@ -42,6 +42,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       token: process.env.TOKEN,
+      imgurId: process.env.IMGUR_CLIENT_ID,
     },
   },
   quasar: {

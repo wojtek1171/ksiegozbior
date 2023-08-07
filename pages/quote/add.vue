@@ -29,7 +29,7 @@ async function onSubmit() {
 
   const sharedState = useState('quoteAlert', () => ({
     isVisible: true,
-    message: 'Cytat została dodany',
+    message: 'Cytat został dodany',
   }));
 
   router.push({

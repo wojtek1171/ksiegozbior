@@ -54,7 +54,7 @@ async function onSubmit() {
     isbn: book.value.isbn,
     notes: book.value.notes,
     description: book.value.description,
-    image: book.value.image,
+    image: book.value.image || 'https://i.imgur.com/rpVYMUX.jpeg',
   };
 
   const response = await useFetch(`/api/book/edit/${bookid.value}`, {

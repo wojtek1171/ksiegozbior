@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { data: books } = await useFetch('/api/books/by_creation_desc');
 const displayedBooks = ref(books.value);
+const { declineBook } = useDeclination();
 
 const isBanner = ref(false);
 
@@ -48,7 +49,7 @@ onUnmounted(() => {
 
   <div class="row items-center" style="max-width: 1000px; margin: auto">
     <div class="col"></div>
-    <div class="q-ma-md col text-center">Wynik wyszukiwania: {{ displayedBooks?.length }}</div>
+    <div class="q-ma-md col text-center">Znaleziono {{ displayedBooks?.length }} {{ declineBook(displayedBooks?.length) }}</div>
     <!-- <q-space /> -->
     <div class="col" align="right">
       <q-btn v-if="tileOrTab" class="q-ma-md text-black" icon="view_list" color="blue-grey-2" @click="changeView" />
