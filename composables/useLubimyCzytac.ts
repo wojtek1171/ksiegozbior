@@ -64,8 +64,6 @@ export default function useLubimyCzytac() {
       ?.split('d>')[1]
       .trim();
     parsedData.value.description = parsedData.value.description.replaceAll('<br /><br />', '\n');
-
-    console.log(parsedData);
   }
 
   return {

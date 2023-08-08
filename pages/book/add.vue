@@ -4,9 +4,17 @@ definePageMeta({
 });
 
 const router = useRouter();
-const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
+const config = useRuntimeConfig();
 const { parsedData, getLcData } = useLubimyCzytac();
+const { searchHintsBundle, prepareSearchHints } = await useBookSearchHints();
+prepareSearchHints();
+const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
 const lcUrl = ref('');
+const isUploadVisible = ref(false);
+const imageFile = ref(null);
+const imgurResponse = ref('');
+const lcError = ref(false);
+const searchHints = ref([]);
 
 const book = ref({
   title: '',
@@ -74,8 +82,6 @@ async function onSubmit() {
   });
 }
 
-const lcError = ref(false);
-
 async function onLoadFromLC() {
   const response = await getLcData(lcUrl.value);
   if (response?.message) {
@@ -101,10 +107,6 @@ async function onLoadFromLC() {
   book.value.image = parsedData.value.image;
 }
 
-const { searchHintsBundle, prepareSearchHints } = await useBookSearchHints();
-prepareSearchHints();
-const searchHints = ref([]);
-
 function filterFn(val, update, hints) {
   update(() => {
     if (val === '') {
@@ -120,6 +122,19 @@ const onReset = async () => {
   console.log('reset');
 };
 
+async function uploadFile() {
+  const clientId = config.public.imgurId;
+  const response = await $fetch('https://api.imgur.com/3/image', {
+    method: 'POST',
+    headers: {
+      Authorization: `Client-ID ${clientId}`,
+    },
+    body: imageFile.value,
+  });
+  imgurResponse.value = response.data.link;
+  book.value.image = response.data.link;
+}
+
 onMounted(() => {
   useMeta({
     title: 'Dodaj książkę',
@@ -129,7 +144,7 @@ onMounted(() => {
 
 <template>
   <div class="q-pa-md" id="add-form" style="max-width: 800px">
-    <q-card class="card-form" flat bordered>
+    <q-card class="add-card-form" flat bordered>
       <div class="q-mx-md row no-wrap items-center">
         <div class="card-title">Dodaj książkę</div>
 
@@ -272,7 +287,7 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="row">
+          <div class="row items-center text-center">
             <div class="col-3">
               <q-select dense v-model="book.cover" label="Rodzaj okładki" :options="coverOptions" />
             </div>
@@ -280,7 +295,38 @@ onMounted(() => {
             <div class="col">
               <q-input dense type="url" v-model="book.image" label="Link do okładki" />
             </div>
+            <div class="col-1">
+              <q-btn padding="xs" icon="add" @click="isUploadVisible = !isUploadVisible">
+                <q-tooltip>Dodaj własną okładkę</q-tooltip>
+              </q-btn>
+            </div>
           </div>
+
+          <q-slide-transition>
+            <q-card-section class="row flex upload-section" v-show="isUploadVisible">
+              <div class="q-gutter-sm" style="min-width: 300px">
+                <div class="q-gutter-y-md column">
+                  <q-file color="text-black" v-model="imageFile" label="Wybierz plik">
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                  <q-btn @click="uploadFile" :disabled="!imageFile">Upload </q-btn>
+                </div>
+                <!-- <q-field filled label="Link do okładki" stack-label dense>
+                  <template v-slot:control>
+                    <div>{{ imgurResponse }}</div>
+                  </template>
+                  <template v-slot:after>
+                    <q-btn round dense flat icon="assignment_returned" :disabled="!imageFile" @click="book.image = imgurResponse">
+                      <q-tooltip class="text-body2"> Przenieś do formularza </q-tooltip>
+                    </q-btn>
+                  </template>
+                </q-field> -->
+              </div>
+              <q-img v-if="imgurResponse" class="q-mx-lg" :src="imgurResponse" width="150px" />
+            </q-card-section>
+          </q-slide-transition>
 
           <div>
             <q-input dense type="url" v-model="book.lcUrl" label="Link do LubimyCzytac.pl" />
@@ -325,7 +371,6 @@ onMounted(() => {
           <q-input dense v-model="book.notes" label="Notatka" type="textarea" />
 
           <div class="q-gutter-sm" align="right">
-            <!-- <q-btn label="Dodaj okładkę" type="submit" color="primary" outline /> -->
             <q-btn label="Submit" type="submit" color="positive" outline />
             <q-btn label="Reset" type="reset" color="primary" outline class="q-ml-sm" />
           </div>
@@ -340,8 +385,14 @@ onMounted(() => {
   margin: auto;
 }
 
-.card-form {
+.add-card-form {
   background-color: rgb(255, 255, 255, 0.5);
+  border-radius: 25px;
+}
+
+.upload-section {
+  background-color: rgba(168, 170, 172, 0.226);
+  border-radius: 5px;
 }
 
 .card-title {

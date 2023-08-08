@@ -176,7 +176,7 @@ onMounted(() => {
       </div>
 
       <q-slide-transition>
-        <q-card-section v-show="true" class="q-gutter-sm">
+        <q-card-section v-show="isLcFormVisible" class="q-gutter-sm">
           <q-field filled label="Tytuł" stack-label dense>
             <template v-slot:control>
               <div>{{ lcBookData.title }}</div>
