@@ -2,11 +2,8 @@
 const props = defineProps(['quote']);
 const emit = defineEmits(['quoteDeleted']);
 const router = useRouter();
-
 const quote = props.quote;
-
 const deleteModalOpen = ref(false);
-
 const { isAdmin, authorize } = useAuth();
 authorize();
 
@@ -29,15 +26,6 @@ async function handleDelete() {
 function copyToClipboard() {
   navigator.clipboard.writeText(quote.text);
 }
-
-// onMounted(() => {
-//   console.log('Hej1');
-// });
-
-// onUnmounted(() => {
-//   console.log('Unmounted');
-//   window.removeEventListener('resize', changeOnResize);
-// });
 </script>
 
 <template>
@@ -128,7 +116,7 @@ function copyToClipboard() {
 
 .title-link {
   text-decoration: none;
-  color: rgb(94, 93, 93);
+  color: rgb(43, 42, 42);
 }
 
 .title-link:hover {
@@ -141,7 +129,5 @@ function copyToClipboard() {
 
 .text-area {
   font-size: large;
-  /* color: gray; */
-  /* background-color: rgb(255, 255, 255, 0.4); */
 }
 </style>

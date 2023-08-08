@@ -6,6 +6,15 @@ authorize();
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+function logout() {
+  const token = useCookie('token');
+  token.value = '';
+  reloadNuxtApp({
+    path: '/',
+    ttl: 1000,
+  });
+}
 </script>
 
 <template>
@@ -15,8 +24,17 @@ function toggleLeftDrawer() {
       <q-toolbar class="bg-indigo">
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="toolbar-title"> App </q-toolbar-title>
-        <div><q-btn icon="logout" round size="sm" color="indigo-10" to="/login"></q-btn></div>
+        <q-toolbar-title class="toolbar-title"> Księgozbiór </q-toolbar-title>
+        <div v-if="isAdmin">
+          <q-btn icon="logout" size="sm" color="indigo-10" @click="logout">
+            <q-tooltip>Wyloguj</q-tooltip>
+          </q-btn>
+        </div>
+        <div v-else>
+          <q-btn icon="login" size="sm" color="indigo-10" to="/login">
+            <q-tooltip>Zaloguj</q-tooltip>
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
