@@ -38,6 +38,22 @@ export default function useBookFilter() {
         name: 'readStatus',
         cond: (book) => book.read === filterOptions.readStatus.read || book.read != filterOptions.readStatus.notRead,
       },
+      {
+        name: 'publicationYearFrom',
+        cond: (book) => book.publicationDate >= filterOptions.publicationYearFrom,
+      },
+      {
+        name: 'publicationYearTo',
+        cond: (book) => book.publicationDate <= filterOptions.publicationYearTo,
+      },
+      {
+        name: 'purchaseDateFrom',
+        cond: (book) => new Date(book.purchaseDate) >= new Date(filterOptions.purchaseDateFrom),
+      },
+      {
+        name: 'purchaseDateTo',
+        cond: (book) => new Date(book.purchaseDate) <= new Date(filterOptions.purchaseDateTo),
+      },
     ];
 
     const usedFilters = filtersConditionArray.filter((filt) => usedFiltersNames.includes(filt.name)).map((filt) => filt.cond);

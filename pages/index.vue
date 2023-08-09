@@ -48,7 +48,7 @@ onMounted(() => {
 
       <q-scroll-area ref="scrollAreaRef" class="col-10" style="height: 350px; max-width: 1100px" @scroll="scroll">
         <div class="row no-wrap">
-          <div v-for="book in homePageData.recentBooks" :key="book" class="q-pa-sm">
+          <div v-for="book in homePageData.recentBooks" :key="book" class="q-ma-sm">
             <router-link :to="`/book/${book._id}`">
               <q-img id="scroll-img" style="height: 300px; width: 200px" :src="book.image" />
             </router-link>

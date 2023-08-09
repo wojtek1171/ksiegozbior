@@ -1,8 +1,6 @@
 <script setup lang="ts">
 const emit = defineEmits(['filterOptionsChanged']);
-
 const route = useRoute();
-
 const searchParam = route.params.param as String;
 
 const filterOptions = ref({
@@ -13,10 +11,10 @@ const filterOptions = ref({
   series: null,
   publSeries: null,
   isbn: '',
-  purchaseDateFrom: '',
-  purchaseDateTo: '',
-  publicationYearFrom: '',
-  publicationYearTo: '',
+  purchaseDateFrom: null,
+  purchaseDateTo: null,
+  publicationYearFrom: null,
+  publicationYearTo: null,
   tags: [],
   readStatus: {
     read: true,
@@ -45,7 +43,6 @@ function filterFn(val, update, hints) {
 
 onMounted(() => {
   const splittedParam = searchParam.split('=');
-
   switch (splittedParam[0]) {
     case 'aut':
       filterOptions.value.authors = splittedParam[1];
@@ -65,6 +62,16 @@ onMounted(() => {
     default:
       filterOptions.value.title = splittedParam[0];
   }
+});
+
+watch(filterByPublicationYear, () => {
+  filterOptions.value.publicationYearFrom = null;
+  filterOptions.value.publicationYearTo = null;
+});
+
+watch(filterByPurchaseDate, () => {
+  filterOptions.value.purchaseDateFrom = null;
+  filterOptions.value.purchaseDateTo = null;
 });
 
 watch(filterOptions.value, () => {
@@ -153,7 +160,7 @@ watch(filterOptions.value, () => {
       />
     </div>
 
-    <div class="row q-mt-md flex justify-start">
+    <div class="row q-my-sm flex justify-start">
       <div>
         <q-checkbox v-model="filterByPublicationYear" label="Filtruj po roku publikacji" />
       </div>
@@ -163,45 +170,23 @@ watch(filterOptions.value, () => {
           class="col q-mx-md"
           filled
           dense
+          type="number"
+          debounce="500"
           :disable="!filterByPublicationYear"
           v-model="filterOptions.publicationYearFrom"
-          mask="date"
-          :rules="['date']"
           label="Od"
         >
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-date v-model="filterOptions.publicationYearFrom">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
         </q-input>
         <q-input
           class="col"
           filled
           dense
+          type="number"
+          debounce="500"
           :disable="!filterByPublicationYear"
           v-model="filterOptions.publicationYearTo"
-          mask="date"
-          :rules="['date']"
           label="Do"
         >
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-date v-model="filterOptions.publicationYearTo">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
         </q-input>
       </div>
     </div>
