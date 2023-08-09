@@ -53,7 +53,7 @@ export default function useLubimyCzytac() {
       .match(new RegExp('Cykl:' + '(.*?)' + '</'))?.[1]
       ?.split('>')[1]
       .trim();
-    parsedData.value.isbn = stringData.match(new RegExp('isbn":"' + '(.*?)' + '"'))?.[1];
+    parsedData.value.isbn = stringData.match(new RegExp('isbn":"' + '(.*?)' + '"'))?.[1]?.replaceAll('-', '');
     parsedData.value.tags = stringData.match(/(?<=class="btn btn-outline-primary tag mt-2 mb-0">)(.*?)(?=<\/a>)/g)?.map((e) => e.trim());
     parsedData.value.note = stringData.match(new RegExp('books:rating:value" content="' + '(.*?)' + '" />'))?.[1];
     parsedData.value.description = stringData.match(new RegExp('<div class="collapse-content"><p>' + '(.*?)' + '</p>'))[1]?.trim();

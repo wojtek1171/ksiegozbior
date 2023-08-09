@@ -151,10 +151,12 @@ onMounted(() => {
         <q-space />
 
         <q-btn class="q-ma-sm" color="orange-10" outline label="Pobierz z LC">
-          <q-popup-proxy>
+          <q-popup-proxy :offset="[377, 0]">
             <q-card class="q-pa-md" style="width: 500px">
-              <q-input dense v-model="lcUrl" label="link lubimy czytać"></q-input>
-              <q-btn class="q-mt-lg" label="pobierz" @click="onLoadFromLC()"></q-btn>
+              <q-input dense v-model="lcUrl" label="link do pozycji w LubimyCzytac.pl" />
+              <div class="text-right">
+                <q-btn class="q-mt-lg" outline color="grey-8" label="pobierz" @click="onLoadFromLC()"></q-btn>
+              </div>
               <div v-if="lcError" class="dsad text-red">Dane mogą być niekompletne</div>
             </q-card>
           </q-popup-proxy>
@@ -371,8 +373,8 @@ onMounted(() => {
           <q-input dense v-model="book.notes" label="Notatka" type="textarea" />
 
           <div class="q-gutter-sm" align="right">
-            <q-btn label="Submit" type="submit" color="positive" outline />
-            <q-btn label="Reset" type="reset" color="primary" outline class="q-ml-sm" />
+            <q-btn label="potwierdź" type="submit" color="positive" outline />
+            <q-btn label="wyczyść" type="reset" color="primary" outline class="q-ml-sm" />
           </div>
         </q-form>
       </q-card-section>
