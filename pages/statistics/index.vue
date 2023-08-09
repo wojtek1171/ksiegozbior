@@ -121,7 +121,6 @@ onMounted(() => {
         class="q-mt-sm"
       >
         <div class="absolute-full flex flex-center">
-          <!-- <q-badge color="white" size="lg" text-color="indigo-10" :label="`${statisticsData.booksRead} / ${statisticsData.booksTotal}`" /> -->
           <div class="text-body1 text-white">
             {{ statisticsData.booksRead }} / {{ statisticsData.booksTotal }} ({{
               Math.round((statisticsData.booksRead / statisticsData.booksTotal) * 100)
@@ -133,27 +132,27 @@ onMounted(() => {
 
     <div class="q-mt-lg text-h5 text-center">Liczba książek wg autorów</div>
     <div align="center">
-      <apexchart width="80%" height="500" type="bar" :options="barAuthorsOptions" :series="barAuthorsSeries"></apexchart>
+      <apexchart width="95%" height="500" type="bar" :options="barAuthorsOptions" :series="barAuthorsSeries"></apexchart>
     </div>
 
     <div class="q-mt-lg text-h5 text-center">Liczba książek wg wydawnictw</div>
     <div align="center">
-      <apexchart width="80%" height="500" type="bar" :options="barPublishersOptions" :series="barPublishersSeries"></apexchart>
+      <apexchart width="95%" height="500" type="bar" :options="barPublishersOptions" :series="barPublishersSeries"></apexchart>
     </div>
 
     <div class="q-mt-lg text-h5 text-center">Najczęstsze tagi</div>
     <div align="center">
-      <apexchart width="80%" height="500" type="bar" :options="barTagsOptions" :series="barTagsSeries"></apexchart>
+      <apexchart width="95%" height="500" type="bar" :options="barTagsOptions" :series="barTagsSeries"></apexchart>
     </div>
 
     <div class="q-mt-lg text-h5 text-center">Liczba książek zakupionych w danym roku</div>
     <div align="center">
-      <apexchart width="80%" height="400" type="bar" :options="booksCountByYearOptions" :series="booksCountByYearSeries"></apexchart>
+      <apexchart width="95%" height="400" type="bar" :options="booksCountByYearOptions" :series="booksCountByYearSeries"></apexchart>
     </div>
 
     <div class="q-mt-lg text-h5 text-center">Roczne wydatki [zł]</div>
     <div align="center">
-      <apexchart width="80%" height="400" type="bar" :options="expensesByYearOptions" :series="expensesByYearSeries"></apexchart>
+      <apexchart width="95%" height="400" type="bar" :options="expensesByYearOptions" :series="expensesByYearSeries"></apexchart>
     </div>
   </q-page>
 </template>
@@ -161,6 +160,6 @@ onMounted(() => {
 <style lang="scss">
 .page {
   margin: auto;
-  max-width: 1000px;
+  max-width: 900px;
 }
 </style>

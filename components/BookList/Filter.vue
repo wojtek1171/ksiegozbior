@@ -18,8 +18,10 @@ const filterOptions = ref({
   publicationYearFrom: '',
   publicationYearTo: '',
   tags: [],
-  read: true,
-  notRead: true,
+  readStatus: {
+    read: true,
+    notRead: true,
+  },
 });
 
 const filterByPurchaseDate = ref(false);
@@ -259,8 +261,8 @@ watch(filterOptions.value, () => {
       </div>
     </div>
 
-    <q-checkbox v-model="filterOptions.read" label="Przeczytana" />
-    <q-checkbox v-model="filterOptions.notRead" label="Nieprzeczytane" />
+    <q-checkbox v-model="filterOptions.readStatus.read" label="Przeczytana" />
+    <q-checkbox v-model="filterOptions.readStatus.notRead" label="Nieprzeczytane" />
   </q-card>
 </template>
 
