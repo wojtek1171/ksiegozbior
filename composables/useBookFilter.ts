@@ -5,7 +5,7 @@ export default function useBookFilter() {
     const usedFiltersNames = Object.getOwnPropertyNames(
       Object.fromEntries(Object.entries(filterOptions).filter(([_, v]) => !!v && v.length != 0)),
     );
-    const filtersConditionArray = [
+    const filterConditionsArray = [
       {
         name: 'title',
         cond: (book) => book.title?.toLowerCase().includes(filterOptions.title?.toLowerCase()),
@@ -16,6 +16,10 @@ export default function useBookFilter() {
       },
       {
         name: 'publisher',
+        cond: (book) => book.publisher?.toLowerCase().includes(filterOptions.publisher?.toLowerCase()),
+      },
+      {
+        name: 'tags',
         cond: (book) => filterOptions.tags?.some((tag) => book.tags.includes(tag)),
       },
       {
@@ -56,7 +60,7 @@ export default function useBookFilter() {
       },
     ];
 
-    const usedFilters = filtersConditionArray.filter((filt) => usedFiltersNames.includes(filt.name)).map((filt) => filt.cond);
+    const usedFilters = filterConditionsArray.filter((filt) => usedFiltersNames.includes(filt.name)).map((filt) => filt.cond);
     filteredBooks.value = books.filter((q) => usedFilters.every((filt) => filt(q)));
 
     // filteredBooks.value = books
