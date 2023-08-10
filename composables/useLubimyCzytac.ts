@@ -56,7 +56,7 @@ export default function useLubimyCzytac() {
     parsedData.value.isbn = stringData.match(new RegExp('isbn":"' + '(.*?)' + '"'))?.[1]?.replaceAll('-', '');
     parsedData.value.tags = stringData.match(/(?<=class="btn btn-outline-primary tag mt-2 mb-0">)(.*?)(?=<\/a>)/g)?.map((e) => e.trim());
     parsedData.value.note = stringData.match(new RegExp('books:rating:value" content="' + '(.*?)' + '" />'))?.[1];
-    parsedData.value.description = stringData.match(new RegExp('<div class="collapse-content"><p>' + '(.*?)' + '</p>'))[1]?.trim();
+    parsedData.value.description = stringData.match(new RegExp('<div class="collapse-content"><p>' + '(.*?)' + '</p>'))?.[1]?.trim();
     parsedData.value.image = stringData.match(new RegExp('og:image" content="' + '(.*?)' + '" />'))?.[1];
     parsedData.value.translators = stringData.match(new RegExp('Tłumacz:(.*?)</a></dd>'))?.[1]?.replace(/<.*?>/g, '')?.split(', ');
     parsedData.value.originalTitle = stringData

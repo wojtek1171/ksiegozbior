@@ -176,6 +176,11 @@ onMounted(() => {
           <div v-html="prepareDescription(book.description)"></div>
         </q-card-section>
 
+        <q-card-section v-if="book.notes">
+          <div class="text-h6" style="white-space: pre-line">Notatki</div>
+          <div v-html="prepareDescription(book.notes)"></div>
+        </q-card-section>
+
         <div class="row no-wrap" style="height: 40px">
           <q-btn :href="book.lcUrl" target="_blank" class="q-ml-sm" round flat>
             <q-avatar size="30px">
