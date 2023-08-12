@@ -50,7 +50,6 @@ onUnmounted(() => {
   <div class="row items-center" style="max-width: 1000px; margin: auto">
     <div class="col"></div>
     <div class="q-ma-md col text-center">Znaleziono {{ displayedBooks?.length }} {{ declineBook(displayedBooks?.length) }}</div>
-    <!-- <q-space /> -->
     <div class="col" align="right">
       <q-btn v-if="tileOrTab" class="q-ma-md text-black" icon="view_list" color="blue-grey-2" @click="changeView" />
       <q-btn v-else class="q-ma-md text-black" icon="grid_view" color="blue-grey-2" @click="changeView" />

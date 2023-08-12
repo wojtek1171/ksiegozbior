@@ -1,11 +1,6 @@
 <script setup lang="ts">
 const props = defineProps(['book']);
-
 const book = props.book;
-
-// onUnmounted(() => {
-//   window.removeEventListener('resize', changeOnResize);
-// });
 </script>
 
 <template>

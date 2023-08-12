@@ -49,7 +49,6 @@ onMounted(() => {
           <div class="q-mx-md book-details-data-container">
             <q-card-section class="q-pa-xs">
               <div class="text-h5">{{ book.title }}</div>
-              <!-- <div class="text-h6">{{ book.authors }}</div> -->
               <div class="chip-col-right">
                 <span v-for="author in book.authors.split(',')" :key="author">
                   <router-link class="link" :to="`/books/aut=${author}`">

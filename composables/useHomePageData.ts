@@ -44,26 +44,6 @@ export default function useHomePageData() {
     return preparedData;
   }
 
-  function sumField(fieldName: string, books: Book) {
-    let sum = 0;
-
-    books.forEach((book) => {
-      sum += book[fieldName];
-    });
-
-    return sum;
-  }
-
-  function countAuthors(books: Book) {
-    let authors = [];
-
-    books.forEach((book) => {
-      authors = authors.concat(book.authors.split(','));
-    });
-
-    return new Set(authors).size;
-  }
-
   return {
     homePageData,
     getHomePageData,

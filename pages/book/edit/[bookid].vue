@@ -554,13 +554,6 @@ onMounted(() => {
       </q-card-section>
     </q-card>
   </div>
-
-  <!-- <div>{{ book.purchasePrice }}</div>
-  <div>{{ book.retailPrice }}</div>
-  <div>{{ book.purchaseDate }}</div>
-  <div>{{ typeof book.purchaseDate }}</div>
-  <div>{{ options }}</div>
-  <div>{{ filterOptions }}</div> -->
 </template>
 
 <style lang="scss">

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 const props = defineProps(['books']);
 
-//let visBooks = props.books?.slice(0, 10);
-
 const pagination = ref({
   page: 1,
   rowsPerPage: 25,
@@ -73,7 +71,6 @@ const columns = [
 
 <style lang="scss">
 .router-link {
-  //all: unset;
   color: #000000;
 }
 

@@ -153,7 +153,6 @@ onMounted(() => {
 <style lang="scss">
 .section {
   margin: auto;
-  // font-size: xx-large;
 }
 
 .top-section {
