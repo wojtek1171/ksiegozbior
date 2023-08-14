@@ -1,6 +1,22 @@
 # Księgozbiór
 
-Aplikacja do zarządzania księgozbiorem.
+Aplikacja do zarządzania księgozbiorem i bazą cytatów. Przy dodawaniu nowych pozycji możliwe jest pobranie danych ksiązki z serwisu LubimyCzytac.pl.
+
+Aplikacja została stworzona w technologii PWA.
+
+W projekcie wykorzystano:
+
+- Nuxt 3
+- Vue 3
+- MongoDB
+
+## Zrzuty ekranu
+
+![img-01](/.github/assets/img-01.png)
+![img-01](/.github/assets/img-02.png)
+![img-01](/.github/assets/img-03.png)
+![img-01](/.github/assets/img-04.png)
+![img-01](/.github/assets/img-05.png)
 
 ## Nuxt 3 Minimal Starter
 
