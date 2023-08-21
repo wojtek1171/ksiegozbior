@@ -1,10 +1,15 @@
 <script setup lang="ts">
 const route = useRoute();
 const router = useRouter();
+const config = useRuntimeConfig();
 const bookid = ref(route.params.bookid);
 const { data: fetchedBook } = await useFetch(`/api/book/${bookid.value}`);
 const coverOptions = ['twarda', 'miękka', 'zintegrowana', 'inna'];
+const formatOptions = ['książka papierowa', 'ebook', 'audiobook', 'inny'];
 const { parsedData, getLcData } = useLubimyCzytac();
+const isUploadVisible = ref(false);
+const imageFile = ref(null);
+const imgurResponse = ref('');
 
 const book = ref({
   title: fetchedBook.value.title,
@@ -28,6 +33,8 @@ const book = ref({
   isbn: fetchedBook.value.isbn,
   notes: fetchedBook.value.notes,
   description: fetchedBook.value.description,
+  format: fetchedBook.value.format,
+  language: fetchedBook.value.language,
   image: fetchedBook.value.image,
 });
 
@@ -54,6 +61,8 @@ async function onSubmit() {
     isbn: book.value.isbn,
     notes: book.value.notes,
     description: book.value.description,
+    format: book.value.format,
+    language: book.value.language,
     image: book.value.image || 'https://i.imgur.com/rpVYMUX.jpeg',
   };
 
@@ -149,6 +158,20 @@ function filterFn(val, update, hints) {
     }
   });
 }
+
+async function uploadFile() {
+  const clientId = config.public.imgurId;
+  const response = await $fetch('https://api.imgur.com/3/image', {
+    method: 'POST',
+    headers: {
+      Authorization: `Client-ID ${clientId}`,
+    },
+    body: imageFile.value,
+  });
+  imgurResponse.value = response.data.link;
+  book.value.image = response.data.link;
+}
+
 onMounted(() => {
   useMeta({
     title: `Edytuj - ${book.value.title.slice(0, 20)}...`,
@@ -445,9 +468,13 @@ onMounted(() => {
             label="Seria"
           />
 
-          <div class="q-py-xs row">
+          <div class="q-pt-xs row">
             <div class="col">
-              <q-input dense type="number" v-model="book.isbn" label="ISBN" />
+              <q-select dense v-model="book.format" label="Format" :options="formatOptions" />
+            </div>
+            <div class="col-1"></div>
+            <div class="col">
+              <q-select dense v-model="book.cover" label="Rodzaj okładki" :options="coverOptions" />
             </div>
             <div class="col-1"></div>
             <div class="col">
@@ -457,10 +484,39 @@ onMounted(() => {
                 v-model="book.pages"
                 label="Liczba stron"
                 lazy-rules
-                :rules="[
-                  (val) => (val !== null && val !== '') || 'Wprowadź prawidłową liczbę',
-                  (val) => (val > 0 && val < 9999) || 'Wprowadź prawidłową liczbę',
-                ]"
+                :rules="[(val) => (val > 0 && val < 9999) || 'Wprowadź prawidłową liczbę']"
+              />
+            </div>
+          </div>
+
+          <div class="q-mt-none row">
+            <div class="col">
+              <q-input dense v-model="book.retailPrice" label="Cena okładkowa" reverse-fill-mask mask="#.##" fill-mask="0" />
+            </div>
+            <div class="col-1"></div>
+            <div class="col">
+              <q-input dense v-model="book.purchasePrice" label="Cena zakupu" reverse-fill-mask mask="#.##" fill-mask="0" />
+            </div>
+            <div class="col-1"></div>
+            <div class="col">
+              <q-input dense v-model="book.lcNote" label="Ocena LC" mask="#.##" fill-mask="0" />
+            </div>
+          </div>
+
+          <div class="q-mt-md row">
+            <div class="col">
+              <q-input dense type="number" v-model="book.isbn" label="ISBN" />
+            </div>
+            <div class="col-1"></div>
+            <div class="col">
+              <q-select
+                v-model="book.language"
+                dense
+                :options="searchHints"
+                use-input
+                @filter="(val, update) => filterFn(val, update, searchHintsBundle.languages)"
+                new-value-mode="add-unique"
+                label="Język"
               />
             </div>
             <div class="col-1"></div>
@@ -479,29 +535,32 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="q-mt-xs row">
-            <div class="col">
-              <q-input dense v-model="book.retailPrice" label="Cena okładkowa" reverse-fill-mask mask="#.##" fill-mask="0" />
-            </div>
-            <div class="col-1"></div>
-            <div class="col">
-              <q-input dense v-model="book.purchasePrice" label="Cena zakupu" reverse-fill-mask mask="#.##" fill-mask="0" />
-            </div>
-            <div class="col-1"></div>
-            <div class="col">
-              <q-input dense v-model="book.lcNote" label="Ocena LC" mask="#.##" fill-mask="0" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-3">
-              <q-select dense v-model="book.cover" label="Rodzaj okładki" :options="coverOptions" />
-            </div>
-            <div class="col-1"></div>
+          <div class="q-mt-none row items-center text-center">
             <div class="col">
               <q-input dense type="url" v-model="book.image" label="Link do okładki" />
             </div>
+            <div class="col-1">
+              <q-btn outline color="grey-8" padding="xs" icon="add" @click="isUploadVisible = !isUploadVisible">
+                <q-tooltip>Dodaj własną okładkę</q-tooltip>
+              </q-btn>
+            </div>
           </div>
+
+          <q-slide-transition>
+            <q-card-section class="row flex upload-section" v-show="isUploadVisible">
+              <div class="q-gutter-sm" style="min-width: 300px">
+                <div class="q-gutter-y-md column">
+                  <q-file color="text-black" v-model="imageFile" label="Wybierz plik">
+                    <template v-slot:prepend>
+                      <q-icon name="attach_file" />
+                    </template>
+                  </q-file>
+                  <q-btn @click="uploadFile" :disabled="!imageFile">Upload </q-btn>
+                </div>
+              </div>
+              <q-img v-if="imgurResponse" class="q-mx-lg" :src="imgurResponse" width="150px" />
+            </q-card-section>
+          </q-slide-transition>
 
           <div>
             <q-input dense type="url" v-model="book.lcUrl" label="Link do LubimyCzytac.pl" />
@@ -567,5 +626,11 @@ onMounted(() => {
 
 .card-title {
   font-size: x-large;
+}
+
+.q-field__bottom {
+  // display: none;
+  height: 1px;
+  // background-color: red;
 }
 </style>

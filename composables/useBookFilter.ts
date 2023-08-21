@@ -39,6 +39,14 @@ export default function useBookFilter() {
         cond: (book) => book.isbn?.toString().includes(filterOptions.isbn),
       },
       {
+        name: 'format',
+        cond: (book) => book.format?.toString().includes(filterOptions.format),
+      },
+      {
+        name: 'language',
+        cond: (book) => book.language?.toString().includes(filterOptions.language),
+      },
+      {
         name: 'readStatus',
         cond: (book) => book.read === filterOptions.readStatus.read || book.read != filterOptions.readStatus.notRead,
       },

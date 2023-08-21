@@ -2,6 +2,7 @@
 const emit = defineEmits(['filterOptionsChanged']);
 const route = useRoute();
 const searchParam = route.params.param as String;
+const formatOptions = ['książka papierowa', 'ebook', 'audiobook', 'inny'];
 
 const filterOptions = ref({
   title: '',
@@ -11,6 +12,8 @@ const filterOptions = ref({
   series: null,
   publSeries: null,
   isbn: '',
+  format: '',
+  language: '',
   purchaseDateFrom: null,
   purchaseDateTo: null,
   publicationYearFrom: null,
@@ -144,8 +147,32 @@ watch(filterOptions.value, () => {
     </div>
 
     <div class="row q-gutter-md">
-      <q-input class="col-4" dense debounce="500" v-model="filterOptions.isbn" type="number" label="ISBN" />
+      <q-input class="col" dense debounce="500" v-model="filterOptions.isbn" type="number" label="ISBN" />
 
+      <q-select
+        class="col"
+        v-model="filterOptions.format"
+        dense
+        clearable
+        :options="formatOptions"
+        use-input
+        @filter="(val, update) => filterFn(val, update, formatOptions)"
+        label="Format"
+      />
+      <q-select
+        class="col"
+        v-model="filterOptions.language"
+        dense
+        clearable
+        :options="searchHints"
+        use-input
+        @filter="(val, update) => filterFn(val, update, searchHintsBundle.languages)"
+        new-value-mode="add-unique"
+        label="Język"
+      />
+    </div>
+
+    <div class="row q-gutter-md">
       <q-select
         class="col"
         v-model="filterOptions.tags"

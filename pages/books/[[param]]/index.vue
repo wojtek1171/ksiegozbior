@@ -71,8 +71,9 @@ onUnmounted(() => {
       </div>
     </div>
   </q-banner>
+
   <q-page-scroller position="bottom-left" :scroll-offset="150" :offset="[10, 10]">
-    <q-btn fab icon="keyboard_arrow_up" color="indigo" />
+    <q-btn icon="keyboard_arrow_up" color="indigo" size="md" round />
   </q-page-scroller>
 </template>
 

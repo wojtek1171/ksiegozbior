@@ -32,13 +32,12 @@ const columns = [
 </script>
 
 <template>
-  <div class="q-pb-lg q-px-md">
+  <div class="q-py-lg q-px-md">
     <q-table
       class="my-sticky-header-table table"
       flat
       bordered
       dense
-      title="Tytuł tabeli"
       :rows="props.books"
       :columns="columns"
       v-model:pagination="pagination"

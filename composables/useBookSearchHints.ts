@@ -6,6 +6,7 @@ export default function useBookSearchHints() {
     series: [],
     publSeries: [],
     tags: [],
+    languages: [],
   });
 
   async function prepareSearchHints() {
@@ -17,6 +18,7 @@ export default function useBookSearchHints() {
     let series = [];
     let publSeries = [];
     let tags = [];
+    let languages = [];
 
     books.forEach((book) => {
       authors = authors.concat(book.authors?.split(','));
@@ -25,6 +27,7 @@ export default function useBookSearchHints() {
       series.push(book.series);
       publSeries.push(book.publSeries);
       tags = tags.concat(book.tags?.split(','));
+      languages.push(book.language);
     });
 
     searchHintsBundle.value.authors = Array.from(new Set(authors));
@@ -33,6 +36,7 @@ export default function useBookSearchHints() {
     searchHintsBundle.value.series = Array.from(new Set(series));
     searchHintsBundle.value.publSeries = Array.from(new Set(publSeries));
     searchHintsBundle.value.tags = Array.from(new Set(tags));
+    searchHintsBundle.value.languages = Array.from(new Set(languages));
   }
 
   return {

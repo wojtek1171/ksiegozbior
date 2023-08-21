@@ -24,6 +24,8 @@ export const Book = defineMongooseModel({
     lcUrl: String,
     notes: String,
     description: String,
+    format: String,
+    language: String,
     image: {
       type: String,
       default: 'https://i.imgur.com/rpVYMUX.jpeg',

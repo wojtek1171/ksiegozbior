@@ -133,6 +133,14 @@ onMounted(() => {
 
             <q-card-section class="q-pa-xs">
               <div class="row">
+                <div class="col-4">Format:</div>
+                <div class="col text-bold">{{ book.format }}</div>
+              </div>
+              <div class="row">
+                <div class="col-4">Język:</div>
+                <div class="col text-bold">{{ book.language }}</div>
+              </div>
+              <div class="row">
                 <div class="col-4">Cena zakupu:</div>
                 <div class="col text-bold">{{ book.purchasePrice }} zł</div>
               </div>
