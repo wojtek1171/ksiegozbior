@@ -106,7 +106,7 @@ async function onLoadFromLC() {
   book.value.seriesVol = parsedData.value.series ? +parsedData.value.series?.split(' (tom ')[1].slice(0, -1) : null;
   book.value.publSeries = parsedData.value.publSeries;
   book.value.isbn = parsedData.value.isbn;
-  book.value.lcNote = +parsedData.value.note;
+  book.value.lcNote = (+parsedData.value.note).toFixed(2);
   book.value.lcUrl = lcUrl.value;
   book.value.isbn = parsedData.value.isbn;
   book.value.image = parsedData.value.image;
