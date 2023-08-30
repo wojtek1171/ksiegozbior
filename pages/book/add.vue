@@ -118,7 +118,7 @@ function filterFn(val, update, hints) {
       searchHints.value = hints;
     } else {
       const needle = val.toLowerCase();
-      searchHints.value = hints.filter((v) => v.toLowerCase().indexOf(needle) > -1);
+      searchHints.value = hints.filter((hint) => hint?.toLowerCase().indexOf(needle) > -1);
     }
   });
 }
