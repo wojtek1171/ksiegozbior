@@ -122,7 +122,7 @@ onMounted(() => {
         </q-card-section>
         <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
-          <div class="text-h6">{{ declineQuote(homePageData.bookCount) }}</div>
+          <div class="text-h6">{{ declineQuote(homePageData.quotesCount) }}</div>
         </q-card-section>
       </q-card>
 
