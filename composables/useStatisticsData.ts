@@ -11,12 +11,13 @@ export default function useStatisticsData() {
 
   async function getStatisticsData() {
     const books = await $fetch('/api/books');
+    const settings = await $fetch('/api/settings/admin');
 
-    const preparedData = prepareData(books);
+    const preparedData = prepareData(books, settings);
     statisticsData.value = { ...preparedData, booksRead: getReadBooksCount(books), booksTotal: books.length };
   }
 
-  function prepareData(books) {
+  function prepareData(books, settings) {
     const preparedData = {
       authors: [],
       publishers: [],
@@ -31,9 +32,10 @@ export default function useStatisticsData() {
       },
     };
 
-    let yearsFrom2013 = [];
-    for (let year = 2013; year <= new Date().getFullYear(); year++) {
-      yearsFrom2013.push({
+    let consecutiveYears = [];
+    const initialYear = settings.statisticsInitialYear;
+    for (let year = initialYear; year <= new Date().getFullYear(); year++) {
+      consecutiveYears.push({
         year: year,
         expenses: 0,
         bookCount: 0,
@@ -45,14 +47,14 @@ export default function useStatisticsData() {
       preparedData.publishers.push(book.publisher);
       preparedData.tags.push(book.tags.split(','));
 
-      const yearObj = yearsFrom2013.find((x) => x.year == +book.purchaseDate.slice(0, 4));
+      const yearObj = consecutiveYears.find((x) => x.year == +book.purchaseDate.slice(0, 4));
       if (yearObj) {
         yearObj.expenses += book.purchasePrice;
         yearObj.bookCount += 1;
       }
     });
 
-    yearsFrom2013.forEach((year) => {
+    consecutiveYears.forEach((year) => {
       preparedData.expensesByYear.categories.push(year.year);
       preparedData.expensesByYear.data.push(year.expenses.toFixed(2));
       preparedData.booksByYear.categories.push(year.year);

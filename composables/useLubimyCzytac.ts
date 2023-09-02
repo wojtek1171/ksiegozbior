@@ -63,7 +63,7 @@ export default function useLubimyCzytac() {
       .match(new RegExp('Tytuł oryginału:' + '(.*?)' + '</dd'))?.[1]
       ?.split('d>')[1]
       .trim();
-    parsedData.value.description = parsedData.value.description.replaceAll('<br /><br />', '\n');
+    parsedData.value.description = parsedData.value.description.replaceAll('<br />', '\n');
   }
 
   return {

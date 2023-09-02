@@ -202,6 +202,7 @@ watch(filterOptions.value, () => {
           :disable="!filterByPublicationYear"
           v-model="filterOptions.publicationYearFrom"
           label="Od"
+          style="max-width: 233px"
         >
         </q-input>
         <q-input
@@ -213,6 +214,7 @@ watch(filterOptions.value, () => {
           :disable="!filterByPublicationYear"
           v-model="filterOptions.publicationYearTo"
           label="Do"
+          style="max-width: 233px"
         >
         </q-input>
       </div>
@@ -233,7 +235,7 @@ watch(filterOptions.value, () => {
           mask="date"
           :rules="['date']"
           label="Od"
-          style="max-width: 800px"
+          style="max-width: 233px"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -256,7 +258,7 @@ watch(filterOptions.value, () => {
           mask="date"
           :rules="['date']"
           label="Do"
-          style="max-width: 800px"
+          style="max-width: 233px"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
