@@ -49,7 +49,11 @@ async function onSubmit() {
     purchasePrice: +book.value.purchasePrice,
     retailPrice: +book.value.retailPrice,
     read: book.value.read,
-    purchaseDate: new Date(book.value.purchaseDate),
+    purchaseDate: Date.UTC(
+      +book.value.purchaseDate.slice(0, 4),
+      +book.value.purchaseDate.slice(5, 7) - 1,
+      +book.value.purchaseDate.slice(8, 10),
+    ),
     translators: book.value.translators?.join(','),
     originalTitle: book.value.originalTitle,
     tags: book.value.tags?.join(','),
