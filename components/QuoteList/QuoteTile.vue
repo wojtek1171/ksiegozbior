@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['quote']);
+const props = defineProps(['quote', 'textSearchPhrase']);
 const emit = defineEmits(['quoteDeleted']);
 const router = useRouter();
 const quote = props.quote;
@@ -7,8 +7,31 @@ const deleteModalOpen = ref(false);
 const { isAdmin, authorize } = useAuth();
 authorize();
 
-function prepareDescription(desc: String) {
-  return desc?.replaceAll('\r\n', '<br />').replaceAll('\n', '<br />');
+function prepareQuoteText(text: String) {
+  let convertedText = text;
+  convertedText = convertNewLines(text);
+  convertedText = props.textSearchPhrase ? highlightSearchePhrase(convertedText) : convertedText;
+  return convertedText;
+}
+
+function convertNewLines(text: String) {
+  return text?.replaceAll('\r\n', '<br />').replaceAll('\n', '<br />');
+}
+
+function highlightSearchePhrase(text: String) {
+  if (props.textSearchPhrase) {
+    const index = text.toLowerCase().indexOf(props.textSearchPhrase.toLowerCase());
+
+    const textWithHighlight =
+      String(text).substring(0, index) +
+      '<mark>' +
+      String(text).substring(index, index + props.textSearchPhrase.length) +
+      '</mark>' +
+      String(text).substring(index + props.textSearchPhrase.length);
+
+    return textWithHighlight;
+  }
+  return text;
 }
 
 async function handleDelete() {
@@ -51,7 +74,7 @@ function copyToClipboard() {
       </div>
 
       <q-card-section class="text-area">
-        <div class="text" v-html="prepareDescription(quote.text)"></div>
+        <div class="text" v-html="prepareQuoteText(quote.text)"></div>
       </q-card-section>
 
       <q-card-section class="q-py-xs">

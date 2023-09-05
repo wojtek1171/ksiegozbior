@@ -9,6 +9,7 @@ const filterOptions = ref({
   bookTitle: '',
   authors: '',
   tags: [],
+  text: '',
 });
 
 const { searchHintsBundle, prepareSearchHints } = await useQuoteSearchHints();
@@ -83,6 +84,7 @@ watch(filterOptions.value, () => {
       new-value-mode="add-unique"
       label="Tagi"
     />
+    <q-input v-model="filterOptions.text" dense clearable label="Treść" debounce="500" />
   </q-card>
 </template>
 

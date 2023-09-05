@@ -9,6 +9,7 @@ const filterOptions = ref({
   bookTitle: '',
   authors: '',
   tags: [],
+  text: '',
 });
 
 const { filteredQuotes, filterQuotes } = useQuoteFilter();
@@ -58,7 +59,7 @@ onUnmounted(() => {
   </div>
   <q-separator />
 
-  <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" @quoteDeleted="onQuoteDeleted" />
+  <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" :textSearchPhrase="filterOptions.text" @quoteDeleted="onQuoteDeleted" />
 
   <q-banner v-if="isBanner" class="bg-green-4 banner">
     <div class="row no-wrap q-gutter-md">

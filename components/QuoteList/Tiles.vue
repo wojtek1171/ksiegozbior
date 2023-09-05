@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['quotes']);
+const props = defineProps(['quotes', 'textSearchPhrase']);
 const emit = defineEmits(['quoteDeleted']);
 
 let visQuotes = props.quotes?.slice(0, 10);
@@ -24,7 +24,12 @@ watch(currentPage, () => {
   </div>
 
   <div class="q-my-md" v-for="quote in visQuotes">
-    <QuoteListQuoteTile :key="quote._id" :quote="quote" @quoteDeleted="onQuoteDeleted"></QuoteListQuoteTile>
+    <QuoteListQuoteTile
+      :key="quote._id"
+      :quote="quote"
+      :textSearchPhrase="props.textSearchPhrase"
+      @quoteDeleted="onQuoteDeleted"
+    ></QuoteListQuoteTile>
   </div>
 
   <div class="flex flex-center">

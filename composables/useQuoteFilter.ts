@@ -18,6 +18,10 @@ export default function useBookFilter() {
         name: 'tags',
         cond: (quote) => filterOptions.tags?.some((tag) => quote.tags.includes(tag)),
       },
+      {
+        name: 'text',
+        cond: (quote) => quote.text?.toLowerCase().includes(filterOptions.text?.toLowerCase()),
+      },
     ];
 
     const usedFilters = filtersConditionArray.filter((filt) => usedFiltersNames.includes(filt.name)).map((filt) => filt.cond);
