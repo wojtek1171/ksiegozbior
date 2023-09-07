@@ -8,11 +8,13 @@ export default function useHomePageData() {
     purchasePriceSum: 0,
     retailPriceSum: 0,
     quotesCount: 0,
+    shelvesCount: 0,
   });
 
   async function getHomePageData() {
     const books = await $fetch('/api/books/by_creation_desc');
     const quotesCount = await $fetch('/api/quotes/count');
+    const shelvesCount = await $fetch('/api/shelves/count');
     const settings = await $fetch('/api/settings/admin');
 
     const preparedData = prepareData(books);
@@ -25,6 +27,7 @@ export default function useHomePageData() {
     homePageData.value.purchasePriceSum = preparedData.purchasePriceSum;
     homePageData.value.retailPriceSum = preparedData.retailPriceSum;
     homePageData.value.quotesCount = quotesCount;
+    homePageData.value.shelvesCount = shelvesCount;
   }
 
   function prepareData(books) {

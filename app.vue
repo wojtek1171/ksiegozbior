@@ -69,6 +69,15 @@ function logout() {
           </q-item-section>
         </q-item>
 
+        <q-item to="/shelves" clickable>
+          <q-item-section avatar>
+            <q-icon name="shelves" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Półki</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item to="/quotes" clickable>
           <q-item-section avatar>
             <q-icon name="format_quote" />

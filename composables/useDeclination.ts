@@ -33,6 +33,15 @@ export default function useDeclination() {
     return 'autorów';
   }
 
+  function declineShelves(shelvesCount) {
+    if (shelvesCount === 1) {
+      return 'półkę';
+    } else if (shelvesCount % 10 === 2 || shelvesCount % 10 === 3 || shelvesCount % 10 === 4) {
+      return 'półki';
+    }
+    return 'półek';
+  }
+
   function attributesWithComma(index, array) {
     if (index !== array.length - 1) {
       return `${array[index]},`;
@@ -52,5 +61,6 @@ export default function useDeclination() {
     declineQuote,
     declinePage,
     declineAuthor,
+    declineShelves,
   };
 }

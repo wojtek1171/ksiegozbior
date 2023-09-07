@@ -27,8 +27,6 @@ async function onSubmit() {
     body: settingsToSave,
   });
 
-  console.log(response.data.value?.message);
-
   useState('settingsAlert', () => ({
     isVisible: true,
     message: response.data.value?.message || 'Coś poszło nie tak',
@@ -51,9 +49,9 @@ onMounted(() => {
 
 <template>
   <div class="q-pa-md" id="form" style="max-width: 800px">
-    <q-card class="card-form" flat bordered>
+    <q-card class="q-mb-md card-form" flat bordered>
       <div class="q-mx-md row no-wrap items-center">
-        <div class="card-title">Panel admina</div>
+        <div class="card-title">Ustawienia</div>
       </div>
 
       <q-separator></q-separator>

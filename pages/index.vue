@@ -2,7 +2,7 @@
 const { homePageData, getHomePageData } = useHomePageData();
 await getHomePageData();
 
-const { declineBook, declineAuthor, declinePage, declineQuote } = useDeclination();
+const { declineBook, declineAuthor, declinePage, declineQuote, declineShelves } = useDeclination();
 
 const scrollAreaRef = ref(null);
 const position = ref(0);
@@ -99,6 +99,18 @@ onMounted(() => {
         <q-separator inset />
         <q-card-section class="col text-h3 flex items-center text-center section">
           <div class="text-h6">{{ declinePage(homePageData.pagesCount) }}</div>
+        </q-card-section>
+      </q-card>
+
+      <q-card bordered class="column text-center my-card">
+        <q-card-section class="col text-h3 flex items-center text-center top-section">
+          <div>
+            {{ homePageData.shelvesCount }}
+          </div>
+        </q-card-section>
+        <q-separator inset />
+        <q-card-section class="col text-h3 flex items-center text-center section">
+          <div class="text-h6">{{ declineShelves(homePageData.shelvesCount) }}</div>
         </q-card-section>
       </q-card>
 
