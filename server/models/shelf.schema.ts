@@ -5,6 +5,10 @@ export const Shelf = defineMongooseModel({
   schema: {
     name: String,
     books: [String],
+    pinned: {
+      type: Boolean,
+      default: false,
+    },
     created: {
       type: Date,
       default: Date.now,

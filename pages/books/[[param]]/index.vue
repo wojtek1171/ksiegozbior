@@ -32,7 +32,7 @@ function dismissBanner() {
 
 onMounted(() => {
   useMeta({
-    title: 'Wyszukaj książkę',
+    title: 'Znajdź książkę',
   });
   isBanner.value = sharedState.value?.isVisible;
 });

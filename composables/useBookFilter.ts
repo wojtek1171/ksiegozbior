@@ -23,6 +23,10 @@ export default function useBookFilter() {
         cond: (book) => filterOptions.tags?.some((tag) => book.tags.includes(tag)),
       },
       {
+        name: 'tag',
+        cond: (book) => book.tags?.toLowerCase().includes(filterOptions.tag?.toLowerCase()),
+      },
+      {
         name: 'translators',
         cond: (book) => book.translators?.toLowerCase().includes(filterOptions.translators?.toLowerCase()),
       },

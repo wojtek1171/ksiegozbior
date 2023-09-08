@@ -4,6 +4,7 @@ const router = useRouter();
 const bookid = ref(route.params.bookid);
 const { data: book } = await useFetch(`/api/book/${bookid.value}`);
 const { data: quotes } = await useFetch(`/api/quotes/by_book_id/${bookid.value}`);
+const { data: shelves } = await useFetch(`/api/shelves/by_book_id/${bookid.value}`);
 
 const deleteModalOpen = ref(false);
 
@@ -171,6 +172,23 @@ onMounted(() => {
                 <router-link class="link" :to="`/books/tag=${tag}`">
                   <q-chip dense clickable size="md">
                     {{ tag }}
+                  </q-chip>
+                </router-link>
+              </span>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-py-xs">
+          <div class="row items-center text-bold">
+            <div class="col-auto" id="tag-icon">
+              <q-icon name="shelves" size="sm"></q-icon>
+            </div>
+            <div class="col text-bold">
+              <span v-for="shelf in shelves" :key="shelf">
+                <router-link class="link" to="/shelves">
+                  <q-chip dense clickable size="md">
+                    {{ shelf.name }}
                   </q-chip>
                 </router-link>
               </span>

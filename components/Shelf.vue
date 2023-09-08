@@ -1,9 +1,6 @@
 <script setup lang="ts">
-const props = defineProps(['shelf', 'books']);
-//const emit = defineEmits(['quoteDeleted']);
-const router = useRouter();
-//const { isAdmin, authorize } = useAuth();
-//authorize();
+const props = defineProps(['shelf', 'books', 'isAdmin']);
+const emit = defineEmits(['shelfChanged']);
 
 const { filteredBooks, filterBooks } = useBookFilter();
 const drag = ref(false);
@@ -13,10 +10,13 @@ const deleteShelfModalOpen = ref(false);
 const changeNameModalOpen = ref(false);
 const editModeActive = ref(false);
 const shelfName = ref(props.shelf?.name);
+const isShelfPinned = ref(props.shelf.pinned);
+const shelfExpanded = ref(false);
 
 const filterOptions = ref({
   title: '',
   authors: '',
+  tag: '',
 });
 
 function getBooksFromShelfWithOrder(): any {
@@ -30,17 +30,6 @@ function addToShelf(book) {
   editModeActive.value = true;
 }
 
-async function onDelete() {
-  const response = await useFetch(`/api/shelf/delete/${props.shelf._id}`, {
-    method: 'DELETE',
-  });
-  // const sharedState = useState('alert', () => ({
-  //   isVisible: true,
-  //   message: `Książka ${book.value.title} została usunięta`,
-  // }));
-  //router.push('/books');
-}
-
 function removeFromShelf(bookId: string) {
   for (let i = 0; i < booksOnShelf.value.length; i++) {
     if (booksOnShelf.value[i]._id == bookId) {
@@ -48,6 +37,25 @@ function removeFromShelf(bookId: string) {
       break;
     }
   }
+}
+
+function changePinnedStatus() {
+  editModeActive.value = true;
+  isShelfPinned.value = !isShelfPinned.value;
+}
+
+function onCancel() {
+  editModeActive.value = false;
+  isShelfPinned.value = props.shelf.pinned || false;
+  shelfName.value = props.shelf.name;
+  booksOnShelf.value = getBooksFromShelfWithOrder();
+}
+
+async function onDelete() {
+  const response = await useFetch(`/api/shelf/delete/${props.shelf._id}`, {
+    method: 'DELETE',
+  });
+  emit('shelfChanged');
 }
 
 async function onSave() {
@@ -59,6 +67,7 @@ async function onSave() {
   const shelfToSave = {
     name: shelfName.value,
     books: booksIds,
+    pinned: isShelfPinned,
   };
 
   const response = await useFetch(`/api/shelf/edit/${props.shelf._id}`, {
@@ -67,6 +76,7 @@ async function onSave() {
   });
 
   editModeActive.value = false;
+  emit('shelfChanged');
 }
 
 watch(filterOptions.value, () => {
@@ -77,46 +87,25 @@ watch(filterOptions.value, () => {
 <template>
   <q-expansion-item
     class="shadow-1 overflow-hidden"
-    style="border-radius: 25px; max-width: 1100px; margin: auto"
+    v-model="shelfExpanded"
+    style="border-radius: 20px; max-width: 1100px; margin: auto"
     :label="shelfName"
     header-class="bg-indigo text-white text-h6"
     expand-icon-class="text-white"
   >
     <template v-slot:header>
       <q-item-section>
-        <div class="row">
-          <div>• {{ shelfName }}</div>
+        <div class="row items-center">
+          <q-icon v-if="isShelfPinned" class="q-mr-sm" name="push_pin"></q-icon>
+          <q-icon v-else class="q-mr-sm"></q-icon>
+          <div>{{ shelfName }}</div>
           <q-chip class="q-ml-md">{{ shelf.books.length }}</q-chip>
+          <q-space></q-space>
+          <div v-if="shelfExpanded"></div>
         </div>
       </q-item-section>
     </template>
     <q-card class="q-pa-md shelf-card" bordered>
-      <div class="row items-center q-pb-sm" style="margin: auto">
-        <!-- <div class="text-h5">{{ shelfName }}</div> -->
-        <!-- <q-chip>{{ shelf.books.length }}</q-chip> -->
-        <q-space />
-        <div>
-          <q-btn outline color="grey-9" size="sm" icon="menu">
-            <q-menu>
-              <q-list style="min-width: 100px">
-                <q-item clickable v-close-popup>
-                  <q-item-section @click="addBookModalOpen = true">Dodaj książki</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section @click="editModeActive = true">Edytuj zawartość</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section @click="changeNameModalOpen = true">Zmień nazwę</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section @click="deleteShelfModalOpen = true">Usuń półkę</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-        </div>
-      </div>
-
       <draggable
         class="q-gutter-md row flex"
         v-model="booksOnShelf"
@@ -131,7 +120,7 @@ watch(filterOptions.value, () => {
               <q-img class="img-non-edit" :src="element.image" style="width: 100px; height: 155px; border-radius: 10px" />
               <q-tooltip class="text-body2">
                 <div class="text-center">{{ element.title }}</div>
-                <div class="text-center">{{ element.authors.slice(0, 30) }}</div>
+                <div class="text-center">{{ element.authors.slice(0, 40).replaceAll(',', ', ') }}</div>
               </q-tooltip>
             </router-link>
           </div>
@@ -145,32 +134,70 @@ watch(filterOptions.value, () => {
         </template>
       </draggable>
 
-      <div v-if="editModeActive" class="q-gutter-sm" align="right">
-        <q-btn outline color="negative" @click="editModeActive = false">Anuluj</q-btn>
-        <q-btn outline color="positive" @click="onSave()">Zapisz</q-btn>
+      <div v-if="isAdmin" class="row items-center">
+        <q-space />
+        <div class="row q-mt-sm">
+          <div v-if="editModeActive" class="q-g">
+            <q-btn flat color="negative" @click="onCancel()">Anuluj</q-btn>
+            <q-btn flat color="positive" @click="onSave()">Zapisz</q-btn>
+          </div>
+          <q-btn flat color="grey-9" icon="menu">
+            <q-menu anchor="bottom left" self="bottom left">
+              <q-list style="min-width: 100px">
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="addBookModalOpen = true">Dodaj książki</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="editModeActive = true">Edytuj zawartość</q-item-section>
+                </q-item>
+                <q-item v-if="isShelfPinned" clickable v-close-popup>
+                  <q-item-section @click="changePinnedStatus()">Odepnij półkę</q-item-section>
+                </q-item>
+                <q-item v-if="!isShelfPinned" clickable v-close-popup>
+                  <q-item-section @click="changePinnedStatus()">Przypnij półkę</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="changeNameModalOpen = true">Zmień nazwę</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="deleteShelfModalOpen = true">Usuń półkę</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
       </div>
     </q-card>
   </q-expansion-item>
 
   <q-dialog v-model="addBookModalOpen">
-    <q-card>
-      <q-card-section class="text-center items-center">
-        <q-input v-model="filterOptions.title" dense clearable label="Tytuł" debounce="500" />
-        <q-input v-model="filterOptions.authors" dense clearable label="Autor" debounce="500" />
+    <q-card style="width: 550px; height: 800px">
+      <q-card-section class="text-center items-center q-gutter-xs">
+        <q-input filled v-model="filterOptions.title" dense clearable label="Tytuł" debounce="500" />
+        <q-input filled v-model="filterOptions.authors" dense clearable label="Autor" debounce="500" />
+        <q-input filled v-model="filterOptions.tag" dense clearable label="Tag" debounce="500" />
       </q-card-section>
+
+      <div class="q-pl-md">Znaleziono: {{ filteredBooks.length }}</div>
 
       <q-card-section>
-        <div v-for="book in filteredBooks.slice(0, 10)">
-          <div>{{ book.title }}</div>
-          <div>{{ book.authors }}</div>
-          <q-btn icon="add" size="xs" @click="addToShelf(book)"></q-btn>
-          <q-separator></q-separator>
-        </div>
-      </q-card-section>
+        <q-scroll-area style="height: 535px; max-width: 550px">
+          <div v-for="book in filteredBooks">
+            <div class="row items-center">
+              <div class="col">
+                <div class="text-body text-bold">{{ book.title }}</div>
+                <div>{{ book.authors.replaceAll(',', ', ') }}</div>
+              </div>
+              <q-btn class="col-1 q-mr-sm" flat icon="add" color="grey-8" size="md" @click="addToShelf(book)"></q-btn>
+            </div>
+            <q-separator class="q-my-xs" />
+          </div>
+        </q-scroll-area>
 
-      <q-card-actions align="right">
-        <q-btn outline label="OK" color="primary" v-close-popup />
-      </q-card-actions>
+        <q-card-actions align="right">
+          <q-btn outline label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card-section>
     </q-card>
   </q-dialog>
 
@@ -181,7 +208,7 @@ watch(filterOptions.value, () => {
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Wróć" color="primary" v-close-popup />
+        <q-btn @click="shelfName = shelf.name" flat label="Wróć" color="primary" v-close-popup />
         <q-btn @click="onSave()" flat label="Zapisz" color="positive" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -207,7 +234,7 @@ watch(filterOptions.value, () => {
   margin: auto;
   max-width: 1100px;
   background-color: rgb(255, 255, 255, 0.2);
-  border-radius: 25px;
+  border-radius: 20px;
 }
 
 .drag-item-edit {
