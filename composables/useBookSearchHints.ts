@@ -9,8 +9,11 @@ export default function useBookSearchHints() {
     languages: [],
   });
 
-  async function prepareSearchHints() {
-    const books = await $fetch('/api/books');
+  //param made optional to avoid double books fetching in search page
+  async function prepareSearchHints(books?) {
+    if (books === undefined) {
+      books = await $fetch('/api/books/for_search');
+    }
 
     let authors = [];
     let publishers = [];

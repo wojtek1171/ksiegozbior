@@ -61,7 +61,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <q-separator></q-separator>
+    <q-separator />
 
     <div class="q-pt-lg text-h3 text-center">Księgozbiór zawiera</div>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { data: shelves } = await useFetch('/api/shelves/by_name_asc_pinned_first');
-const { data: books } = await useFetch('/api/books');
+const { data: books } = useFetch('/api/books/for_shelves');
 
 const { isAdmin, authorize } = useAuth();
 authorize();
@@ -65,7 +65,8 @@ onMounted(() => {
   </div>
   <div v-if="shelves?.length == 0" class="text-h6 text-center">Nie utworzono jeszcze żadnych półek.</div>
   <div v-else class="q-my-sm" v-for="shelf in displayedShelfs">
-    <Shelf :key="shelf._id" :shelf="shelf" :books="books" :isAdmin="isAdmin" @shelfChanged="onChange"></Shelf>
+    <Shelf v-if="books" :key="shelf._id" :shelf="shelf" :books="books" :isAdmin="isAdmin" @shelfChanged="onChange" />
+    <q-skeleton v-else class="q-pa-md q-mx-lg bg-indigo" square style="border-radius: 20px" />
   </div>
 
   <!-- <q-banner v-if="isBanner" class="bg-green-4 banner">

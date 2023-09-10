@@ -179,7 +179,7 @@ onMounted(() => {
           </div>
         </q-card-section>
 
-        <q-card-section class="q-py-xs">
+        <q-card-section v-if="shelves?.length > 0" class="q-py-xs">
           <div class="row items-center text-bold">
             <div class="col-auto" id="tag-icon">
               <q-icon name="shelves" size="sm"></q-icon>

@@ -10,7 +10,7 @@ export default function useStatisticsData() {
   });
 
   async function getStatisticsData() {
-    const books = await $fetch('/api/books');
+    const books = await $fetch('/api/books/for_statistics');
     const settings = await $fetch('/api/settings/admin');
 
     const preparedData = prepareData(books, settings);

@@ -117,8 +117,8 @@ onMounted(() => {
           <q-input dense v-model="quote.text" label="Cytat" type="textarea" />
 
           <div align="right">
-            <q-btn label="Dodaj" type="submit" color="positive" outline />
-            <q-btn label="Resetuj" type="reset" color="primary" outline class="q-ml-sm" />
+            <q-btn label="Resetuj" type="reset" color="primary" outline />
+            <q-btn label="Dodaj" type="submit" color="positive" outline class="q-ml-sm" />
           </div>
         </q-form>
       </q-card-section>

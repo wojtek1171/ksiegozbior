@@ -1,10 +1,9 @@
 <script setup lang="ts">
-const { data: books } = await useFetch('/api/books/by_creation_desc');
-const displayedBooks = ref(books.value);
+const { data: books } = useFetch('/api/books/for_search');
+const displayedBooks = ref();
 const { declineBook } = useDeclination();
 
 const isBanner = ref(false);
-
 const tileOrTab = ref(true);
 const changeView = () => (tileOrTab.value = !tileOrTab.value);
 const filterOptions = ref({
@@ -13,7 +12,6 @@ const filterOptions = ref({
 });
 
 const { filteredBooks, filterBooks } = useBookFilter();
-
 const componentKey = ref(0);
 
 const onChange = (param) => {
@@ -40,10 +38,17 @@ onMounted(() => {
 onUnmounted(() => {
   clearNuxtState('alert');
 });
+
+watch(books, () => {
+  displayedBooks.value = books.value;
+});
 </script>
 
 <template>
-  <BookListFilter @filterOptionsChanged="onChange" />
+  <div class="q-ma-md text-h3 text-center">Księgozbiór</div>
+
+  <BookListFilter v-if="displayedBooks" @filterOptionsChanged="onChange" :books="books" />
+  <q-skeleton v-else class="filter-skeleton"></q-skeleton>
 
   <q-separator class="q-mt-md" />
 
@@ -58,8 +63,15 @@ onUnmounted(() => {
 
   <q-separator />
 
-  <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey" />
-  <BookListTable v-else :books="displayedBooks" />
+  <div v-if="displayedBooks">
+    <BookListTiles v-if="tileOrTab" :books="displayedBooks" :key="componentKey" />
+    <BookListTable v-else :books="displayedBooks" />
+  </div>
+  <div v-else class="q-mt-xl q-gutter-md">
+    <div v-for="index in 3" :key="index">
+      <q-skeleton class="tile-skeleton"></q-skeleton>
+    </div>
+  </div>
 
   <q-banner v-if="isBanner" class="bg-green-4 banner">
     <div class="row no-wrap q-gutter-md">
@@ -83,5 +95,21 @@ onUnmounted(() => {
   border-radius: 20px;
   top: 55px;
   right: 5px;
+}
+
+.tile-skeleton {
+  margin-top: 1em;
+  border-radius: 25px;
+  height: 380px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.filter-skeleton {
+  margin-top: 1em;
+  border-radius: 25px;
+  height: 380px;
+  max-width: 1000px;
+  margin: auto;
 }
 </style>

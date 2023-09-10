@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const props = defineProps(['books']);
 const emit = defineEmits(['filterOptionsChanged']);
 const route = useRoute();
 const searchParam = route.params.param as String;
@@ -28,8 +29,8 @@ const filterOptions = ref({
 const filterByPurchaseDate = ref(false);
 const filterByPublicationYear = ref(false);
 
-const { searchHintsBundle, prepareSearchHints } = await useBookSearchHints();
-prepareSearchHints();
+const { searchHintsBundle, prepareSearchHints } = useBookSearchHints();
+prepareSearchHints(props.books);
 
 const searchHints = ref([]);
 
@@ -80,11 +81,16 @@ watch(filterByPurchaseDate, () => {
 watch(filterOptions.value, () => {
   emit('filterOptionsChanged', filterOptions.value);
 });
+
+watch(
+  () => props.books,
+  () => {
+    console.log('sd');
+  },
+);
 </script>
 
 <template>
-  <div class="q-ma-md text-h3 text-center">Księgozbiór</div>
-
   <q-card class="q-pa-sm" id="filter-base-card">
     <div class="row q-gutter-md" id="filter-row">
       <q-input class="col" dense v-model="filterOptions.title" debounce="500" label="Tytuł" />
