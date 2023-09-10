@@ -66,7 +66,7 @@ onMounted(() => {
   <div v-if="shelves?.length == 0" class="text-h6 text-center">Nie utworzono jeszcze żadnych półek.</div>
   <div v-else class="q-my-sm" v-for="shelf in displayedShelfs">
     <Shelf v-if="books" :key="shelf._id" :shelf="shelf" :books="books" :isAdmin="isAdmin" @shelfChanged="onChange" />
-    <q-skeleton v-else class="q-pa-md q-mx-lg bg-indigo" square style="border-radius: 20px" />
+    <q-skeleton v-else class="q-pa-md q-mx-lg bg-indigo shelf-skeleton" square />
   </div>
 
   <!-- <q-banner v-if="isBanner" class="bg-green-4 banner">
@@ -87,5 +87,11 @@ onMounted(() => {
   border-radius: 20px;
   top: 55px;
   right: 5px;
+}
+
+.shelf-skeleton {
+  border-radius: 20px;
+  max-width: 1100px;
+  margin: auto;
 }
 </style>

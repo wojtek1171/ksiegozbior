@@ -81,13 +81,6 @@ watch(filterByPurchaseDate, () => {
 watch(filterOptions.value, () => {
   emit('filterOptionsChanged', filterOptions.value);
 });
-
-watch(
-  () => props.books,
-  () => {
-    console.log('sd');
-  },
-);
 </script>
 
 <template>

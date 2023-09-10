@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { homePageData, getHomePageData } = useHomePageData();
-await getHomePageData();
+getHomePageData();
 
 const { declineBook, declineAuthor, declinePage, declineQuote, declineShelves } = useDeclination();
 
@@ -9,6 +9,7 @@ const position = ref(0);
 let once = false;
 const curPosPercentage = ref(0);
 const totalWidth = ref(0);
+const loading = ref(true);
 
 function scroll(sc) {
   curPosPercentage.value = sc.horizontalPercentage;
@@ -27,13 +28,17 @@ function animateScroll(dir: string) {
   }
   scrollAreaRef.value.setScrollPosition('horizontal', position.value, 300);
 }
-const { isAdmin, authorize } = useAuth();
-authorize();
+//const { isAdmin, authorize } = useAuth();
+//authorize();
 
 onMounted(() => {
   useMeta({
     title: 'Księgozbiór - Strona główna',
   });
+});
+
+watch(homePageData.value, () => {
+  loading.value = false;
 });
 </script>
 
@@ -48,10 +53,13 @@ onMounted(() => {
 
       <q-scroll-area ref="scrollAreaRef" class="col-10" style="height: 350px; max-width: 1100px" @scroll="scroll">
         <div class="row no-wrap">
-          <div v-for="book in homePageData.recentBooks" :key="book" class="q-ma-sm">
+          <div v-if="!loading" v-for="book in homePageData.recentBooks" :key="book" class="q-ma-sm">
             <router-link :to="`/book/${book._id}`">
-              <q-img id="scroll-img" style="height: 300px; width: 200px" :src="book.image" />
+              <q-img id="scroll-img" :src="book.image" />
             </router-link>
+          </div>
+          <div v-else v-for="index in 10" :key="index" class="q-ma-sm">
+            <q-skeleton id="scroll-img" square></q-skeleton>
           </div>
         </div>
       </q-scroll-area>
@@ -187,9 +195,15 @@ onMounted(() => {
 #scroll-img {
   border-radius: 10px;
   transition: transform 0.4s;
+  height: 300px;
+  width: 200px;
 }
 
 #scroll-img:hover {
   transform: scale(1.05);
+}
+
+.cover-skeleton {
+  width: 200px;
 }
 </style>
