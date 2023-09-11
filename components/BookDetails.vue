@@ -7,6 +7,7 @@ const { data: quotes } = await useFetch(`/api/quotes/by_book_id/${bookid.value}`
 const { data: shelves } = await useFetch(`/api/shelves/by_book_id/${bookid.value}`);
 
 const deleteModalOpen = ref(false);
+const lendingModalOpen = ref(false);
 
 const { isAdmin, authorize } = useAuth();
 authorize();
@@ -218,6 +219,7 @@ onMounted(() => {
           <q-card-actions v-if="isAdmin" align="right">
             <q-btn outline color="red" @click="onDeleteButton"> usuń </q-btn>
             <q-btn outline color="green" :to="`/book/edit/${book._id}`"> edytuj </q-btn>
+            <q-btn outline color="primary" @click="lendingModalOpen = true"> wypożycz </q-btn>
             <q-btn outline color="primary" :to="`/quote/add?bookid=${book._id}&source=${book.title}&authors=${book.authors}`">
               dodaj cytat
             </q-btn>
@@ -235,6 +237,10 @@ onMounted(() => {
         <QuoteListQuoteTile :key="quote._id" :quote="quote" />
       </div>
     </div>
+
+    <q-dialog v-model="lendingModalOpen">
+      <ModalLending :book="book" />
+    </q-dialog>
 
     <q-dialog v-model="deleteModalOpen" persistent>
       <q-card>

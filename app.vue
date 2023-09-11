@@ -78,6 +78,15 @@ function logout() {
           </q-item-section>
         </q-item>
 
+        <q-item v-if="isAdmin" to="/lending" clickable>
+          <q-item-section avatar>
+            <q-icon name="autorenew" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Wypożyczenia</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item to="/quotes" clickable>
           <q-item-section avatar>
             <q-icon name="format_quote" />
