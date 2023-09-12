@@ -1,6 +1,16 @@
 # Księgozbiór
 
-Aplikacja do zarządzania księgozbiorem i bazą cytatów. Przy dodawaniu nowych pozycji możliwe jest pobranie danych ksiązki z serwisu LubimyCzytac.pl.
+Zarządzanie księgozbiorem i bazą cytatów.
+
+Aplikacja umożliwia:
+
+- dodawanie i wyszukiwanie książek
+- pobieranie danych książki z serwisu LubimyCzytac.pl
+- tworzenie własnych półek z książkami
+- dodawanie i wyszukiwanie cytatów
+- kanał RSS cytatów (/quotes/rss)
+- podgląd statystyk księgozbioru
+- prowadzenie archiwum wypożyczeń
 
 Aplikacja została stworzona w technologii PWA.
 
@@ -8,15 +18,21 @@ W projekcie wykorzystano:
 
 - Nuxt 3
 - Vue 3
+- Quasar
 - MongoDB
 
 ## Zrzuty ekranu
 
 ![img-01](/.github/assets/img-01.png)
-![img-01](/.github/assets/img-02.png)
-![img-01](/.github/assets/img-03.png)
-![img-01](/.github/assets/img-04.png)
-![img-01](/.github/assets/img-05.png)
+![img-02](/.github/assets/img-02.png)
+![img-03](/.github/assets/img-03.png)
+![img-04](/.github/assets/img-04.png)
+![img-05](/.github/assets/img-05.png)
+![img-06](/.github/assets/img-06.png)
+
+## Instalacja
+
+WIP
 
 ## Nuxt 3 Minimal Starter
 

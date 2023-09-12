@@ -1,5 +1,7 @@
 {
-  "name": "nuxt-app",
+  "name": "ksiegozbior",
+  "version": "1.0.0",
+  "author": "Wojtek Mski",
   "private": true,
   "scripts": {
     "build": "nuxt build",
