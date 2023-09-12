@@ -32,20 +32,21 @@ onMounted(() => {
         <div class="text-bold col-12 col-sm-3">Pozycja</div>
         <div class="text-bold col-5 col-sm-2">Pożyczający</div>
         <div class="text-bold col-5 col-sm-2">Data pożyczenia</div>
-        <div class="text-bold col-12 col-sm-3">Notatka</div>
+        <div class="text-bold col-12 col-sm-3">Uwagi</div>
         <div class="col-auto"></div>
       </q-card-section>
     </q-card>
-    <div v-for="loan in currentLoans" :key="loan._id">
+    <div v-if="currentLoans.length > 0" v-for="loan in currentLoans" :key="loan._id">
       <LoanTile :loan="loan" @loan-archived="refetchAndFilter()" />
     </div>
+    <div v-else class="q-mt-md text-center">Aktualnie nie wypożyczasz żadnej książki.</div>
 
-    <q-separator class="q-my-md"></q-separator>
+    <q-separator class="q-my-md" />
   </div>
   <div style="max-width: 950px; margin: auto">
     <div class="text-h5 text-center">Archiwum</div>
-
-    <LoanTable :loans="archivedLoans"></LoanTable>
+    <LoanTable v-if="archivedLoans.length > 0" :loans="archivedLoans" />
+    <div v-else class="q-mt-md text-center">Archiwum wypożyczeń jest puste</div>
   </div>
 </template>
 

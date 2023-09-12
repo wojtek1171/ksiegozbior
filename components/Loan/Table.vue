@@ -26,7 +26,7 @@ const columns = [
   { name: 'lendingDate', align: 'left', label: 'Data wyp.', field: (row) => row.lendingDate, sortable: true },
   { name: 'returnDate', align: 'left', label: 'Data oddania', field: (row) => row.returnDate, sortable: true },
   { name: 'onLoanDays', align: 'left', label: 'Dni wyp.', field: (row) => row.onLoanDays, sortable: true },
-  { name: 'notes', align: 'left', label: 'Notatka', field: (row) => row.notes, sortable: true },
+  { name: 'notes', align: 'left', label: 'Uwagi', field: (row) => row.notes, sortable: true },
 ];
 </script>
 

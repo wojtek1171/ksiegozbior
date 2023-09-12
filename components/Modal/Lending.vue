@@ -56,7 +56,7 @@ async function onSubmit() {
           </q-icon>
         </template>
       </q-input>
-      <q-input v-model="loan.notes" dense label="Notatka" type="textarea"></q-input>
+      <q-input v-model="loan.notes" dense label="Uwagi" type="textarea"></q-input>
     </q-card-section>
     <q-card-section align="right">
       <q-btn outline color="primary" @click="onSubmit()">Zatwierdź</q-btn>
