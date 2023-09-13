@@ -1,20 +1,18 @@
 <script setup lang="ts">
 const { data: quotes } = await useFetch('/api/quotes/by_creation_desc');
-const displayedQuotes = ref(quotes.value);
 const { declineQuote } = useDeclination();
-
+const { filteredQuotes, filterQuotes } = useQuoteFilter();
+const componentKey = ref(0);
 const isBanner = ref(false);
-
 const filterOptions = ref({
   bookTitle: '',
   authors: '',
   tags: [],
   text: '',
 });
-
-const { filteredQuotes, filterQuotes } = useQuoteFilter();
-
-const componentKey = ref(0);
+filterQuotes(quotes.value, filterOptions.value);
+const displayedQuotes = ref(filteredQuotes.value);
+console.log('render');
 
 const onFilterChange = (param) => {
   componentKey.value += 1;
@@ -38,15 +36,17 @@ function dismissBanner() {
   clearNuxtState('quoteAlert');
 }
 
+function rollTheDice() {
+  const randomQuoteNo = Math.floor(Math.random() * filteredQuotes.value.length);
+  displayedQuotes.value = [filteredQuotes.value[randomQuoteNo]];
+  componentKey.value += 1;
+}
+
 onMounted(() => {
   useMeta({
-    title: 'Wyszukaj cytat',
+    title: 'Znajdź cytat',
   });
   isBanner.value = sharedState.value?.isVisible;
-});
-
-onUnmounted(() => {
-  //clearNuxtState('quoteAlert');
 });
 </script>
 
@@ -54,8 +54,12 @@ onUnmounted(() => {
   <QuoteListFilter @filterOptionsChanged="onFilterChange" />
 
   <q-separator class="q-mt-md" />
-  <div class="row items-center" style="max-width: 1000px; margin: auto">
+  <div class="row items-center" style="max-width: 750px; margin: auto">
+    <div class="col"></div>
     <div class="q-ma-md col text-center">Znaleziono {{ displayedQuotes?.length }} {{ declineQuote(displayedQuotes?.length) }}</div>
+    <div class="col" align="right">
+      <q-btn class="q-ma-md text-black" flat icon="casino" color="grey-8" @click="rollTheDice()" />
+    </div>
   </div>
   <q-separator />
 

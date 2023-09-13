@@ -219,9 +219,17 @@ onMounted(() => {
           <q-card-actions v-if="isAdmin" align="right">
             <q-btn outline color="red" @click="onDeleteButton"> usuń </q-btn>
             <q-btn outline color="green" :to="`/book/edit/${book._id}`"> edytuj </q-btn>
-            <q-btn outline color="primary" @click="lendingModalOpen = true"> wypożycz </q-btn>
-            <q-btn outline color="primary" :to="`/quote/add?bookid=${book._id}&source=${book.title}&authors=${book.authors}`">
-              dodaj cytat
+            <q-btn outline color="grey-9" icon="more_vert">
+              <q-menu anchor="bottom left" self="bottom left">
+                <q-list style="min-width: 100px">
+                  <q-item clickable v-close-popup>
+                    <q-item-section @click="lendingModalOpen = true">Wypożycz</q-item-section>
+                  </q-item>
+                  <q-item clickable :to="`/quote/add?bookid=${book._id}&source=${book.title}&authors=${book.authors}`" v-close-popup>
+                    <q-item-section>Dodaj cytat</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
             </q-btn>
           </q-card-actions>
         </div>

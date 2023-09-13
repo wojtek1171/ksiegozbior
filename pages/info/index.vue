@@ -7,7 +7,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <q-page class="q-pa-xl for-page">
+  <q-page class="q-py-xl q-px-xs for-page">
     <q-card class="info-card">
       <q-card-section>
         <div class="text-h5 text-center">Info</div>

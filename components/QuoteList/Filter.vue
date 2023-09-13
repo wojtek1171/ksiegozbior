@@ -17,6 +17,13 @@ prepareSearchHints();
 
 const searchHints = ref([]);
 
+function onReset() {
+  filterOptions.value.bookTitle = '';
+  filterOptions.value.authors = '';
+  filterOptions.value.tags = [];
+  filterOptions.value.text = '';
+}
+
 function filterFn(val, update, hints) {
   update(() => {
     if (val === '') {
@@ -85,6 +92,9 @@ watch(filterOptions.value, () => {
       label="Tagi"
     />
     <q-input v-model="filterOptions.text" dense clearable label="Treść" debounce="500" />
+    <div class="q-mt-sm" align="right">
+      <q-btn flat icon="restart_alt" color="" @click="onReset()" />
+    </div>
   </q-card>
 </template>
 
