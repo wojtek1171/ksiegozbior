@@ -32,13 +32,12 @@ function animateScroll(dir: string) {
 //authorize();
 
 onMounted(() => {
-  useMeta({
-    title: 'Księgozbiór - Strona główna',
-  });
+  document.title = 'Strona główna';
 });
 
 watch(homePageData.value, () => {
   loading.value = false;
+  document.title = `${homePageData.value.toolbarTitle} - Strona główna`;
 });
 </script>
 

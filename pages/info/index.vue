@@ -1,3 +1,11 @@
+<script setup>
+onMounted(() => {
+  useMeta({
+    title: 'Info',
+  });
+});
+</script>
+
 <template>
   <q-page class="q-pa-xl for-page">
     <q-card class="info-card">
@@ -35,7 +43,7 @@
         <q-img src="~/assets/info-page/mongo-logo.png" width="300px" />
       </div>
       <div>
-        <q-img src="~/assets/info-page/quasar-logo.png" width="150px" />
+        <q-img src="~/assets/info-page/quasar-logo.png" width="140px" />
       </div>
     </div>
   </q-page>

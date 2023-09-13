@@ -9,6 +9,7 @@ export default function useHomePageData() {
     retailPriceSum: 0,
     quotesCount: 0,
     shelvesCount: 0,
+    toolbarTitle: '',
   });
 
   async function getHomePageData() {
@@ -29,6 +30,7 @@ export default function useHomePageData() {
     homePageData.value.retailPriceSum = preparedData.retailPriceSum;
     homePageData.value.quotesCount = quotesCount;
     homePageData.value.shelvesCount = shelvesCount;
+    homePageData.value.toolbarTitle = settings.toolbarTitle;
   }
 
   function prepareData(books) {

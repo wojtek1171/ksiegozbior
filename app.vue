@@ -3,6 +3,9 @@ const leftDrawerOpen = ref(true);
 const { isAdmin, authorize } = useAuth();
 authorize();
 
+const { data: settings } = await useFetch('/api/settings/admin');
+const toolbarTitle = ref(settings.value?.toolbarTitle || 'Księgozbiór');
+
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
@@ -24,7 +27,7 @@ function logout() {
       <q-toolbar class="bg-indigo">
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="toolbar-title"> Księgozbiór </q-toolbar-title>
+        <q-toolbar-title class="toolbar-title"> {{ toolbarTitle }} </q-toolbar-title>
         <div v-if="isAdmin">
           <q-btn icon="logout" size="sm" color="indigo-10" @click="logout">
             <q-tooltip>Wyloguj</q-tooltip>

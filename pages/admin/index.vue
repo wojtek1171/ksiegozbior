@@ -8,15 +8,17 @@ const isBanner = ref(false);
 const sharedState = useState('settingsAlert');
 
 const settings = ref({
-  user: fetchedSettings.value.user,
-  meters: fetchedSettings.value.meters,
-  statisticsInitialYear: fetchedSettings.value.statisticsInitialYear,
-  expensesVisibleToGuests: fetchedSettings.value.expensesVisibleToGuests,
+  user: fetchedSettings.value.user || 'admin',
+  toolbarTitle: fetchedSettings.value.toolbarTitle || 'Księgozbiór',
+  meters: fetchedSettings.value.meters || 10,
+  statisticsInitialYear: fetchedSettings.value.statisticsInitialYear || new Date().getFullYear(),
+  expensesVisibleToGuests: fetchedSettings.value.expensesVisibleToGuests || false,
 });
 
 async function onSubmit() {
   const settingsToSave = {
     user: settings.value.user,
+    toolbarTitle: settings.value.toolbarTitle,
     meters: +settings.value.meters,
     statisticsInitialYear: +settings.value.statisticsInitialYear,
     expensesVisibleToGuests: settings.value.expensesVisibleToGuests,
@@ -58,6 +60,7 @@ onMounted(() => {
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-md">
+          <q-input dense v-model="settings.toolbarTitle" label="Tytuł na pasku" />
           <q-input dense v-model="settings.meters" label="Metry bieżące na stronie startowej" reverse-fill-mask mask="#.#" fill-mask="0" />
           <q-input dense v-model="settings.statisticsInitialYear" label="Wyświetlaj roczne statystyki od:" type="number" />
           <q-checkbox v-model="settings.expensesVisibleToGuests" label="Pokaż wydatki na stronie głównej niezalogowanym użytkownikom" />
