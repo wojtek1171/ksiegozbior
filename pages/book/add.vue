@@ -398,8 +398,8 @@ onMounted(() => {
           <q-input dense v-model="book.notes" label="Notatka" type="textarea" />
 
           <div class="q-gutter-sm" align="right">
-            <q-btn label="potwierdź" type="submit" color="positive" outline />
-            <q-btn label="wyczyść" type="reset" color="primary" outline class="q-ml-sm" />
+            <q-btn label="wyczyść" type="reset" color="primary" outline />
+            <q-btn class="q-ml-sm" label="zapisz" type="submit" color="positive" outline />
           </div>
         </q-form>
       </q-card-section>

@@ -42,7 +42,14 @@ async function onSubmit() {
       <div class="text-body1">{{ book.authors.replaceAll(',', ', ') }}</div>
     </q-card-section>
     <q-card-section>
-      <q-input class="q-mb-sm" dense v-model="loan.borrower" label="Pożyczający"></q-input>
+      <q-input
+        class="q-mb-none"
+        dense
+        v-model="loan.borrower"
+        label="Pożyczający"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Pole wymagane']"
+      />
       <q-input dense v-model="loan.lendingDate" mask="date" :rules="['date']" label="Data wypożyczenia">
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
@@ -56,7 +63,7 @@ async function onSubmit() {
           </q-icon>
         </template>
       </q-input>
-      <q-input v-model="loan.notes" dense label="Uwagi" type="textarea"></q-input>
+      <q-input v-model="loan.notes" dense label="Uwagi" type="textarea" />
     </q-card-section>
     <q-card-section align="right">
       <q-btn outline color="primary" @click="onSubmit()">Zatwierdź</q-btn>

@@ -52,7 +52,7 @@ function copyToClipboard() {
 </script>
 
 <template>
-  <q-card class="q-pl-xs quote-card" bordered>
+  <q-card class="q-pl-xs" id="quote-card" bordered>
     <div class="q-my-sms">
       <div class="row flex">
         <div class="q-mx-md q-mt-sm">
@@ -130,7 +130,7 @@ function copyToClipboard() {
 </template>
 
 <style>
-.quote-card {
+#quote-card {
   margin: auto;
   max-width: 750px;
   background-color: rgb(255, 255, 255, 0.2);
