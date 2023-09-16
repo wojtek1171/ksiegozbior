@@ -10,6 +10,7 @@ let once = false;
 const curPosPercentage = ref(0);
 const totalWidth = ref(0);
 const loading = ref(true);
+const documentTitle = ref(homePageData.value.toolbarTitle || 'Księgozbiór');
 
 function scroll(sc) {
   curPosPercentage.value = sc.horizontalPercentage;
@@ -37,7 +38,8 @@ onMounted(() => {
 
 watch(homePageData.value, () => {
   loading.value = false;
-  document.title = `${homePageData.value.toolbarTitle} - Strona główna`;
+  documentTitle.value = homePageData.value.toolbarTitle;
+  document.title = `${documentTitle.value} - Strona główna`;
 });
 </script>
 
