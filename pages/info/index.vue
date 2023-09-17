@@ -26,7 +26,7 @@ onMounted(() => {
         <div class="text-center text-body1"><a class="link" href="https://www.gnu.org/licenses/agpl-3.0.html" target="blank">AGPL-3.0</a></div>
 
         <div class="q-mt-lg text-h5 text-center">Wersja:</div>
-        <div class="text-center text-body1">1.0.2</div>
+        <div class="text-center text-body1">1.0.3</div>
       </q-card-section>
     </q-card>
 

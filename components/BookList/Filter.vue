@@ -55,7 +55,7 @@ onMounted(() => {
       filterOptions.value.translators = splittedParam[1];
       break;
     case 'tag':
-      filterOptions.value.tags = splittedParam[1];
+      filterOptions.value.tags = new Array(splittedParam[1]);
       break;
     case 'series':
       filterOptions.value.series = new Array(splittedParam[1]);

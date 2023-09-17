@@ -208,7 +208,7 @@ onMounted(() => {
         </q-card-section>
 
         <div class="row no-wrap" style="height: 40px">
-          <q-btn :href="book.lcUrl" target="_blank" class="q-ml-sm" round flat>
+          <q-btn :href="book.lcUrl" target="_blank" class="q-ml-sm" round flat :disable="!book.lcUrl">
             <q-avatar size="30px">
               <q-tooltip>Przejdź do LubimyCzytac.pl</q-tooltip>
               <img src="../assets/pics/lc-logo.png" />
