@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['shelf', 'books', 'isAdmin']);
+const props = defineProps(['shelf', 'books', 'isAdmin', 'orderModeActive']);
 const emit = defineEmits(['shelfChanged']);
 
 const { filteredBooks, filterBooks } = useBookFilter();
@@ -96,11 +96,12 @@ watch(filterOptions.value, () => {
     <template v-slot:header>
       <q-item-section>
         <div class="row items-center">
-          <q-icon v-if="isShelfPinned" class="q-mr-sm" name="push_pin"></q-icon>
-          <q-icon v-else class="q-mr-sm"></q-icon>
+          <q-icon v-if="isShelfPinned && !orderModeActive" class="q-mr-sm" name="push_pin" />
+          <q-icon v-else-if="orderModeActive" class="q-mr-sm order-mode" name="drag_indicator" />
+          <q-icon v-else class="q-mr-sm" />
           <div>{{ shelfName }}</div>
           <q-chip class="q-ml-md">{{ shelf.books.length }}</q-chip>
-          <q-space></q-space>
+          <q-space />
           <div v-if="shelfExpanded"></div>
         </div>
       </q-item-section>
@@ -218,7 +219,10 @@ watch(filterOptions.value, () => {
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="warning" color="primary" text-color="white" />
-        <span class="q-ml-sm">Na pewno? Usuniętej półki nie można przywrócić.</span>
+        <span class="q-ml-sm">
+          <div>Usuwasz półkę {{ shelf.name }}!</div>
+          Usuniętej półki nie można przywrócić.</span
+        >
       </q-card-section>
 
       <q-card-actions align="right">
@@ -260,6 +264,14 @@ watch(filterOptions.value, () => {
 
 .img-non-edit:hover {
   transform: scale(1.05);
+}
+
+.order-mode {
+  /* Start the shake animation and make the animation last for 0.5 seconds */
+  animation: shake 0.5s;
+  /* When the animation is finished, start again */
+  animation-iteration-count: infinite;
+  cursor: move;
 }
 
 @keyframes shake {

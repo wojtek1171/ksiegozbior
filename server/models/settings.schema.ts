@@ -8,6 +8,7 @@ export const Settings = defineMongooseModel({
     meters: Number,
     statisticsInitialYear: Number,
     expensesVisibleToGuests: Boolean,
+    shelvesOrder: [String],
     created: {
       type: Date,
       default: Date.now,
