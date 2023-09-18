@@ -51,7 +51,7 @@ async function archive() {
       <div class="col-5 col-sm-2">{{ loan.lendingDate.slice(0, 10) }}</div>
       <div class="col-12 col-sm-3">{{ loan.notes }}</div>
       <div class="col-12 col-sm-auto" align="right">
-        <q-btn outline icon="archive" color="grey-8" size="sm" @click="archiveModalOpen = true">
+        <q-btn flat round icon="archive" color="grey-8" @click="archiveModalOpen = true">
           <q-tooltip>Archiwizuj</q-tooltip>
         </q-btn>
       </div>

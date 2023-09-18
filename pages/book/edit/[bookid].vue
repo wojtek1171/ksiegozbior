@@ -544,7 +544,7 @@ onMounted(() => {
               <q-input dense type="url" v-model="book.image" label="Link do okładki" />
             </div>
             <div class="col-1">
-              <q-btn outline color="grey-8" padding="xs" icon="add" @click="isUploadVisible = !isUploadVisible">
+              <q-btn outline round color="grey-8" padding="xs" icon="add" @click="isUploadVisible = !isUploadVisible">
                 <q-tooltip>Dodaj własną okładkę</q-tooltip>
               </q-btn>
             </div>

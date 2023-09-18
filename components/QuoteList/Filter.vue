@@ -93,7 +93,7 @@ watch(filterOptions.value, () => {
     />
     <q-input v-model="filterOptions.text" dense clearable label="Treść" debounce="500" />
     <div class="q-mt-sm" align="right">
-      <q-btn flat icon="restart_alt" color="" @click="onReset()" />
+      <q-btn flat round icon="restart_alt" color="" @click="onReset()" />
     </div>
   </q-card>
 </template>

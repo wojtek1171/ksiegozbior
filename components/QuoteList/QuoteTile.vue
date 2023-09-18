@@ -52,7 +52,7 @@ function copyToClipboard() {
 </script>
 
 <template>
-  <q-card class="q-pl-xs" id="quote-card" bordered>
+  <q-card id="quote-card" bordered>
     <div class="q-my-sms">
       <div class="row flex">
         <div class="q-mx-md q-mt-sm">
@@ -94,19 +94,19 @@ function copyToClipboard() {
         </div>
       </q-card-section>
 
-      <q-separator class="q-mst-xs"></q-separator>
+      <q-separator />
 
       <q-card-actions align="right">
         <div class="row no-wrap"></div>
         <div v-if="isAdmin">
-          <q-btn icon="delete" flat color="negative" @click="deleteModalOpen = !deleteModalOpen"></q-btn>
-          <q-btn icon="edit" flat color="positive" :to="`/quote/edit/${quote._id}`"></q-btn>
+          <q-btn icon="delete" flat round color="negative" @click="deleteModalOpen = !deleteModalOpen"></q-btn>
+          <q-btn icon="edit" flat round color="positive" :to="`/quote/edit/${quote._id}`"></q-btn>
         </div>
         <div>
-          <q-btn icon="content_copy" flat color="grey" @click="copyToClipboard">
+          <q-btn icon="content_copy" flat round color="grey-7" @click="copyToClipboard">
             <q-tooltip>Kopiuj do schowka</q-tooltip>
           </q-btn>
-          <q-btn v-if="quote.bookId" icon="menu_book" flat color="grey" :to="`/book/${quote.bookId}`">
+          <q-btn v-if="quote.bookId" icon="menu_book" flat round color="grey-7" :to="`/book/${quote.bookId}`">
             <q-tooltip>Przejdź do źródła</q-tooltip>
           </q-btn>
         </div>

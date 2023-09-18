@@ -217,9 +217,9 @@ onMounted(() => {
           <q-space></q-space>
 
           <q-card-actions v-if="isAdmin" align="right">
-            <q-btn flat icon="delete" color="negative" @click="onDeleteButton" />
-            <q-btn flat icon="edit" color="green" :to="`/book/edit/${book._id}`" />
-            <q-btn flat color="grey-9" icon="more_vert">
+            <q-btn flat round icon="delete" color="negative" @click="onDeleteButton" />
+            <q-btn flat round icon="edit" color="green" :to="`/book/edit/${book._id}`" />
+            <q-btn flat round color="grey-9" icon="more_vert">
               <q-menu anchor="bottom left" self="bottom left">
                 <q-list style="min-width: 100px">
                   <q-item clickable v-close-popup>

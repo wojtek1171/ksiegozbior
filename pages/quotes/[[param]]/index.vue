@@ -12,7 +12,6 @@ const filterOptions = ref({
 });
 filterQuotes(quotes.value, filterOptions.value);
 const displayedQuotes = ref(filteredQuotes.value);
-console.log('render');
 
 const onFilterChange = (param) => {
   componentKey.value += 1;
@@ -51,34 +50,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <QuoteListFilter @filterOptionsChanged="onFilterChange" />
+  <q-page class="q-px-xs">
+    <QuoteListFilter @filterOptionsChanged="onFilterChange" />
 
-  <q-separator class="q-mt-md" />
-  <div class="row items-center" style="max-width: 750px; margin: auto">
-    <div class="col"></div>
-    <div class="q-ma-md col text-center">Znaleziono {{ displayedQuotes?.length }} {{ declineQuote(displayedQuotes?.length) }}</div>
-    <div class="col" align="right">
-      <q-btn class="q-ma-md text-black" flat icon="casino" color="grey-8" @click="rollTheDice()" />
-    </div>
-  </div>
-  <q-separator />
-
-  <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" :textSearchPhrase="filterOptions.text" @quoteDeleted="onQuoteDeleted" />
-
-  <q-banner v-if="isBanner" class="bg-green-4 banner">
-    <div class="row no-wrap q-gutter-md">
-      <div>
-        {{ sharedState?.message }}
-      </div>
-      <div>
-        <q-btn @click="dismissBanner" outline color="black" icon="close" size="sm" round />
+    <q-separator class="q-mt-md" />
+    <div class="row items-center" style="max-width: 750px; margin: auto">
+      <div class="col"></div>
+      <div class="q-ma-sm col text-center">Znaleziono {{ displayedQuotes?.length }} {{ declineQuote(displayedQuotes?.length) }}</div>
+      <div class="col" align="right">
+        <q-btn class="q-ma-sm text-black" flat round icon="casino" color="grey-8" @click="rollTheDice()" />
       </div>
     </div>
-  </q-banner>
+    <q-separator />
 
-  <q-page-scroller position="bottom-left" :scroll-offset="150" :offset="[10, 10]">
-    <q-btn icon="keyboard_arrow_up" color="indigo" size="md" round />
-  </q-page-scroller>
+    <QuoteListTiles :quotes="displayedQuotes" :key="componentKey" :textSearchPhrase="filterOptions.text" @quoteDeleted="onQuoteDeleted" />
+
+    <q-banner v-if="isBanner" class="bg-green-4 banner">
+      <div class="row no-wrap q-gutter-md">
+        <div>
+          {{ sharedState?.message }}
+        </div>
+        <div>
+          <q-btn @click="dismissBanner" outline color="black" icon="close" size="sm" round />
+        </div>
+      </div>
+    </q-banner>
+
+    <q-page-scroller position="bottom-left" :scroll-offset="150" :offset="[10, 10]">
+      <q-btn icon="keyboard_arrow_up" color="indigo" size="md" round />
+    </q-page-scroller>
+  </q-page>
 </template>
 
 <style lang="scss">
