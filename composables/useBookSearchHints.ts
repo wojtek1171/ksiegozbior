@@ -33,13 +33,32 @@ export default function useBookSearchHints() {
       languages.push(book.language);
     });
 
-    searchHintsBundle.value.authors = Array.from(new Set(authors));
-    searchHintsBundle.value.publishers = Array.from(new Set(publishers));
-    searchHintsBundle.value.translators = Array.from(new Set(translators));
-    searchHintsBundle.value.series = Array.from(new Set(series));
-    searchHintsBundle.value.publSeries = Array.from(new Set(publSeries));
-    searchHintsBundle.value.tags = Array.from(new Set(tags));
+    searchHintsBundle.value.authors = getValuesWithOccurCount(authors);
+    searchHintsBundle.value.publishers = getValuesWithOccurCount(publishers);
+    searchHintsBundle.value.translators = getValuesWithOccurCount(translators);
+    searchHintsBundle.value.series = getValuesWithOccurCount(series);
+    searchHintsBundle.value.publSeries = getValuesWithOccurCount(publSeries);
+    searchHintsBundle.value.tags = getValuesWithOccurCount(tags);
     searchHintsBundle.value.languages = Array.from(new Set(languages));
+  }
+
+  function getValuesWithOccurCount(array) {
+    const resultArr = [];
+    const counts = {};
+
+    array.forEach((el) => {
+      if (el) {
+        counts[el] = counts[el] ? counts[el] + 1 : 1;
+      }
+    });
+
+    const countsSorted = Object.entries(counts).sort(([_, a], [__, b]) => b - a);
+
+    countsSorted.forEach((el) => {
+      resultArr.push({ label: `${el[0]} (${el[1]})`, value: el[0] });
+    });
+
+    return resultArr;
   }
 
   return {

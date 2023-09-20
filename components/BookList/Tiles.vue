@@ -7,14 +7,15 @@ const currentPage = ref(1);
 const maxPage = ref(Math.ceil(props.books.length / 10));
 
 watch(currentPage, () => {
-  window.scrollTo(0, 400);
+  const position = document.querySelector('#pagination-top').getBoundingClientRect().top;
+  window.scrollTo(0, position + document.documentElement.scrollTop - 100);
   const startPosition = (currentPage.value - 1) * 10;
   visBooks = props.books.slice(startPosition, startPosition + 10);
 });
 </script>
 
 <template>
-  <div class="flex flex-center">
+  <div class="flex flex-center" id="pagination-top">
     <q-pagination v-model="currentPage" :max="maxPage" input />
   </div>
 

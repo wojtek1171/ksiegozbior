@@ -54,23 +54,27 @@ function copyToClipboard() {
 <template>
   <q-card id="quote-card" bordered>
     <div class="q-my-sms">
-      <div class="row flex">
-        <div class="q-mx-md q-mt-sm">
-          <q-card-section class="q-pa-xs">
-            <router-link class="title-link" :to="`/quotes/source=${quote.bookTitle}`"
-              ><div class="text-body1">{{ quote.bookTitle }}</div></router-link
-            >
-            <div class="chip-col-right">
-              <span v-for="author in quote.authors.split(',')" :key="author">
-                <router-link class="link" :to="`/quotes/author=${author}`">
-                  <q-chip dense clickable size="md">
-                    {{ author }}
-                  </q-chip>
-                </router-link>
-              </span>
-            </div>
-          </q-card-section>
+      <div class="row flex no-wrap">
+        <div class="col row flex">
+          <div class="q-mx-md q-mt-sm">
+            <q-card-section class="q-pa-xs">
+              <router-link class="title-link" :to="`/quotes/source=${quote.bookTitle}`"
+                ><div class="text-body1">{{ quote.bookTitle }}</div></router-link
+              >
+              <div class="chip-col-right">
+                <span v-for="author in quote.authors.split(',')" :key="author">
+                  <router-link class="link" :to="`/quotes/author=${author}`">
+                    <q-chip dense clickable size="md">
+                      {{ author }}
+                    </q-chip>
+                  </router-link>
+                </span>
+              </div>
+            </q-card-section>
+          </div>
         </div>
+
+        <div class="col-auto"><q-icon name="format_quote" size="xl" color="grey-6" /></div>
       </div>
 
       <q-card-section class="text-area">

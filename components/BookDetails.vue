@@ -40,7 +40,7 @@ onMounted(() => {
 
 <template>
   <div class="q-py-lg">
-    <q-card class="q-my-xs" id="base-card" bordered>
+    <q-card class="q-my-xs" id="book-card" bordered>
       <div v-if="book.read" class="q-pa-mds badge"><q-icon name="check_circle" size="xs" color="positive" /></div>
       <div class="q-my-lg" ref="div">
         <div class="row flex justify-center">
@@ -273,10 +273,11 @@ onMounted(() => {
   border-radius: 12px;
 }
 
-#base-card {
+#book-card {
   margin: auto;
   max-width: 900px;
   background-color: rgb(255, 255, 255, 0.2);
+  border-radius: 25px;
 }
 
 .book-details-data-container {

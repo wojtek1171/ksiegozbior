@@ -158,7 +158,7 @@ function filterFn(val, update, hints) {
       searchHints.value = hints;
     } else {
       const needle = val.toLowerCase();
-      searchHints.value = hints.filter((hint) => hint?.toLowerCase().indexOf(needle) > -1);
+      searchHints.value = hints.filter((hint) => hint?.value.toLowerCase().indexOf(needle) > -1);
     }
   });
 }
@@ -409,6 +409,7 @@ onMounted(() => {
             new-value-mode="add-unique"
             label="Autor"
             lazy-rules
+            emit-value
             :rules="[(val) => (val && val.length > 0) || 'Pole wymagane']"
           />
 
@@ -423,6 +424,7 @@ onMounted(() => {
             @filter="(val, update) => filterFn(val, update, searchHintsBundle.publishers)"
             new-value-mode="add-unique"
             label="Wydawca"
+            emit-value
           />
 
           <q-select
@@ -436,6 +438,7 @@ onMounted(() => {
             @filter="(val, update) => filterFn(val, update, searchHintsBundle.translators)"
             new-value-mode="add-unique"
             label="Tłumacz"
+            emit-value
           />
 
           <q-input dense v-model="book.originalTitle" label="Tytuł oryginalny" />
@@ -452,6 +455,7 @@ onMounted(() => {
                 @filter="(val, update) => filterFn(val, update, searchHintsBundle.series)"
                 new-value-mode="add-unique"
                 label="Cykl"
+                emit-value
               />
             </div>
             <div class="col-1"></div>
@@ -470,6 +474,7 @@ onMounted(() => {
             @filter="(val, update) => filterFn(val, update, searchHintsBundle.publSeries)"
             new-value-mode="add-unique"
             label="Seria"
+            emit-value
           />
 
           <div class="q-pt-xs row">
@@ -581,6 +586,7 @@ onMounted(() => {
             @filter="(val, update) => filterFn(val, update, searchHintsBundle.tags)"
             new-value-mode="add-unique"
             label="Tagi"
+            emit-value
           />
 
           <div class="row no-wrap">
